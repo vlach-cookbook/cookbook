@@ -1,4 +1,10 @@
 #################
+## Javascript/Node
+#################
+app/bower_components
+node_modules
+
+#################
 ## Eclipse
 #################
 
