@@ -30,48 +30,61 @@ beforeEach(function() {
     return actual.toLowerCase();
   }
 
-  this.addMatchers({
-    toBeAFirebaseRef: function() {
-      var actual = this.actual;
-      var type = extendedTypeOf(actual);
-      var pass = isFirebaseRef(actual);
-      var notText = pass? ' not' : '';
-      this.message = 'Expected ' + type + notText + ' to be a Firebase ref';
-      return pass;
+  jasmine.addMatchers({
+    toBeAFirebaseRef: function(util, customEqualityTesters) {
+      return {
+        compare: function(actual) {
+          var type = extendedTypeOf(actual);
+          var pass = isFirebaseRef(actual);
+          var notText = pass? ' not' : '';
+          return {pass: pass,
+                  message: 'Expected ' + type + notText + ' to be a Firebase ref'};
+        }
+      };
     },
 
-    toBeASnapshot: function() {
-      var actual = this.actual;
-      var type = extendedTypeOf(actual);
-      var pass =
-        type === 'object' &&
-        typeof actual.val === 'function' &&
-        typeof actual.ref === 'function' &&
-        typeof actual.name === 'function';
-      var notText = pass? ' not' : '';
-      this.message = 'Expected ' + type + notText + ' to be a Firebase snapshot';
-      return pass;
+    toBeASnapshot: function(util, customEqualityTesters) {
+      return {
+        compare: function(actual) {
+          var type = extendedTypeOf(actual);
+          var pass =
+            type === 'object' &&
+            typeof actual.val === 'function' &&
+            typeof actual.ref === 'function' &&
+            typeof actual.name === 'function';
+          var notText = pass? ' not' : '';
+          return {pass: pass,
+                  message: 'Expected ' + type + notText + ' to be a Firebase snapshot'};
+        }
+      };
     },
 
-    toBeAPromise: function() {
-      var obj = this.actual;
-      var objType = extendedTypeOf(obj);
-      var pass =
-        objType === 'object' &&
-        typeof obj.then === 'function' &&
-        typeof obj.catch === 'function' &&
-        typeof obj.finally === 'function';
-      var notText = pass? ' not' : '';
-      this.message = 'Expected ' + objType + notText + ' to be a promise';
-      return pass;
+    toBeAPromise: function(util, customEqualityTesters) {
+      return {
+        compare: function(obj) {
+          var objType = extendedTypeOf(obj);
+          var pass =
+            objType === 'object' &&
+            typeof obj.then === 'function' &&
+            typeof obj.catch === 'function' &&
+            typeof obj.finally === 'function';
+          var notText = pass? ' not' : '';
+          return {pass: pass,
+                  message: 'Expected ' + objType + notText + ' to be a promise'};
+        }
+      };
     },
 
     // inspired by: https://gist.github.com/prantlf/8631877
-    toBeInstanceOf: function(expected) {
-      var pass = this.actual instanceof expected;
-      var notText = pass? ' not' : '';
-      this.message = 'Expected ' + this.actual + notText + ' to be an instance of ' + expected;
-      return pass;
+    toBeInstanceOf: function(util, customEqualityTesters) {
+      return {
+        compare: function(actual, expected) {
+          var pass = actual instanceof expected;
+          var notText = pass? ' not' : '';
+          return {pass: pass,
+                  message: 'Expected ' + this.actual + notText + ' to be an instance of ' + expected};
+        }
+      };
     },
 
     /**
@@ -80,24 +93,31 @@ beforeEach(function() {
      * types can be passed into this method and it will be true if any matches
      * are found.
      */
-    toBeA: function() {
-      var res = compare('a', this.actual, Array.prototype.slice.call(arguments));
-      this.message = res.message;
-      return res.pass;
+    toBeA: function(util, customEqualityTesters) {
+      return {
+        compare: function(actual) {
+          return compare('a', actual, Array.prototype.slice.call(arguments, 1));
+        }
+      };
     },
 
-    toBeAn: function() {
-      var res = compare('an', this.actual, Array.prototype.slice.call(arguments));
-      this.message = res.message;
-      return res.pass;
+    toBeAn: function(util, customEqualityTesters) {
+      return {
+        compare: function(actual) {
+          return compare('an', actual, Array.prototype.slice.call(arguments, 1));
+        }
+      };
     },
 
-    toHaveKey: function(key) {
-      var actual = this.actual;
-      var pass = actual && typeof actual === 'object' && actual.hasOwnProperty(key);
-      var notText = pass? ' not' : '';
-      this.message = 'Expected ' + key + notText + ' to exist in ' + extendedTypeOf(actual);
-      return pass;
+    toHaveKey: function(util, customEqualityTesters) {
+      return {
+        compare: function(actual, key) {
+          var pass = actual && typeof actual === 'object' && actual.hasOwnProperty(key);
+          var notText = pass? ' not' : '';
+          return {pass: pass,
+                  message: 'Expected ' + key + notText + ' to exist in ' + extendedTypeOf(actual)};
+        }
+      };
     }
   });
 

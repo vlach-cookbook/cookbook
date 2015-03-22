@@ -102,7 +102,7 @@ describe('directives', function() {
   function stubSimpleLogin() {
     var listeners = [];
     var obj = jasmine.createSpyObj('simpleLogin', ['watch']);
-    obj.watch.andCallFake(function(cb) {
+    obj.watch.and.callFake(function(cb) {
       listeners.push(cb);
     });
     obj.$$notify = function() {
