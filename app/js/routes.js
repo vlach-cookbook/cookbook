@@ -53,7 +53,7 @@ angular.module('myApp.routes', ['ngRoute', 'simpleLogin'])
         return requireUser();
       }];
       $routeProvider.when(path, route);
-    }
+    };
   }])
 
   // configure views; the authRequired parameter is used for specifying pages

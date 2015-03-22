@@ -1,9 +1,8 @@
 {
   "globalstrict": true,
-  "strict": false,
-  "asi": true,
   "browser": true,
   "globals": {
-    "angular": false
+    "angular": false,
+    "console": false
   }
 }
