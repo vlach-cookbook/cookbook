@@ -3,7 +3,7 @@
 
    /* Services */
 
-   angular.module('myApp.services', [])
+   angular.module('cookbookApp.services', [])
 
       // put your services here!
       // .service('serviceName', ['dependency', function(dependency) {}]);

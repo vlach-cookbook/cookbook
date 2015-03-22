@@ -1,6 +1,6 @@
 
 // a simple wrapper on Firebase and AngularFire to simplify deps and keep things DRY
-angular.module('firebase.utils', ['firebase', 'myApp.config'])
+angular.module('firebase.utils', ['firebase', 'cookbookApp.config'])
   .factory('fbutil', ['$window', 'FBURL', '$firebaseObject', '$firebaseArray',
     function($window, FBURL, $firebaseObject, $firebaseArray) {
       "use strict";
