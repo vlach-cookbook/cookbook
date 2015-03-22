@@ -6,6 +6,8 @@
 *    <div ng-cloak>Authentication has resolved.</div>
 * </code>
 */
+'use strict';
+
 angular.module('myApp.decorators', ['firebase.utils', 'simpleLogin'])
   .config(['$provide', function($provide) {
     // adapt ng-cloak to wait for auth before it does its magic

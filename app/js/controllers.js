@@ -91,7 +91,7 @@ angular.module('myApp.controllers', ['firebase.utils', 'simpleLogin'])
               $scope.msg = 'Password changed';
             }, function(err) {
               $scope.err = err;
-            })
+            });
         }
       };
 

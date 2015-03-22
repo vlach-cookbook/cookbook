@@ -1,3 +1,4 @@
+'use strict';
 
 angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
 
@@ -8,7 +9,7 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
       return simpleLogin.getUser().then(function (user) {
         return user ? user : $q.reject({ authRequired: true });
       });
-    }
+    };
   }])
 
   .factory('simpleLogin', ['$firebaseAuth', 'fbutil', 'createProfile', 'changeEmail',
@@ -105,7 +106,7 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
           else {
             def.resolve(ref);
           }
-        })
+        });
       });
 
       function firstPartOfEmail(email) {
@@ -120,5 +121,5 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
       }
 
       return def.promise;
-    }
+    };
   }]);
