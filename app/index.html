@@ -14,42 +14,34 @@
 <body ng-cloak>
   <!-- Initializr body -->
     <header>
-        <h1 class="title">Cookbook</h1>
+        <h1>Cookbook</h1>
     </header>
     
     <nav>
-        <a href = "new.html" class = "button"> Search </a>
-        <a href = "home.html" class = "button"> Browse </a>
+        <a href="new.html" class="button"> Search </a>
+        <a href="home.html" class="button"> Browse </a>
     </nav>
     
     <main>
-        <h2>Recent Recipes</h2>
-        <p>Recent Recipe 1</p>
-        <p class="recent_user">made by clvlach</p>
+        <div ng-view></div>
     </main>    
 
     <nav>
-        <a href = "new.html" class = "button"> New Recipe </a>
-        <a href = "home.html" class = "button"> Recent </a>
+        <a href="new.html" class="button"> New Recipe </a>
+        <a href="home.html" class="button"> Recent </a>
+        <a href="account" class="button" ng-show-auth>Account</a>
+        <a href="#/login" class="button" ng-hide-auth>Log In</a>
     </nav>
 
-    <article>
-        <div ng-view></div>
-    </article>
-    
+
+
+
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.js"></script>
     <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.js"><\/script>')</script>
 
     <script src="js/main.js"></script>
   <!-- end Initializr body -->
-  <ul class="menu">
-    <li><a href="#/home">home</a></li>
-    <li><a href="#/chat">chat</a></li>
-    <li ng-hide-auth><a href="#/login">login</a></li>
-    <li ng-show-auth><a href="#/account">account</a></li>
-  </ul>
-  <div>AngularFire-seed v<span app-version></span></div>
 
   <!-- build:js js/combined.js -->
     <script src="bower_components/angular/angular.js"></script>

@@ -16,6 +16,20 @@ body {
 
 header {
 	background-image: url(/img/header_skinny.jpg);
+	background-size: auto 100px;
+	background-position: center;
+	height: 100px;
+}
+
+h1 {
+	color: white;
+	background-color: #FF6F0D;
+	border-right: 2px solid;
+	border-bottom: 2px solid;
+	border-color: rgba(0,0,0,0.4);
+	width: 170px;
+	padding-left: 5px;
+	margin: 5px 0px 0px 0px;
 }
 
 nav {
@@ -55,7 +69,6 @@ p {
 	border-radius: 5px;
 	border-color:#388220;
 	text-align:center;
-	flex: auto;
 	padding: 5px;
 	margin-top: 5px;
 	margin-bottom: 5px;
