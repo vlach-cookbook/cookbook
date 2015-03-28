@@ -27,6 +27,11 @@ var runSequence = require('run-sequence');
 var browserSync = require('browser-sync');
 var pagespeed = require('psi');
 var reload = browserSync.reload;
+var spa = require("browser-sync-spa");
+
+browserSync.use(spa({
+  selector: "[ng-app]",
+}));
 
 var AUTOPREFIXER_BROWSERS = [
   'ie >= 10',

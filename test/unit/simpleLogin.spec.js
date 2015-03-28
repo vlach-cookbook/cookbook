@@ -23,7 +23,7 @@ describe('auth', function() {
     it('should return error if $authWithPassword fails',
       inject(function($q, simpleLogin) {
         var cb = jasmine.createSpy('reject');
-        spyOn(auth, '$authWithPassword').andReturn(reject('test_error', null));
+        spyOn(auth, '$authWithPassword').and.returnValue(reject('test_error', null));
         simpleLogin.login('test@test.com', '123').catch(cb);
         flush();
         expect(cb).toHaveBeenCalledWith('test_error');
@@ -32,7 +32,7 @@ describe('auth', function() {
 
     it('should return user if $authWithPassword succeeds',
       inject(function(simpleLogin) {
-        spyOn(auth, '$authWithPassword').andReturn(resolve({uid: 'kato'}));
+        spyOn(auth, '$authWithPassword').and.returnValue(resolve({uid: 'kato'}));
         var cb = jasmine.createSpy('resolve');
         simpleLogin.login('test@test.com', '123').then(cb);
         flush();
@@ -53,7 +53,7 @@ describe('auth', function() {
 
   describe('#changePassword', function() {
     it('should fail if $firebaseSimpleLogin fails', function() {
-      spyOn(auth, '$changePassword').andReturn(reject('errr'));
+      spyOn(auth, '$changePassword').and.returnValue(reject('errr'));
       var cb = jasmine.createSpy('reject');
       simpleLogin.changePassword({
         oldpass: 124,
@@ -66,7 +66,7 @@ describe('auth', function() {
     });
 
     it('should resolve to user if $firebaseSimpleLogin succeeds', function() {
-      spyOn(auth, '$changePassword').andReturn(resolve({uid: 'kato'}));
+      spyOn(auth, '$changePassword').and.returnValue(resolve({uid: 'kato'}));
       var cb = jasmine.createSpy('resolve');
       simpleLogin.changePassword({
         oldpass: 124,
@@ -86,14 +86,14 @@ describe('auth', function() {
     }));
 
     it('should invoke $createUser', function() {
-      spyOn(auth, '$createUser').andReturn(resolve());
+      spyOn(auth, '$createUser').and.returnValue(resolve());
       simpleLogin.createAccount('test@test.com', '123');
       expect(auth.$createUser).toHaveBeenCalled();
     });
 
     it('should reject promise if error', function() {
       var cb = jasmine.createSpy('reject');
-      spyOn(auth, '$createUser').andReturn(reject('test_error'));
+      spyOn(auth, '$createUser').and.returnValue(reject('test_error'));
       simpleLogin.createAccount('test@test.com', '123').catch(cb);
       flush();
       expect(cb).toHaveBeenCalledWith('test_error');
@@ -128,7 +128,7 @@ describe('auth', function() {
     it('should return any error in the reject',
       inject(function(createProfile, fbutil) {
         var cb = jasmine.createSpy();
-        spyOn(fbutil.ref(), 'set').andCallFake(function() {
+        spyOn(fbutil.ref(), 'set').and.callFake(function() {
           cb && cb('nooo');
         });
         createProfile(456, 'test2@test2.com').then(null, cb);
