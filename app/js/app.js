@@ -8,7 +8,8 @@ angular.module('cookbookApp', [
     'cookbookApp.directives',
     'cookbookApp.filters',
     'cookbookApp.routes',
-    'cookbookApp.services'
+    'cookbookApp.services',
+    'cookbookApp.recipe',
   ])
 .config(['$locationProvider', function($locationProvider) {
   $locationProvider.html5Mode(true);
