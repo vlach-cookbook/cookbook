@@ -1,189 +1,255 @@
-/*! HTML5 Boilerplate v5.0 | MIT License | http://h5bp.com/ */
+/*
 
-html {
-    color: #222;
-    font-size: 1em;
-    line-height: 1.4;
-}
+header
+container (flexbox)
+	nav1 (flexbox)
+	main (flexbox)
+	nav2 (flexbox)
 
-::-moz-selection {
-    background: #b3d4fc;
-    text-shadow: none;
-}
-
-::selection {
-    background: #b3d4fc;
-    text-shadow: none;
-}
-
-hr {
-    display: block;
-    height: 1px;
-    border: 0;
-    border-top: 1px solid #ccc;
-    margin: 1em 0;
-    padding: 0;
-}
-
-audio,
-canvas,
-iframe,
-img,
-svg,
-video {
-    vertical-align: middle;
-}
-
-fieldset {
-    border: 0;
-    margin: 0;
-    padding: 0;
-}
-
-textarea {
-    resize: vertical;
-}
-
-.browserupgrade {
-    margin: 0.2em 0;
-    background: #ccc;
-    color: #000;
-    padding: 0.2em 0;
-}
-
-
-/* ===== Initializr Styles ==================================================
-   Author: Jonathan Verrecchia - verekia.com/initializr/responsive-template
-   ========================================================================== */
+*/
 
 body {
-    font: 16px/26px Helvetica, Helvetica Neue, Arial;
+	background-color: #FFEACC;
+	max-width: 900px;
+	margin: auto;
 }
 
-header{
-    background-image: url(/app/img/header.jpg);
-    background-position: center;
-    background-size: cover;
-    height: 200px;
-
+header {
+	background-image: url(/img/header_skinny.jpg);
+	background-size: auto 100px;
+	background-position: center;
+	height: 100px;
 }
 
-.wrapper {
-    width: 90%;
-    margin: 0 5%;
+h1 {
+	color: white;
+	background-color: #FF6F0D;
+	border-right: 2px solid;
+	border-bottom: 2px solid;
+	border-color: rgba(0,0,0,0.4);
+	width: 170px;
+	padding-left: 5px;
+	margin: 5px 0px 0px 0px;
 }
 
-/* ===================
-    ALL: Orange Theme
-   =================== */
-
-.header-container {
-    border-bottom: 20px solid #e44d26;
+#wrapper {
+	display:flex;
+	flex-direction:column;
+	margin: 10px;
 }
 
-.footer-container,
-.main aside {
-    border-top: 20px solid #e44d26;
-}
-
-.header-container,
-.footer-container,
-.main aside {
-    background: #f16529;
-}
-
-.title {
-    color: white;
-}
-
-/* ==============
-    MOBILE: Menu
-   ============== */
-
-nav ul {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
+nav {
+	display: flex;
+	flex-direction: column;
+	align-items:stretch;
+	background-color: #F9D3A0;
+	padding: 10px;
 }
 
 nav a {
-    display: block;
-    margin-bottom: 10px;
-    padding: 15px 0;
-
-    text-align: center;
-    text-decoration: none;
-    font-weight: bold;
-
-    color: white;
-    background: #e44d26;
+	text-decoration: none;
+	color: #414042;
 }
 
-nav a:hover,
-nav a:visited {
-    color: white;
+nav a:hover{
+	border-color: #7ABC61;
 }
 
-nav a:hover {
-    text-decoration: underline;
+#main_container {
+	background-color: #F9D3A0;
+	padding:10px;
+	margin-bottom:10px;
+	order:2;
 }
 
-/* ==============
-    MOBILE: Main
-   ============== */
-
-.main {
-    padding: 30px 0;
+main {
+	display:flex;
+	flex-direction:column;
 }
 
-.main article h1 {
-    font-size: 2em;
+main a {
+	color: #414042;
+	text-decoration:none;
+	font-weight:bold;
 }
 
-.main aside {
-    color: white;
-    padding: 0px 5% 10px;
+main a:hover {
+	color: #1F510C;
 }
 
-.footer-container footer {
-    color: white;
-    padding: 20px 0;
+p {
+	margin: .25em;
 }
 
-/* ===============
-    ALL: IE Fixes
-   =============== */
-
-.ie7 .title {
-    padding-top: 20px;
+.button {
+	background-color: white;
+	height: 20px;
+	border: 2px solid;
+	border-radius: 5px;
+	border-color:#388220;
+	text-align:center;
+	padding: 5px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	text-transform: uppercase;
+	font-weight: bold;
 }
 
-/* ==========================================================================
-   Author's custom styles
-   ========================================================================== */
+.search {
+	color: #939598;
+	text-align: left;
+	text-transform: none;
+	background-image:url(/img/search.svg);
+	background-repeat: no-repeat;
+	background-position: 7px;
+	background-size: 18px;
+	padding-left: 30px;
+}
+
+
+.recent_user {
+	font-style: italic;
+	border-bottom: 1px solid;
+	border-color: #939598;
+}
+
+#nav_1 {
+	order:1;
+	margin-bottom: 15px
+}
+
+#nav_2 {
+	order: 3;
+}
+
+
+/* ====================
+    PARTIALS
+   ==================== */
+
+
+#content {
+	background-color: white;
+	border: 2px solid;
+	border-color: #939598;
+	padding: 10px;
+	order:1;
+}
+
+#menu {
+	flex-direction:column;
+	flex-basis:auto;
+	order:2;
+}
+
+
+
+/* ====================
+    INTERMEDIATE
+   ==================== */
+
+@media only screen and (min-width: 455px) and (max-width: 679px) {
+
+	header {
+		background-size: auto 150px;
+		height: 150px;
+	}
+
+	nav {
+		flex-direction: row;
+	}
+
+	nav a {
+		flex: 1 1 0;
+		margin: 0px 7.5px 0px 7.5px;
+	}
+
+	#menu {
+		flex-direction: row;
+		order:1;
+	}
+
+}
+
+/* ====================
+    WIDE
+   ==================== */
+
+@media only screen and (min-width: 680px) {
+
+	body {
+		border: 10px solid #FF6F0D;
+		border-top:none;
+		border-bottom: none;
+	}
+
+	#wrapper {
+		display: block;
+		box-sizing:border-box;
+	}
+
+	#main_container {
+		width:62%;
+	}
+
+	main {
+		align-items:stretch;
+		margin-right:5px;
+	}
+
+	nav {
+		width: 30%;
+		float:right;
+	}
+
+	#nav_1 {
+	}
+
+	#nav_2 {
+		clear:right;
+	}
+
+	#menu {
+		float:none;
+		flex-direction:row;
+		order:1;
+		width:auto;
+		padding: 10px 0px 10px 0px;
+	}
+
+	#menu a {
+		flex:1 1 auto;
+		margin: 0px 7.5px 0px 7.5px;
+
+	}
+}
 
 /* ==========================================================================
    Browsing Twisties
    ========================================================================== */
+
 .browse ul { 
-  list-style-type: none; 
-  padding-left: 22px;
+  	list-style-type: none; 
+	background-color: white;
+	height: auto;
+	border: 2px solid #388220;
+	border-radius: 5px;
+	padding: 1px;
+	font-weight: bold;
 }
-.browse label{
-    padding: 3px;
-    color: black;   
-}
-.browse ul ul ul li {
-  margin: 2px 2px 2px 30px;
-  padding: 2px 2px 2px 5px;
-  border: none;
-  background-color: #ececec;
-}
+.browse ul ul {
+	border:none;
+	padding-left: 22px;
+} 
 .browse li { 
     margin: 2px;
     padding: 5px;
-    border: 1px solid #ABC;
-    border-radius: 5px;
+}
+.browse ul ul li {
+	padding: 2px;
+}
+.browse ul ul ul ul li {
+	font-weight: normal;
 }
 .browse input[type=checkbox] { display: none; }
 .browse input[type=checkbox] ~ ul { 
@@ -213,233 +279,4 @@ nav a:hover {
     content:'▼';
   margin-left: 0px;
   margin-top: 3px;
-}
-
-
-
-
-
-
-/* ==========================================================================
-   Media Queries
-   ========================================================================== */
-
-@media only screen and (min-width: 480px) {
-
-/* ====================
-    INTERMEDIATE: Menu
-   ==================== */
-
-    nav a {
-        display:block;
-        margin-bottom: 10px;
-        padding: 15px 0;
-
-        text-align: center;
-        text-decoration: none;
-        font-weight: bold;
-
-        color: white;
-        background: #e44d26;
-    }
-
-    nav li:first-child a {
-        margin-left: 0;
-    }
-
-    nav li:last-child a {
-        margin-right: 0;
-    }
-
-/* ========================
-    INTERMEDIATE: IE Fixes
-   ======================== */
-
-    nav ul li {
-        display: inline;
-    }
-
-    .oldie nav a {
-        margin: 0 0.7%;
-    }
-}
-
-@media only screen and (min-width: 768px) {
-
-/* ====================
-    WIDE: CSS3 Effects
-   ==================== */
-
-    .header-container,
-    .main aside {
-        -webkit-box-shadow: 0 5px 10px #aaa;
-           -moz-box-shadow: 0 5px 10px #aaa;
-                box-shadow: 0 5px 10px #aaa;
-    }
-
-/* ============
-    WIDE: Menu
-   ============ */
-
-    .title {
-        float: left;
-    }
-
-    nav {
-        width: 28%;
-        float:right;
-    }
-
-    nav a {
-        display:block;
-        width:100%;
-        margin-bottom: 10px;
-        padding: 15px 0;
-
-        text-align: center;
-        text-decoration: none;
-        font-weight: bold;
-
-        color: white;
-        background: #e44d26;
-    }
-    
-/* ============
-    WIDE: Main
-   ============ */
-
-    .main article {
-        float: left;
-        width: 57%;
-    }
-
-    .main aside {
-        float: right;
-        width: 28%;
-    }
-
-}
-
-@media only screen and (min-width: 1140px) {
-
-/* ===============
-    Maximal Width
-   =============== */
-
-    .wrapper {
-        width: 1026px; /* 1140px - 10% for margins */
-        margin: 0 auto;
-    }
-}
-
-/* ==========================================================================
-   Helper classes
-   ========================================================================== */
-
-.hidden {
-    display: none !important;
-    visibility: hidden;
-}
-
-.visuallyhidden {
-    border: 0;
-    clip: rect(0 0 0 0);
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    width: 1px;
-}
-
-.visuallyhidden.focusable:active,
-.visuallyhidden.focusable:focus {
-    clip: auto;
-    height: auto;
-    margin: 0;
-    overflow: visible;
-    position: static;
-    width: auto;
-}
-
-.invisible {
-    visibility: hidden;
-}
-
-.clearfix:before,
-.clearfix:after {
-    content: " ";
-    display: table;
-}
-
-.clearfix:after {
-    clear: both;
-}
-
-.clearfix {
-    *zoom: 1;
-}
-
-/* ==========================================================================
-   Print styles
-   ========================================================================== */
-
-@media print {
-    *,
-    *:before,
-    *:after {
-        background: transparent !important;
-        color: #000 !important;
-        box-shadow: none !important;
-        text-shadow: none !important;
-    }
-
-    a,
-    a:visited {
-        text-decoration: underline;
-    }
-
-    a[href]:after {
-        content: " (" attr(href) ")";
-    }
-
-    abbr[title]:after {
-        content: " (" attr(title) ")";
-    }
-
-    a[href^="#"]:after,
-    a[href^="javascript:"]:after {
-        content: "";
-    }
-
-    pre,
-    blockquote {
-        border: 1px solid #999;
-        page-break-inside: avoid;
-    }
-
-    thead {
-        display: table-header-group;
-    }
-
-    tr,
-    img {
-        page-break-inside: avoid;
-    }
-
-    img {
-        max-width: 100% !important;
-    }
-
-    p,
-    h2,
-    h3 {
-        orphans: 3;
-        widows: 3;
-    }
-
-    h2,
-    h3 {
-        page-break-after: avoid;
-    }
 }

@@ -14,45 +14,59 @@
 </head>
 <body ng-cloak>
   <!-- Initializr body -->
-  <div class="header-container">
-            <header class="wrapper clearfix">
-                <h1 class="title">Cookbook</h1>
-             </header>
-        </div>
-
-        <div class="main-container">
-            <div class="main wrapper clearfix">
-
-                <article>
-                    <div ng-view></div>
-                </article>
-
-                <aside>
-                    <nav>
-                    <ul>
-                        <li><a href="#">SEARCH</a></li>
-                        <li><a href="#">NEW RECIPE</a></li>
-                        <li><a href="#">BROWSE</a></li>
+    <header>
+        <h1>Cookbook</h1>
+    </header>
+    
+    <div id="wrapper">
+        <nav id="nav_1">
+            <input type="search" class="button search" placeholder ="Search"/>
+            <div class="browse">
+                <ul>
+                <li><input type="checkbox" id="cb"/><label for="cb">Browse</label>
+                    <ul> 
+                        <li><input type="checkbox" id="cb1"/><label for="cb1">Recipe</label>
+                            <ul>
+                                <li><input type="checkbox" id="cb2"/><label for="cb2">A</label>
+                                    <ul>
+                                    <li><label>Alphabet Soup</label></li>
+                                    <li><label>Asparagus Soup</label></li>
+                                    </ul>
+                                </li>
+                                <li><input type="checkbox" id="cb3"/><label for="cb3">B</label>
+                                    <ul>
+                                    <li><label>Barley Soup</label></li>
+                                    <li><label>Borscht</label></li>
+                                    <li><label>Broccoli Soup</label></li>
+                                    </ul>
+                                </li>
+                                <li><input type="checkbox" id="cb6"/><label for="cb6">C</label>
+                                    <ul>
+                                    <li><label>Carrot Soup</label></li>
+                                    <li><label>Cioppino</label></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
-                </nav>
-                </aside>
+                </ul>
+            </div>
+        </nav>
 
-            </div> <!-- #main -->
-        </div> <!-- #main-container -->
+        <nav id="nav_2">
+            <a href="new.html" class="button"> New Recipe </a>
+            <a href="home.html" class="button"> Recent </a>
+            <a href="account" class="button" ng-show-auth>Account</a>
+            <a href="login" class="button" ng-hide-auth>Log In</a>
+        </nav>
 
-        <div class="footer-container">
-            <footer class="wrapper">
-                <h3>footer</h3>
-            </footer>
+
+        <div id="main_container">        
+            <main ng-view>
+            </main>    
         </div>
-  <!-- end Initializr body -->
-  <ul class="menu">
-    <li><a href="/home">home</a></li>
-    <li><a href="/chat">chat</a></li>
-    <li ng-hide-auth><a href="/login">login</a></li>
-    <li ng-show-auth><a href="/account">account</a></li>
-  </ul>
-  <div>AngularFire-seed v<span app-version></span></div>
+        
+    </div>
 
   <!-- build:js js/combined.js -->
     <script src="bower_components/angular/angular.js"></script>
@@ -71,6 +85,7 @@
     <script src="js/firebase.utils.js"></script>
     <script src="js/simpleLogin.js"></script>
     <script src="js/changeEmail.js"></script>
+    <script src="recipe-view/recipe.js"></script>
   <!-- endbuild -->
 </body>
 </html>
