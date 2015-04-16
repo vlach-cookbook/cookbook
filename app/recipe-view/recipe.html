@@ -1,28 +1,52 @@
 <main ng-if="editing">
   <div id="content_edit">
     <h3>Title</h3>
-    <p><input type="text" ng-model="recipe.title" placeholder="Title" ng-change="setTitle()"></p>
+    <p><input type="text" ng-model="recipeMeta.title" placeholder="Title" ng-change="setTitle()"></p>
 
     <h3>Ingredients</h3>
-    <div class="ingredient" ng-repeat="(key, ingredient) in recipe.ingredients">
+    <div class="ingredient" ng-repeat="ingredient in recipe_ingredients">
       <div class="ingredient_short">
-        <input type="text" ng-model="ingredient.quantity" placeholder="Qty">
+        <input type="text"
+               placeholder="Qty"
+               ng-model="ingredient.quantity"
+               ng-change="recipe_ingredients.$save(ingredient)"
+               >
       </div>
       <div class="ingredient_short">
-        <input type="text" ng-model="ingredient.unit"placeholder="Unit">
+        <input type="text"
+               placeholder="Unit"
+               ng-model="ingredient.unit"
+               ng-change="recipe_ingredients.$save(ingredient)"
+               >
       </div>
       <div class="ingredient_long">
-        <input type="text" ng-model="ingredient.name"placeholder="Ingredient">
+        <input type="text"
+               placeholder="Ingredient"
+               ng-model="ingredient.name"
+               ng-change="recipe_ingredients.$save(ingredient)"
+               >
       </div>
       <div class="ingredient_long">
-        <input type="text" ng-model="ingredient.preparation"placeholder="Preparation">
+        <input type="text"
+               placeholder="Preparation"
+               ng-model="ingredient.preparation"
+               ng-change="recipe_ingredients.$save(ingredient)"
+               >
       </div>
-      <a href="javascript:;" ng-click="removeIngredient()"class="nav_style edit">-</a>
+      <a href="javascript:;"
+         ng-click="removeIngredient(ingredient)"
+         class="nav_style edit"
+         >-</a>
     </div>
-    <p><a href="javascript:;" ng-click="addIngredient()"class="nav_style edit">+</a></p>
+    <p><a href="javascript:;"
+          ng-click="addIngredient()"
+          class="nav_style edit"
+          >+</a></p>
 
     <h3>Directions</h3>
-    <textarea ng-model="recipe.directions"></textarea>
+    <textarea ng-model="recipeDetails.directions"
+              ng-change="setDirections()"
+              ></textarea>
 
     <p><a href="javascript:;" ng-click="save()" class="nav_style edit">Save</a></p>
   </div>
@@ -37,14 +61,13 @@
   </nav>
 
   <div id="content">
-    <h2>{{recipe.title}}</h2>
-    {{recipeId}}
+    <h2>{{recipeMeta.title}}</h2>
     <ul>
-      <li ng-repeat="ingredient in recipe.ingredients">
+      <li ng-repeat="ingredient in recipe_ingredients">
         {{ingredient.quantity}} {{ingredient.unit}} {{ingredient.name}}<span ng-if="ingredient.preparation">, {{ingredient.preparation}}</span>
       </li>
     </ul>
 
-    {{recipe.directions}}
+    {{recipeDetails.directions}}
   </div>
 </main>
