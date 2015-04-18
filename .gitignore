@@ -4,6 +4,10 @@
 app/bower_components
 node_modules
 
+# C++
+*.o
+import/tojson
+
 # Firebase; built by blaze from rules.yaml
 rules.json
 
