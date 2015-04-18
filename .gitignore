@@ -4,6 +4,9 @@
 app/bower_components
 node_modules
 
+# Firebase; built by blaze from rules.yaml
+rules.json
+
 #################
 ## Eclipse
 #################
