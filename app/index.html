@@ -14,57 +14,62 @@
 </head>
 <body ng-cloak>
   <!-- Initializr body -->
-    <header>
-        <h1>Cookbook</h1>
-    </header>
+    
     
     <div id="wrapper">
+        <header>
+            <h1>Cookbook</h1>
+        </header>
         <nav id="nav_1">
-            <input type="search" class="button search" placeholder ="Search"/>
+            <input type="search" class="nav_style search" placeholder ="Search"/>
             <div class="browse">
                 <ul>
                 <li><input type="checkbox" id="cb"/><label for="cb">Browse</label>
                     <ul> 
-                        <li><input type="checkbox" id="cb1"/><label for="cb1">Recipe</label>
+                    <li><input type="checkbox" id="cb1"/><label for="cb1">Recipe</label>
+                        <ul>
+                        <li><input type="checkbox" id="cb2"/><label for="cb2">A</label>
                             <ul>
-                                <li><input type="checkbox" id="cb2"/><label for="cb2">A</label>
-                                    <ul>
-                                    <li><label>Alphabet Soup</label></li>
-                                    <li><label>Asparagus Soup</label></li>
-                                    </ul>
-                                </li>
-                                <li><input type="checkbox" id="cb3"/><label for="cb3">B</label>
-                                    <ul>
-                                    <li><label>Barley Soup</label></li>
-                                    <li><label>Borscht</label></li>
-                                    <li><label>Broccoli Soup</label></li>
-                                    </ul>
-                                </li>
-                                <li><input type="checkbox" id="cb6"/><label for="cb6">C</label>
-                                    <ul>
-                                    <li><label>Carrot Soup</label></li>
-                                    <li><label>Cioppino</label></li>
-                                    </ul>
-                                </li>
+                            <li><label>Alphabet Soup ABCDEFG HIJKLMN</label></li>
+                            <li><label>Asparagus Soup</label></li>
                             </ul>
                         </li>
+                        <li><input type="checkbox" id="cb3"/><label for="cb3">B</label>
+                            <ul>
+                            <li><label>Barley Soup</label></li>
+                            <li><label>Borscht</label></li>
+                            <li><label>Broccoli Soup</label></li>
+                            </ul>
+                        </li>
+                        <li><input type="checkbox" id="cb6"/><label for="cb6">C</label>
+                            <ul>
+                            <li><label>Carrot Soup</label></li>
+                            <li><label>Cioppino</label></li>
+                            </ul>
+                        </li>
+                        </ul>
+                    </li>
+                    <li><input type="checkbox" id="cb7"/><label for="cb7">Ingredient</label>
+                    </li>
+                    <li><input type="checkbox" id="cb8"/><label for="cb8">Category</label>
+                    </li>
+                    <li><input type="checkbox" id="cb9"/><label for="cb9">Date</label>
+                    </li>
                     </ul>
+                </li>
                 </ul>
             </div>
         </nav>
 
         <nav id="nav_2">
-            <a href="new.html" class="button"> New Recipe </a>
-            <a href="home.html" class="button"> Recent </a>
-            <a href="account" class="button" ng-show-auth>Account</a>
-            <a href="login" class="button" ng-hide-auth>Log In</a>
+            <a href="new" class="nav_style"> New Recipe </a>
+            <a href="home" class="nav_style"> Recent </a>
+            <a href="account" class="nav_style" ng-show-auth>Account</a>
+            <a href="login" class="nav_style" ng-hide-auth>Log In</a>
         </nav>
 
-
-        <div id="main_container">        
-            <main ng-view>
-            </main>    
-        </div>
+        <main ng-view id="main_container">
+        </main>    
         
     </div>
 

@@ -1,32 +1,50 @@
 <main ng-if="editing">
-  <p><input type="text" ng-model="recipe.title" placeholder="Title" ng-change="setTitle()"></p>
+  <div id="content_edit">
+    <h3>Title</h3>
+    <p><input type="text" ng-model="recipe.title" placeholder="Title" ng-change="setTitle()"></p>
 
-  <h2>Ingredients</h2>
-  <div class="ingredient" ng-repeat="(key, ingredient) in recipe.ingredients">
-    <input type="text" ng-model="ingredient.count">
-    <input type="text" ng-model="ingredient.unit">
-    <input type="text" ng-model="ingredient.name">
-    <input type="text" ng-model="ingredient.preparation">
-    <button ng-click="removeIngredient(key)">-</button>
+    <h3>Ingredients</h3>
+    <div class="ingredient" ng-repeat="(key, ingredient) in recipe.ingredients">
+      <div class="ingredient_short">
+        <input type="text" ng-model="ingredient.quantity" placeholder="Qty">
+      </div>
+      <div class="ingredient_short">
+        <input type="text" ng-model="ingredient.unit"placeholder="Unit">
+      </div>
+      <div class="ingredient_long">
+        <input type="text" ng-model="ingredient.name"placeholder="Ingredient">
+      </div>
+      <div class="ingredient_long">
+        <input type="text" ng-model="ingredient.preparation"placeholder="Preparation">
+      </div>
+      <a href="javascript:;" ng-click="removeIngredient()"class="nav_style edit">-</a>
+    </div>
+    <p><a href="javascript:;" ng-click="addIngredient()"class="nav_style edit">+</a></p>
+
+    <h3>Directions</h3>
+    <textarea ng-model="recipe.directions"></textarea>
+
+    <p><a href="javascript:;" ng-click="save()" class="nav_style edit">Save</a></p>
   </div>
-  <button ng-click="addIngredient()">+</button>
-
-  <h2>Directions</h2>
-  <textarea ng-model="recipe.directions"></textarea>
-
-  <p><button ng-click="save()">Save</button></p>
 </main>
 
-<main ng-if="!editing">
-<h2>{{recipe.title}}</h2>
-{{recipeId}}
-<ul>
-  <li ng-repeat="ingredient in recipe.ingredients">
-    {{ingredient.count}} {{ingredient.unit}} {{ingredient.name}}<span ng-if="ingredient.preparation">, {{ingredient.preparation}}</span>
-  </li>
-</ul>
+<main ng-if="!editing" class="recipe">
+  <nav id="menu">
+    <a href="home.html" class="nav_style"> Make </a>
+    <a href="javascript:;" ng-click="edit()" class="nav_style">Edit</a>
+    <a href="home.html" class="nav_style"> Print </a>
+    <a href="home.html" class="nav_style"> Delete </a>
+  </nav>
 
-{{recipe.directions}}
+  <div id="content">
+    <h2>{{recipe.title}}</h2>
+    {{recipeId}}
+    <ul>
+      <li ng-repeat="ingredient in recipe.ingredients">
+        {{ingredient.quantity}} {{ingredient.unit}} {{ingredient.name}}<span ng-if="ingredient.preparation">, {{ingredient.preparation}}</span>
+      </li>
+    </ul>
 
-<p><button ng-click="edit()">Edit</button></p>
+    {{recipe.directions}}
+  </div>
 </main>
