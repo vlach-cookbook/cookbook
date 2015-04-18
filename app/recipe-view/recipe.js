@@ -12,20 +12,6 @@ angular.module('cookbookApp.recipe', ['ngRoute'])
     controller: 'RecipeCtrl'
   });
 }])
-'use strict';
-
-angular.module('cookbookApp.recipe', ['ngRoute'])
-
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/recipe/:recipeTitle', {
-    templateUrl: 'recipe-view/recipe.html',
-    controller: 'RecipeCtrl'
-  });
-  $routeProvider.when('/new', {
-    templateUrl: 'recipe-view/recipe.html',
-    controller: 'RecipeCtrl'
-  });
-}])
 
 .controller('RecipeCtrl', ['$scope', '$routeParams', '$firebaseObject', '$firebaseArray', 'FBURL', '$location',
   function($scope, $routeParams, $firebaseObject, $firebaseArray, FBURL, $location) {
