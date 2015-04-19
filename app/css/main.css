@@ -213,19 +213,13 @@ input {
     color: #388220;
     padding-right: 0.5em;
 }*/
-.browse input[type=checkbox] { display: none; }
-.browse input[type=checkbox] ~ ul { 
+.browse li.collapsed > ul {
     max-height: 0;
     max-width: 0;
     opacity: 0;
     overflow: hidden;
 }
-.browse input[type=checkbox]:checked ~ ul { 
-    max-height: 100%;
-    max-width: 100%;
-    opacity: 1;
-}
-.browse input[type=checkbox] + label:before{
+.browse li.collapsed label:before{
     margin-top:-3px;
   	margin-left: 0px;
   	padding-right: 25px;
@@ -236,7 +230,7 @@ input {
     content: '▶';
     color: #e44d26;
 }
-.browse input[type=checkbox]:checked + label:before {
+.browse label:before {
   	transform-origin:25% 50%;
     margin-top: -3px;
   	margin-left: 0px;
