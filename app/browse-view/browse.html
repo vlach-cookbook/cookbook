@@ -1,0 +1,25 @@
+<ul ng-controller="BrowseCtrl">
+  <li class="collapsed"><label ng-click="toggleCollapsed($event)">Browse</label>
+    <ul>
+      <li class="collapsed"><label ng-click="toggleCollapsed($event)">Recipe</label>
+        <ul>
+          <li ng-repeat="letter in byTitle track by letter.firstLetter"
+              class="collapsed">
+            <label ng-click="toggleCollapsed($event)">{{letter.firstLetter}}</label>
+            <ul>
+              <li ng-repeat="recipe in letter.recipes track by recipe.url">
+                <a href="recipe/{{recipe.url}}">{{recipe.title}}</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li class="collapsed"><label ng-click="toggleCollapsed($event)">Ingredient</label>
+      </li>
+      <li class="collapsed"><label ng-click="toggleCollapsed($event)">Category</label>
+      </li>
+      <li class="collapsed"><label ng-click="toggleCollapsed($event)">Date</label>
+      </li>
+    </ul>
+  </li>
+</ul>

@@ -58,6 +58,15 @@ void maybe_append(Value& val, const CB_String& s) {
   val[next_push_id()] = s.str();
 }
 
+std::string urlFromTitle(const std::string& title) {
+  static const std::regex nonAlnum("[^a-z0-9]+");
+  std::string lowerTitle = title;
+  for (char& c : lowerTitle) {
+    c = tolower(c);  // Existing db is ascii only.
+  }
+  return std::regex_replace(lowerTitle, nonAlnum, "-");
+}
+
 int main(int argc, char** argv) {
   if (argc < 2) {
     std::cout << "Pass the name of the recipe database to this program, usually 'Recipe.cbd'.\n";
@@ -65,6 +74,10 @@ int main(int argc, char** argv) {
   }
 
   const Value emptyObject(Json::objectValue);
+
+  // Counts the number of times a url has been used.
+  std::map<std::string, int> urlCounts;
+  std::ostringstream titleStream;
 
   CB_Book* book = new CB_Book;
   book->Read(argv[1]);
@@ -78,8 +91,19 @@ int main(int argc, char** argv) {
     const std::string recipeId = next_push_id();
     Value& recipeMeta = recipesMeta[recipeId] = emptyObject;
     Value& recipeDetails = recipesDetails[recipeId] = emptyObject;
-    const std::string title = recipe->Get_name().str();
+    std::string title = recipe->Get_name().str();
+    std::string recipeUrl = urlFromTitle(title);
+    if (++urlCounts[recipeUrl] > 1) {
+      titleStream.str("");
+      titleStream << title << " " << urlCounts[recipeUrl];
+      title = titleStream.str();
+      recipeUrl = urlFromTitle(title);
+    }
     recipeMeta["title"] = title;
+    if (recipeUrl.size() > 1) {
+      recipeUrls[recipeUrl]["id"] = recipeId;
+    }
+
     int serves = atoi(recipe->Get_serves().c_str());
     if (serves > 0)
       recipeDetails["serves"] = serves;
@@ -119,16 +143,6 @@ int main(int argc, char** argv) {
       directions += "\n";
     }
     recipeDetails["directions"] = directions;
-
-    static const std::regex nonAlnum("[^a-z0-9]+");
-    std::string lowerTitle = title;
-    for (char& c : lowerTitle) {
-      c = tolower(c);  // Existing db is ascii only.
-    }
-    const std::string recipeUrl = std::regex_replace(lowerTitle, nonAlnum, "-");
-    if (recipeUrl.size() > 1) {
-      recipeUrls[recipeUrl]["id"] = recipeId;
-    }
   }
   Json::StyledStreamWriter("  ").write(std::cout, root);
 };

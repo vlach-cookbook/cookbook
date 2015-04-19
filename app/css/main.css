@@ -221,20 +221,13 @@ input {
   background-size:5px 5px;
   padding-left: 15px;
 }
-
-.browse input[type=checkbox] { display: none; }
-.browse input[type=checkbox] ~ ul {
-  max-height: 0;
-  max-width: 0;
-  opacity: 0;
-  overflow: hidden;
+.browse li.collapsed > ul {
+    max-height: 0;
+    max-width: 0;
+    opacity: 0;
+    overflow: hidden;
 }
-.browse input[type=checkbox]:checked ~ ul {
-  max-height: 100%;
-  max-width: 100%;
-  opacity: 1;
-}
-.browse input[type=checkbox] + label:before{
+.browse li.collapsed label:before{
   margin-left: 5px;
   padding-right: 10px;
   width: 10px;
@@ -245,7 +238,7 @@ input {
   background-repeat: no-repeat;
   background-size: 10px 10px;
 }
-.browse input[type=checkbox]:checked + label:before {
+.browse label:before {
   margin-left: 5px;
   padding-right: 10px;
   width: 10px;
