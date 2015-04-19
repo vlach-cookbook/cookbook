@@ -35,13 +35,14 @@
       </div>
       <a href="javascript:;"
          ng-click="removeIngredient(ingredient)"
-         class="nav_style edit"
+         class="nav_style minus"
          >-</a>
     </div>
-    <p><a href="javascript:;"
+    <div><a href="javascript:;"
           ng-click="addIngredient()"
           class="nav_style edit"
-          >+</a></p>
+          >+</a>
+    </div>
 
     <h3>Directions</h3>
     <textarea ng-model="recipeDetails.directions"
