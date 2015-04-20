@@ -5,12 +5,11 @@ angular.module('cookbookApp.browse', [])
     function urlFromTitle(title) {
       return title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
     };
-    function compareBy(projection) {
+    var collator = new Intl.Collator();
+    var collate = collator.compare.bind(collator);
+    function collateBy(projection) {
       return function(a, b) {
-        var proj_a = projection(a), proj_b = projection(b);
-        if (proj_a < proj_b) return -1;
-        if (proj_a > proj_b) return 1;
-        return 0;
+        return collate(projection(a), projection(b));
       };
     };
 
@@ -32,10 +31,10 @@ angular.module('cookbookApp.browse', [])
       });
       var byTitleArray = [];
       angular.forEach(byTitle, function(recipes, firstLetter) {
-        recipes.sort(compareBy(function(recipe) { return recipe.title; }));
+        recipes.sort(collateBy(function(recipe) { return recipe.title; }));
         byTitleArray.push({firstLetter: firstLetter, recipes: recipes});
       });
-      byTitleArray.sort(compareBy(function(letter) { return letter.firstLetter; }));
+      byTitleArray.sort(collateBy(function(letter) { return letter.firstLetter; }));
       $scope.byTitle = byTitleArray;
     };
     recipesMeta.$loaded().then(function() {
