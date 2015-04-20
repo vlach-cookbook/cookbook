@@ -69,6 +69,6 @@
       </li>
     </ul>
 
-    {{recipeDetails.directions}}
+    <div ng-bind-html="recipeDetails.directions | newlinesToBrs"></div>
   </div>
 </main>

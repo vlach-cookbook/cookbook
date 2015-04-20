@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cookbookApp.recipe', ['ngRoute'])
+angular.module('cookbookApp.recipe', ['ngRoute', 'ngSanitize'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/recipe/:recipeTitle', {
@@ -78,4 +78,11 @@ angular.module('cookbookApp.recipe', ['ngRoute'])
       $location.search({'edit': 1});
     };
 }])
+
+.filter('newlinesToBrs', function() {
+  return function(input) {
+    if (input === undefined) return input;
+    return input.replace(/\n/g, '<br>');
+  };
+})
 ;
