@@ -1,6 +1,7 @@
 CXX:=g++
-CXXFLAGS:=-g -std=gnu++11 $(shell pkg-config --cflags jsoncpp)
-LDFLAGS:=$(shell pkg-config --libs jsoncpp)
+DEPENDENCIES:=jsoncpp icu-uc
+CXXFLAGS:=-g -std=gnu++11 $(shell pkg-config --cflags $(DEPENDENCIES)) -DU_CHARSET_IS_UTF8=1
+LDFLAGS:=$(shell pkg-config --libs $(DEPENDENCIES))
 
 all: tojson
 

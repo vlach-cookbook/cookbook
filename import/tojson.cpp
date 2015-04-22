@@ -2,6 +2,7 @@
 
 #include "json/json.h"
 #include "time.h"
+#include "unicode/unistr.h"
 #include <random>
 #include <regex>
 
@@ -58,12 +59,25 @@ void maybe_append(Value& val, const CB_String& s) {
   val[next_push_id()] = s.str();
 }
 
+std::string lowerCase(const std::string& source) {
+  icu::UnicodeString lower = icu::UnicodeString::fromUTF8(source);
+  lower.toLower();
+  std::string result;
+  lower.toUTF8String(result);
+  return result;
+}
+
+std::string titleCase(const std::string& source) {
+  icu::UnicodeString title = icu::UnicodeString::fromUTF8(source);
+  title.toTitle(nullptr);
+  std::string result;
+  title.toUTF8String(result);
+  return result;
+}
+
 std::string urlFromTitle(const std::string& title) {
   static const std::regex nonAlnum("[^a-z0-9]+");
-  std::string lowerTitle = title;
-  for (char& c : lowerTitle) {
-    c = tolower(c);  // Existing db is ascii only.
-  }
+  std::string lowerTitle = lowerCase(title);
   return std::regex_replace(lowerTitle, nonAlnum, "-");
 }
 
@@ -99,7 +113,7 @@ int main(int argc, char** argv) {
       title = titleStream.str();
       recipeUrl = urlFromTitle(title);
     }
-    recipeMeta["title"] = title;
+    recipeMeta["title"] = titleCase(title);
     if (recipeUrl.size() > 1) {
       recipeUrls[recipeUrl]["id"] = recipeId;
     }
