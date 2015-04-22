@@ -18,15 +18,17 @@ body {
   margin: auto;
 }
 header {
-  background-image: url(/img/header_skinny.jpg);
-  background-size: auto 100px;
-  background-position: center;
+  background-image: url(/img/header.jpg);
+  background-size: 460px auto;
+  background-position: top;
   height: 100px;
+  padding-top: 10px;
 }
 #wrapper {
   background-color: #FFEACC;
   display:flex;
   flex-direction:column;
+  min-height: 100vh;
 }
 #main_container {
   background-color: #F9D3A0;
@@ -74,7 +76,6 @@ nav a:hover{
 #nav_2 {
   order: 3;
   padding:5px 10px 5px 10px;
-
 }
 
 /* ====================
@@ -93,6 +94,9 @@ h1 {
 }
 h2 {
   margin: 5px 0px 10px 0px;
+  text-transform: capitalize;
+  text-decoration: underline;
+  text-align: center;
 }
 h3 {
   margin: 5px 0px 10px 0px;
@@ -126,6 +130,9 @@ p {
 }
 input {
   width: 95%;
+}
+label {
+  cursor:pointer;
 }
 
 /* ====================
@@ -197,23 +204,31 @@ input {
   font-weight: bold;
   margin:5px 0px 5px 0px;
 }
+.browse li {
+  margin: 1px;
+  padding: 5px;
+  cursor: pointer;
+}
 .browse ul ul {
   border:none;
   padding-left: 15px;
   margin: 0px;
 }
-.browse li {
-  margin: 1px;
-  padding: 5px;
-}
 .browse ul ul li {
   padding: 2px;
 }
+.browse ul ul ul {
+  max-height:300px;
+  overflow:auto;
+}
+
 .browse ul ul ul ul {
   padding-left:0px;
+  max-height: none;
 }
 .browse ul ul ul ul li {
   font-weight: normal;
+  word-wrap:break-word;
   margin-left:9px;
   background-image: url(/img/bullet.png);
   background-repeat: no-repeat;
@@ -221,6 +236,10 @@ input {
   background-size:5px 5px;
   padding-left: 15px;
 }
+.browse ul ul ul ul li a:hover {
+  color:#388220;
+}
+
 .browse li.collapsed > ul {
     max-height: 0;
     max-width: 0;
@@ -258,19 +277,16 @@ input {
 @media only screen and (min-width: 455px) and (max-width: 679px) {
 
   header {
-    background-size: auto 150px;
-    height: 150px;
+    background-size: 100% auto;
+    height: 140px;
   }
-
   nav {
     flex-direction: row;
   }
-
   nav a {
     flex: 1 1 0;
     margin: 0px 7.5px 0px 7.5px;
   }
-
   #menu {
     flex-direction: row;
     order:1;
@@ -278,7 +294,6 @@ input {
   #nav_1 {
     flex-direction:column;
   }
-
 }
 
 /* ====================
@@ -290,44 +305,36 @@ input {
   body {
     height:100vh;
   }
-
   header {
-    background-size: auto 198px;
-    height:188px;
-    padding-top:10px;
+    background-size: 100% auto;
+    height:140px;
   }
-
   #wrapper {
     display: block;
+    overflow:auto;
     box-sizing:border-box;
     padding:0px 10px 0px 10px;
-    height:100%;
   }
-
   #main_container {
     width:65%;
     margin-top: 10px;
   }
-
   main {
     align-items:stretch;
     margin-right:5px;
   }
-
   nav {
     margin-top: 10px;
     width: 30%;
     float:right;
   }
-
   #nav_1 {
   }
-
   #nav_2 {
     clear:right;
     margin-top:0px;
+    margin-bottom:10px;
   }
-
   #menu {
     float:none;
     flex-direction:row;
@@ -335,11 +342,9 @@ input {
     width:auto;
     padding: 10px 0px 10px 0px;
   }
-
   #menu a {
     flex:1 1 auto;
     margin: 0px 7.5px 0px 7.5px;
-
   }
 }
 
@@ -349,12 +354,14 @@ input {
 @media only screen and (min-width: 900px) {
 
   body {
+    /*background-image: url(/img/gradient.png);*/
+    background: linear-gradient(white, #388220);
+    background-attachment: fixed;
+  }
+  #wrapper {
     border: 10px solid #FF6F0D;
     border-top:none;
     border-bottom: none;
-    background-image: url(/img/gradient.png);
-    background-position:bottom left;
-    background-repeat: repeat-x;
   }
 }
 
