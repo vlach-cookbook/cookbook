@@ -100,7 +100,10 @@ int main(int argc, char** argv) {
   Value& recipesMeta = root["recipesMeta"] = emptyObject;
   Value& recipesDetails = root["recipesDetails"] = emptyObject;
   Value& recipeUrls = root["recipeUrls"] = emptyObject;
+  Value& ingredientIndex = root["ingredientIndex"] = emptyObject;
+  int i = 0;
   for (auto& elem : recipes) {
+    if (i++ > 10) break;
     CB_Recipe* const recipe = elem.second;
     const std::string recipeId = next_push_id();
     Value& recipeMeta = recipesMeta[recipeId] = emptyObject;
@@ -148,6 +151,10 @@ int main(int argc, char** argv) {
       maybe_set(json_ingredient, "unit", ingredient->Get_measurement());
       maybe_set(json_ingredient, "name", ingredient->Get_ingredient());
       maybe_set(json_ingredient, "preparation", ingredient->Get_preparation());
+
+      if (ingredient->Get_ingredient().size() > 0) {
+        ingredientIndex[ingredient->Get_ingredient().str()][recipeId] = true;
+      }
     }
 
     const std::vector< CB_String >& direction_lines = recipe->Get_directions();

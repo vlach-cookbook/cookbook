@@ -53,6 +53,15 @@ schema:
         additionalProperties: false
         properties:
           id: {type: string}
+    ingredientIndex:
+      type: object
+      $ingredient:
+        # The name of an ingredient maps to an object whose keys are
+        # the recipe IDs that contain that ingredient. All values are 'true'.
+        type: object
+        $recipeId:
+          type: boolean
+          constraint: next === true
 
 access:
   - location: /
