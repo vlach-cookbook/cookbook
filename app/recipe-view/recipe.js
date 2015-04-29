@@ -13,12 +13,56 @@ angular.module('cookbookApp.recipe', ['ngRoute', 'ngSanitize'])
   });
 }])
 
-.controller('RecipeCtrl', ['$scope', '$routeParams', '$firebaseObject', '$firebaseArray', 'FBURL', '$location',
-  function($scope, $routeParams, $firebaseObject, $firebaseArray, FBURL, $location) {
-    var recipesMeta = new Firebase(FBURL).child('recipesMeta');
-    var recipesDetails = new Firebase(FBURL).child('recipesDetails');
-    var recipeUrls = new Firebase(FBURL).child('recipeUrls');
-    var ingredientIndex = new Firebase(FBURL).child('ingredientIndex');
+.service('ingredientIndex', ['FBURL', function(FBURL) {
+  var FbRoot = new Firebase(FBURL);
+  var ingredientNames = FbRoot.child('ingredientNames');
+  var ingredientRecipes = FbRoot.child('ingredientRecipes');
+  var ingredientNamesCache = new Map();
+  function setIngredient(snapshot) {
+    var ingredientName = snapshot.key();
+    var ingredientId = snapshot.val();
+    ingredientNamesCache.set(ingredientName, ingredientId);
+  };
+  ingredientNames.on('child_added', setIngredient);
+  ingredientNames.on('child_changed', setIngredient);
+  ingredientNames.on('child_removed', function removeIngredient(snapshot) {
+    var ingredientName = snapshot.key();
+    ingredientNamesCache.delete(ingredientName);
+  });
+  return {
+    add: function(ingredientName, recipeId, recipeTitle) {
+      var ingredientId = ingredientNamesCache.get(ingredientName);
+      if (ingredientId === undefined) {
+        ingredientId = ingredientRecipes.push().key();
+        ingredientNames.child(ingredientName).set(ingredientId);
+      }
+      ingredientRecipes.child(ingredientId).child(recipeId).set(recipeTitle);
+    },
+    remove: function(ingredientName, recipeId) {
+      var ingredientId = ingredientNamesCache.get(ingredientName);
+      var ingredient = ingredientRecipes.child(ingredientId);
+      ingredient.child(recipeId).remove();
+      // limitToFirst(1) avoids downloading lots of data for popular ingredients.
+      ingredient.limitToFirst(1).once('value', function(snapshot) {
+        if (!snapshot.exists()) {
+          // There's a race condition if another client adds a recipe
+          // for this ingredient before the remove() arrives at the
+          // server.
+          ingredientNames.child(ingredientName).remove();
+        }
+      });
+    },
+  };
+}])
+
+.controller('RecipeCtrl', ['$scope', '$routeParams', '$firebaseObject', '$firebaseArray', 'FBURL', '$location', 'ingredientIndex',
+  function($scope, $routeParams, $firebaseObject, $firebaseArray, FBURL, $location, ingredientIndex) {
+    var FbRoot = new Firebase(FBURL);
+    var recipesMeta = FbRoot.child('recipesMeta');
+    var recipesDetails = FbRoot.child('recipesDetails');
+    var recipeUrls = FbRoot.child('recipeUrls');
+    var ingredientNames = FbRoot.child('ingredientNames');
+    var ingredientRecipes = FbRoot.child('ingredientRecipes');
 
     // Maps an ingredient name to the set of ingredient objects that
     // specify that ingredient:
@@ -102,14 +146,16 @@ angular.module('cookbookApp.recipe', ['ngRoute', 'ngSanitize'])
       // Find the old name of this ingredient.
       var ingredientName = ingredientCache.val(ingredientId);
       // If no other ingredients have that name...
-      ingredientCache.removeVal(ingredientId);
-      if (ingredientCache.key(ingredientName) === undefined) {
-        // ... remove it from the index.
-        ingredientIndex.child(ingredientName).child($scope.recipeId).remove();
+      if (ingredientName !== undefined) {
+        ingredientCache.removeVal(ingredientId);
+        if (ingredientCache.key(ingredientName) === undefined) {
+          // ... remove it from the index.
+          ingredientIndex.remove(ingredientName, $scope.recipeId);
+        }
       }
       // Now add the new name and key to the cache and index.
       if (ingredientCache.key(ingredient.name) === undefined) {
-        ingredientIndex.child(ingredient.name).child($scope.recipeId).set(true);
+        ingredientIndex.add(ingredient.name, $scope.recipeId, $scope.recipeMeta.title);
       }
       ingredientCache.appendVal(ingredient.name, ingredientId);
       // And save the change to the ingredient.
@@ -119,9 +165,11 @@ angular.module('cookbookApp.recipe', ['ngRoute', 'ngSanitize'])
     $scope.removeIngredient = function(ingredient) {
       var ingredientId = $scope.recipe_ingredients.$keyAt(ingredient);
       var ingredientName = ingredientCache.val(ingredientId);
-      ingredientCache.removeVal(ingredientId);
-      if (ingredientCache.key(ingredientName) === undefined) {
-        ingredientIndex.child(ingredientName).child($scope.recipeId).remove();
+      if (ingredientName !== undefined) {
+        ingredientCache.removeVal(ingredientId);
+        if (ingredientCache.key(ingredientName) === undefined) {
+          ingredientIndex.remove(ingredientName, $scope.recipeId);
+        }
       }
       $scope.recipe_ingredients.$remove(ingredient);
     };
