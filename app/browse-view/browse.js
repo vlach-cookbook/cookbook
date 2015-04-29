@@ -78,25 +78,26 @@ angular.module('cookbookApp.browse', [])
       value: function(recipe) { return toSlug(recipe.title); }
     });
 
-    var ingredientIndex = $firebaseArray(FbRoot.child('ingredientIndex'));
+    var ingredientNames = $firebaseArray(FbRoot.child('ingredientNames'));
+    var ingredientRecipes = FbRoot.child('ingredientRecipes');
     groupAlphabeticallyAndBind({
       scope: $scope,
       field: 'byIngredient',
-      array: ingredientIndex,
-      label: function(ingredient) { return ingredientIndex.$keyAt(ingredient); },
-      value: function(ingredient) {
-        var result = [];
-        angular.forEach(ingredient, function(value, recipeId) {
-          if (recipeId[0] === '$') return;
-          result.push($firebaseObject(FbRoot.child('recipesMeta').child(recipeId).child('title')));
-        });
-        return result;
-      }
+      array: ingredientNames,
+      label: function(ingredient) {
+        return decodeURIComponent(ingredientNames.$keyAt(ingredient));
+      },
+      value: function(ingredient) { return ingredient.$value; },
     });
 
     $scope.toggleCollapsed = function($event) {
       // Toggles the 'collapsed' class on the parent of the clicked element.
       $event.currentTarget.parentElement.classList.toggle('collapsed');
+    };
+
+    $scope.lazyLoadIngredientRecipes = function(ingredient) {
+      if (ingredient.recipes) return;
+      ingredient.recipes = $firebaseArray(ingredientRecipes.child(ingredient.value));
     };
 }])
 ;

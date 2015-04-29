@@ -22,9 +22,9 @@
             <ul>
               <li ng-repeat="ingredient in letter.items track by ingredient.label"
                   class="collapsed">
-                <label ng-click="toggleCollapsed($event)">{{ingredient.label}}</label>
+                <label ng-click="lazyLoadIngredientRecipes(ingredient); toggleCollapsed($event)">{{ingredient.label}}</label>
                 <ul>
-                  <li ng-repeat="recipeTitle in ingredient.value | orderBy: recipeTitle.$value track by recipeTitle.$value">
+                  <li ng-repeat="recipeTitle in ingredient.recipes | orderBy: '$value' track by recipeTitle.$value">
                     <a href="recipe/{{recipeTitle.$value | toSlug}}">{{recipeTitle.$value}}</a>
                   </li>
                 </ul>

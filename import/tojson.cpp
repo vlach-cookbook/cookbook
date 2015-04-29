@@ -8,11 +8,13 @@
 
 using Json::Value;
 
+static const char hexDigits[] = "0123456789ABCDEF";
+
 // NOT THREAD SAFE
 std::string next_push_id() {
   static const char alphabet[] = "-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz";
   static int64_t last_timestamp = 0;
-  static char last_rand[12] = {};
+  static unsigned char last_rand[12] = {};
   static std::random_device engine;
   static std::uniform_int_distribution<char> dist(0, 63);
   timespec time;
@@ -81,6 +83,30 @@ std::string urlFromTitle(const std::string& title) {
   return std::regex_replace(lowerTitle, nonAlnum, "-");
 }
 
+std::string escapeKey(const std::string& unescaped) {
+  std::string result;
+  for (unsigned char c : unescaped) {
+    switch(c) {
+    default:
+      result += c;
+      break;
+    // These are the characters disallowed from Firebase keys.
+    case '.':
+    case '#':
+    case '$':
+    case '/':
+    case '[':
+    case ']':
+    case '%':  // And the escape character.
+      result += '%';
+      result += hexDigits[c/16];
+      result += hexDigits[c%16];
+      break;
+    }
+  }
+  return result;
+}
+
 int main(int argc, char** argv) {
   if (argc < 2) {
     std::cout << "Pass the name of the recipe database to this program, usually 'Recipe.cbd'.\n";
@@ -100,10 +126,11 @@ int main(int argc, char** argv) {
   Value& recipesMeta = root["recipesMeta"] = emptyObject;
   Value& recipesDetails = root["recipesDetails"] = emptyObject;
   Value& recipeUrls = root["recipeUrls"] = emptyObject;
-  Value& ingredientIndex = root["ingredientIndex"] = emptyObject;
+  Value& ingredientNames = root["ingredientNames"] = emptyObject;
+  Value& ingredientRecipes = root["ingredientRecipes"] = emptyObject;
   int i = 0;
   for (auto& elem : recipes) {
-    if (i++ > 10) break;
+    //if (i++ > 10) break;
     CB_Recipe* const recipe = elem.second;
     const std::string recipeId = next_push_id();
     Value& recipeMeta = recipesMeta[recipeId] = emptyObject;
@@ -116,7 +143,8 @@ int main(int argc, char** argv) {
       title = titleStream.str();
       recipeUrl = urlFromTitle(title);
     }
-    recipeMeta["title"] = titleCase(title);
+    title = titleCase(title);
+    recipeMeta["title"] = title;
     if (recipeUrl.size() > 1) {
       recipeUrls[recipeUrl]["id"] = recipeId;
     }
@@ -153,7 +181,11 @@ int main(int argc, char** argv) {
       maybe_set(json_ingredient, "preparation", ingredient->Get_preparation());
 
       if (ingredient->Get_ingredient().size() > 0) {
-        ingredientIndex[ingredient->Get_ingredient().str()][recipeId] = true;
+        Value& ingredientId = ingredientNames[escapeKey(ingredient->Get_ingredient().str())];
+        if (!ingredientId) {
+          ingredientId = next_push_id();
+        }
+        ingredientRecipes[ingredientId.asCString()][recipeId] = title;
       }
     }
 
