@@ -53,6 +53,25 @@ schema:
         additionalProperties: false
         properties:
           id: {type: string}
+    # The next two keys make up the index by ingredient.
+    # ingredientNames maps the name of an ingredient to the key for
+    # that ingredient in the ingredientRecipes object.  A key in the
+    # ingredientRecipes object is mapped to an object whose keys are
+    # the recipe IDs containing that ingredient, and whose values are
+    # that recipe's title.
+    #
+    # We use this 2-step lookup process to allow fetching all the
+    # ingredient names without their recipes.
+    ingredientNames:
+      type: object
+      $ingredient: {type: string}
+    ingredientRecipes:
+      type: object
+      $ingredientId:
+        type: object
+        $recipeId:
+          type: string
+          constraint: next === root.recipesMeta[$recipeId].title
 
 access:
   - location: /

@@ -7,14 +7,31 @@
               class="collapsed">
             <label ng-click="toggleCollapsed($event)">{{letter.firstLetter}}</label>
             <ul>
-              <li ng-repeat="recipe in letter.recipes track by recipe.url">
-                <a href="recipe/{{recipe.url}}">{{recipe.title}}</a>
+              <li ng-repeat="recipe in letter.items track by recipe.value">
+                <a href="recipe/{{recipe.value}}">{{recipe.label}}</a>
               </li>
             </ul>
           </li>
         </ul>
       </li>
       <li class="collapsed"><label ng-click="toggleCollapsed($event)">Ingredient</label>
+        <ul>
+          <li ng-repeat="letter in byIngredient track by letter.firstLetter"
+              class="collapsed">
+            <label ng-click="toggleCollapsed($event)">{{letter.firstLetter}}</label>
+            <ul>
+              <li ng-repeat="ingredient in letter.items track by ingredient.label"
+                  class="collapsed">
+                <label ng-click="lazyLoadIngredientRecipes(ingredient); toggleCollapsed($event)">{{ingredient.label}}</label>
+                <ul>
+                  <li ng-repeat="recipeTitle in loadedRecipes[ingredient.value] | orderBy: '$value' track by recipeTitle.$value">
+                    <a href="recipe/{{recipeTitle.$value | toSlug}}">{{recipeTitle.$value}}</a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </li>
       <li class="collapsed"><label ng-click="toggleCollapsed($event)">Category</label>
       </li>
