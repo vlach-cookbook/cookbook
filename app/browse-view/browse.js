@@ -95,9 +95,11 @@ angular.module('cookbookApp.browse', [])
       $event.currentTarget.parentElement.classList.toggle('collapsed');
     };
 
+    $scope.loadedRecipes = {};
     $scope.lazyLoadIngredientRecipes = function(ingredient) {
-      if (ingredient.recipes) return;
-      ingredient.recipes = $firebaseArray(ingredientRecipes.child(ingredient.value));
+      if ($scope.loadedRecipes[ingredient.value]) return;
+      $scope.loadedRecipes[ingredient.value] =
+        $firebaseArray(ingredientRecipes.child(ingredient.value));
     };
 }])
 ;

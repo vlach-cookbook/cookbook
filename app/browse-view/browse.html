@@ -24,7 +24,7 @@
                   class="collapsed">
                 <label ng-click="lazyLoadIngredientRecipes(ingredient); toggleCollapsed($event)">{{ingredient.label}}</label>
                 <ul>
-                  <li ng-repeat="recipeTitle in ingredient.recipes | orderBy: '$value' track by recipeTitle.$value">
+                  <li ng-repeat="recipeTitle in loadedRecipes[ingredient.value] | orderBy: '$value' track by recipeTitle.$value">
                     <a href="recipe/{{recipeTitle.$value | toSlug}}">{{recipeTitle.$value}}</a>
                   </li>
                 </ul>
