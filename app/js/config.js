@@ -9,5 +9,7 @@ angular.module('cookbookApp.config', [])
 
   // The Firebase data URL for Cookbook:
   .constant('FBURL', 'https://vlookbook.firebaseio.com')
-;
 
+  // The root Firebase reference for Cookbook:
+  .constant('fbRoot', new Firebase('https://vlookbook.firebaseio.com'))
+;

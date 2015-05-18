@@ -20,10 +20,6 @@ angular.module('cookbookApp.routes', ['ngRoute', 'simpleLogin'])
       templateUrl: 'partials/chat.html',
       controller: 'ChatCtrl'
     },
-    '/login': {
-      templateUrl: 'partials/login.html',
-      controller: 'LoginCtrl'
-    },
     '/browse': {
       templateUrl: 'partials/browse.html',
       controller: 'BrowseCtrl'
