@@ -13,10 +13,9 @@ angular.module('cookbookApp.recipe', ['ngRoute', 'ngSanitize'])
   });
 }])
 
-.service('ingredientIndex', ['FBURL', function(FBURL) {
-  var FbRoot = new Firebase(FBURL);
-  var ingredientNames = FbRoot.child('ingredientNames');
-  var ingredientRecipes = FbRoot.child('ingredientRecipes');
+.service('ingredientIndex', ['fbRoot', function(fbRoot) {
+  var ingredientNames = fbRoot.child('ingredientNames');
+  var ingredientRecipes = fbRoot.child('ingredientRecipes');
   var ingredientNamesCache = new Map();
   function setIngredient(snapshot) {
     var ingredientName = snapshot.key();
@@ -55,14 +54,13 @@ angular.module('cookbookApp.recipe', ['ngRoute', 'ngSanitize'])
   };
 }])
 
-.controller('RecipeCtrl', ['$scope', '$routeParams', '$firebaseObject', '$firebaseArray', 'FBURL', '$location', 'ingredientIndex',
-  function($scope, $routeParams, $firebaseObject, $firebaseArray, FBURL, $location, ingredientIndex) {
-    var FbRoot = new Firebase(FBURL);
-    var recipesMeta = FbRoot.child('recipesMeta');
-    var recipesDetails = FbRoot.child('recipesDetails');
-    var recipeUrls = FbRoot.child('recipeUrls');
-    var ingredientNames = FbRoot.child('ingredientNames');
-    var ingredientRecipes = FbRoot.child('ingredientRecipes');
+.controller('RecipeCtrl', ['$scope', '$routeParams', '$firebaseObject', '$firebaseArray', 'fbRoot', '$location', 'ingredientIndex',
+  function($scope, $routeParams, $firebaseObject, $firebaseArray, fbRoot, $location, ingredientIndex) {
+    var recipesMeta = fbRoot.child('recipesMeta');
+    var recipesDetails = fbRoot.child('recipesDetails');
+    var recipeUrls = fbRoot.child('recipeUrls');
+    var ingredientNames = fbRoot.child('ingredientNames');
+    var ingredientRecipes = fbRoot.child('ingredientRecipes');
 
     // Maps an ingredient name to the set of ingredient objects that
     // specify that ingredient:
