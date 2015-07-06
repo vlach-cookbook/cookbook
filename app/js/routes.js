@@ -28,14 +28,6 @@ angular.module('cookbookApp.routes', ['ngRoute', 'simpleLogin'])
       templateUrl: 'partials/recipe.html',
       controller: 'RecipeCtrl'
     },
-    '/account': {
-      templateUrl: 'partials/account.html',
-      controller: 'AccountCtrl',
-      // require user to be logged in to view this route
-      // the whenAuthenticated method below will resolve the current user
-      // before this controller loads and redirect if necessary
-      authRequired: true
-    }
   })
 
   /**

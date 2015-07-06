@@ -12,6 +12,7 @@ angular.module('cookbookApp', [
     'cookbookApp.recipe',
     'cookbookApp.browse',
     'cookbookApp.login',
+    'cookbookApp.account',
   ])
 .config(['$locationProvider', function($locationProvider) {
   $locationProvider.html5Mode(true);
