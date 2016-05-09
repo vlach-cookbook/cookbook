@@ -122,16 +122,22 @@ gulp.task('html', function () {
 // Clean Output Directory
 gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
 
+let browserSyncOptions = {
+  notify: false,
+  // Don't expose the server to non-local clients.
+  online: false,
+  // Run as an https by uncommenting 'https: true'
+  // Note: this uses an unsigned certificate which on first access
+  //       will present a certificate warning in the browser.
+  // https: true,
+  server: ['.tmp', 'app']
+};
+
 // Watch Files For Changes & Reload
 gulp.task('serve', ['styles'], function () {
-  browserSync({
-    notify: false,
-    // Run as an https by uncommenting 'https: true'
-    // Note: this uses an unsigned certificate which on first access
-    //       will present a certificate warning in the browser.
-    // https: true,
+  browserSync(Object.assign({}, browserSyncOptions, {
     server: ['.tmp', 'app']
-  });
+  }));
 
   gulp.watch(['app/**/*.html'], reload);
   gulp.watch(['app/**/*.{scss,css}'], ['styles', reload]);
@@ -141,14 +147,9 @@ gulp.task('serve', ['styles'], function () {
 
 // Build and serve the output from the dist build
 gulp.task('serve:dist', ['default'], function () {
-  browserSync({
-    notify: false,
-    // Run as an https by uncommenting 'https: true'
-    // Note: this uses an unsigned certificate which on first access
-    //       will present a certificate warning in the browser.
-    // https: true,
+  browserSync(Object.assign({}, browserSyncOptions, {
     server: 'dist'
-  });
+  }));
 
   gulp.watch(['app/**/*.html'], ['html', reload]);
   gulp.watch(['app/**/*.{scss,css}'], ['styles', reload]);
