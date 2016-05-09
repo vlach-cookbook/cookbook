@@ -1,7 +1,7 @@
 <main ng-if="editing">
   <div id="content_edit">
     <h3>Title</h3>
-    <p><input type="text" ng-model="recipeMeta.title" placeholder="Title" ng-change="setTitle()"></p>
+    <input type="text" class="title" ng-model="recipeMeta.title" placeholder="Title" ng-change="setTitle()">
 
     <h3>Ingredients</h3>
     <div class="ingredient" ng-repeat="ingredient in recipe_ingredients">
@@ -38,27 +38,22 @@
          class="nav_style minus"
          >-</a>
     </div>
-    <div><a href="javascript:;"
+    <a href="javascript:;"
           ng-click="addIngredient()"
           class="nav_style edit"
           >+</a>
-    </div>
-
     <h3>Directions</h3>
-    <textarea ng-model="recipeDetails.directions"
-              ng-change="setDirections()"
-              ></textarea>
-
-    <p><a href="javascript:;" ng-click="save()" class="nav_style edit">Save</a></p>
+    <textarea ng-model="recipeDetails.directions" ng-change="setDirections()" ></textarea>
+    <a href="javascript:;" ng-click="save()" class="nav_style edit">Save</a>
   </div>
 </main>
 
 <main ng-if="!editing" class="recipe">
   <nav id="menu">
-    <a href="home.html" class="nav_style"> Make </a>
+    <a href="" class="nav_style"> Make </a>
     <a href="javascript:;" ng-click="edit()" class="nav_style">Edit</a>
-    <a href="home.html" class="nav_style"> Print </a>
-    <a href="home.html" class="nav_style"> Delete </a>
+    <a href="" class="nav_style"> Print </a>
+    <a href="" class="nav_style"> Delete </a>
   </nav>
 
   <div id="content">

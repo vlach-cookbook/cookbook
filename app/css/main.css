@@ -47,26 +47,24 @@ nav {
   background-color: #F9D3A0;
   padding: 10px;
 }
-nav a {
-  text-decoration: none;
-  color: #414042;
-}
-nav a:hover{
-  border-color: #7ABC61;
-}
 .nav_style {
   background-color: white;
+  color: #414042;
   height: 20px;
   border: 2px solid;
   border-radius: 7px;
   border-color:#388220;
   text-align:center;
+  text-decoration: none;
   padding: 5px 0px 3px 0px;
   margin-top: 5px;
   margin-bottom: 5px;
   text-transform: uppercase;
   font-weight: bold;
   vertical-align: middle;
+}
+.nav_style:hover{
+  border-color: #7ABC61;
 }
 #nav_1 {
   order:1;
@@ -81,6 +79,9 @@ nav a:hover{
 /* ====================
     ITEMS
    ==================== */
+a {
+  text-decoration: none;
+}
 
 h1 {
   color: white;
@@ -99,21 +100,22 @@ h2 {
   text-align: center;
 }
 h3 {
-  margin: 5px 0px 10px 0px;
+  margin: 0px 0px 10px 0px;
 }
 main a {
   color: #414042;
-  text-decoration:none;
   font-weight:bold;
 }
 main a:hover {
-  color: #1F510C;
+  color: #388220;
 }
 p {
   margin: 0px;
 }
 .recent_user {
   font-style: italic;
+  padding-bottom:5px;
+  margin-bottom:5px;
   border-bottom: 1px solid;
   border-color: #939598;
 }
@@ -134,12 +136,29 @@ input {
 label {
   cursor:pointer;
 }
+textarea {
+  flex:1 1 auto;
+  height: 110px;
+}
 
 /* ====================
     PARTIALS
    ==================== */
 
-
+#welcome {
+  margin: 10px;
+  padding: 10px;
+  text-align: center;
+  background-color: white;
+  border: 2px solid;
+  border-radius: 7px;
+  border-color:#FF6F0D;
+}
+#welcome h3{
+  font-size:175%;
+  color: #388220;
+  text-transform: uppercase;
+}
 #content {
   background-color: white;
   border: 2px solid;
@@ -148,6 +167,8 @@ label {
   padding: 10px;
 }
 #content_edit{
+  display:flex;
+  flex-direction:column;
   margin:10px;
 }
 #menu {
@@ -155,11 +176,15 @@ label {
   flex-direction:column;
   flex-basis:auto;
   order:2;
-  padding: 10px;
+  padding: 0px 0px 10px 0px;
+  margin: 0px 10px 0px 10px;
 }
 .menu button {
   flex:1 1 0;
   margin:5px;
+}
+.title {
+  margin-bottom: 10px;
 }
 .ingredient {
   display:flex;
@@ -184,10 +209,10 @@ label {
   padding-right:10px;
 }
 .edit {
-  height: 15px;
-  margin: 10px 0px 2px 0px;
+  margin: 10px 0px 10px 0px;
   padding-left:10px;
   padding-right:10px;
+  align-self:flex-start;
 }
 
 /* ==========================================================================
@@ -235,6 +260,10 @@ label {
   background-position: 0px 7.5px;
   background-size:5px 5px;
   padding-left: 15px;
+}
+.browse ul ul ul ul li a {
+  color:#414042;
+  text-decoration: none;
 }
 .browse ul ul ul ul li a:hover {
   color:#388220;
@@ -340,7 +369,7 @@ label {
     flex-direction:row;
     order:1;
     width:auto;
-    padding: 10px 0px 10px 0px;
+    padding: 0px 0px 10px 0px;
   }
   #menu a {
     flex:1 1 auto;
