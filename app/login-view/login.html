@@ -1,7 +1,7 @@
 
-<h2>Login Page</h2>
+<h4>Login</h4>
 
-<form name="loginForm">
+<form id="loginForm">
     <label>
         <span>email</span>
         <input type="email" ng-model="email" required />
@@ -11,12 +11,14 @@
         <input type="password" ng-model="pass" />
     </label>
     <label ng-cloak ng-show="createMode">
-        <span>confirm pass</span>
+        <span>confirm password</span>
         <input type="password" ng-model="confirm" />
     </label>
-    <button ng-click="forgotPassword()" ng-hide="createMode">Forgot Password</button><br>
-    <button ng-click="login()" ng-hide="createMode">Log In</button>
-    <button ng-click="createMode = true" ng-hide="createMode">Register</button>
+    <div class="login">
+        <button ng-click="login()" ng-hide="createMode">Log In</button>
+        <a href="" ng-click="forgotPassword()" ng-hide="createMode">Forgot Password</a>
+        <a href="" ng-click="createMode = true" ng-hide="createMode">Register</a>
+    </div>
     <button ng-cloak ng-show="createMode" ng-click="createAccount()">Create Account</button>
     <button ng-cloak ng-show="createMode" ng-click="createMode = false">Cancel</button>
 

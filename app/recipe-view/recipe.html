@@ -1,3 +1,21 @@
+<main ng-if="!editing" class="recipe">
+  <div>
+    <h2>{{recipeMeta.title}}</h2>
+    <ul>
+      <li ng-repeat="ingredient in recipe_ingredients">
+        {{ingredient.quantity}} {{ingredient.unit}} {{ingredient.name}}<span ng-if="ingredient.preparation">, {{ingredient.preparation}}</span>
+      </li>
+    </ul>
+    <div ng-bind-html="recipeDetails.directions | newlinesToBrs"></div>
+      <nav id="options" class="noprint">
+         <a href="javascript:;" ng-click="edit()" class="action">Edit</a>
+         <a href="javascript:window.print()" class="action"> Print </a>
+         <a href="" class="action"> Delete </a>
+      </nav>
+  </div>
+</main>
+
+
 <main ng-if="editing">
   <div id="content_edit">
     <h3>Title</h3>
@@ -33,37 +51,15 @@
                ng-change="recipe_ingredients.$save(ingredient)"
                >
       </div>
-      <a href="javascript:;"
-         ng-click="removeIngredient(ingredient)"
-         class="nav_style minus"
-         >-</a>
-    </div>
-    <a href="javascript:;"
-          ng-click="addIngredient()"
-          class="nav_style edit"
-          >+</a>
+      <button ng-click="removeIngredient(ingredient)"
+          id="minus"
+          >-</button>
+      </div>
+      <button ng-click="addIngredient()"
+          id="plus"
+          >+</button>
     <h3>Directions</h3>
     <textarea ng-model="recipeDetails.directions" ng-change="setDirections()" ></textarea>
-    <a href="javascript:;" ng-click="save()" class="nav_style edit">Save</a>
-  </div>
-</main>
-
-<main ng-if="!editing" class="recipe">
-  <nav id="menu">
-    <a href="" class="nav_style"> Make </a>
-    <a href="javascript:;" ng-click="edit()" class="nav_style">Edit</a>
-    <a href="" class="nav_style"> Print </a>
-    <a href="" class="nav_style"> Delete </a>
-  </nav>
-
-  <div id="content">
-    <h2>{{recipeMeta.title}}</h2>
-    <ul>
-      <li ng-repeat="ingredient in recipe_ingredients">
-        {{ingredient.quantity}} {{ingredient.unit}} {{ingredient.name}}<span ng-if="ingredient.preparation">, {{ingredient.preparation}}</span>
-      </li>
-    </ul>
-
-    <div ng-bind-html="recipeDetails.directions | newlinesToBrs"></div>
+    <a href="javascript:;" ng-click="save()" class="action" id="save">Save</a>
   </div>
 </main>

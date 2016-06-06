@@ -17,17 +17,16 @@
 
 
     <div id="wrapper">
-        <header>
+        <header class="noprint">
             <a href="home"><h1>Cookbook</h1></a>
         </header>
-        <nav id="nav_1">
+        <nav id="nav_1" class="noprint">
             <input type="search" class="nav_style search" placeholder ="Search"/>
             <div class="browse" ng-include="'browse-view/browse.html'"></div>
         </nav>
 
-        <nav id="nav_2">
+        <nav id="nav_2" class="noprint">
             <a href="new" class="nav_style"> New Recipe </a>
-            <a href="home" class="nav_style"> Recent </a>
             <a href="account" class="nav_style" ng-show-auth>Account</a>
             <a href="login" class="nav_style" ng-hide-auth>Log In</a>
         </nav>
