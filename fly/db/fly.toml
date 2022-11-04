@@ -1,0 +1,3 @@
+# Just exists to make it easy to examine the database from this directory.
+
+app = "vlach-cookbook-db"
