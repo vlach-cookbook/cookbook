@@ -128,9 +128,8 @@ int main(int argc, char** argv) {
   Value& recipeUrls = root["recipeUrls"] = emptyObject;
   Value& ingredientNames = root["ingredientNames"] = emptyObject;
   Value& ingredientRecipes = root["ingredientRecipes"] = emptyObject;
-  int i = 0;
+
   for (auto& elem : recipes) {
-    //if (i++ > 10) break;
     CB_Recipe* const recipe = elem.second;
     const std::string recipeId = next_push_id();
     Value& recipeMeta = recipesMeta[recipeId] = emptyObject;
