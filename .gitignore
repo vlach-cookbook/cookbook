@@ -10,7 +10,9 @@ node_modules/
 
 # C++
 *.o
-import/tojson
+import/tofirebase
+import/torecipejson
+import/recipes.json
 
 # For Macs
 .DS_Store
