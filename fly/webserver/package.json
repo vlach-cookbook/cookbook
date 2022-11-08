@@ -19,6 +19,11 @@
   },
   "dependencies": {
     "@astrojs/node": "^1.1.0",
+    "@prisma/client": "^4.5.0",
     "astro": "^1.4.6"
+  },
+  "devDependencies": {
+    "dotenv-cli": "^6.0.0",
+    "prisma": "^4.5.0"
   }
 }

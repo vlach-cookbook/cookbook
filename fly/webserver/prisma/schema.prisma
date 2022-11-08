@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model Recipe {
+  id          Int                @id @default(autoincrement())
+  createdAt   DateTime           @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime           @updatedAt @db.Timestamptz(3)
+  name        String             @unique
+  servings    Int?
+  ingredients RecipeIngredient[]
+  categories  Category[]
+  steps       String[]
+}
+
+model Unit {
+  id           Int     @id @default(autoincrement())
+  name         String  @unique
+  abbreviation String? @unique
+
+  RecipeIngredient RecipeIngredient[]
+}
+
+/// An ingredient line in a recipe, like "1 cup sugar".
+model RecipeIngredient {
+  id Int @id @default(autoincrement())
+
+  amount     String?
+  unit       Unit?  @relation(fields: [unitId], references: [id])
+  unitId     Int?
+  ingredient String
+
+  recipe   Recipe @relation(fields: [recipeId], references: [id])
+  recipeId Int
+}
+
+model Category {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  Recipes Recipe[]
+}
