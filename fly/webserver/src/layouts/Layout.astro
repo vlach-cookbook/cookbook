@@ -10,26 +10,35 @@ const { title } = Astro.props;
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
+		<title>{title}</title>
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+    <link rel="stylesheet" href="css/normalize.min.css">
+    <link rel="stylesheet" href="css/main.css">
 		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
 	</head>
 	<body>
-		<slot />
+    <div id="wrapper">
+      <header class="noprint">
+          <a href="home"><h1>Cookbook</h1></a>
+      </header>
+      <nav id="nav_1" class="noprint">
+          <input type="search" class="nav_style search" placeholder ="Search"/>
+          <div class="browse" ng-include="'browse-view/browse.html'"></div>
+      </nav>
+
+      <nav id="nav_2" class="noprint">
+          <a href="new" class="nav_style"> New Recipe </a>
+          <a href="account" class="nav_style" ng-show-auth>Account</a>
+          <a href="login" class="nav_style" ng-hide-auth>Log In</a>
+      </nav>
+
+      <main id="main_container">
+        <slot/>
+      </main>
+
+  </div>
 	</body>
 </html>
-<style is:global>
-	:root {
-		--accent: 124, 58, 237;
-		--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%);
-	}
-	html {
-		font-family: system-ui, sans-serif;
-		background-color: #F6F6F6;
-	}
-	code {
-		font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-			Bitstream Vera Sans Mono, Courier New, monospace;
-	}
-</style>

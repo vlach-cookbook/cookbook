@@ -54,11 +54,16 @@ function parseOptionalInt(value: string | undefined): number | null {
   return parsed;
 }
 
+function slugify(title: str): str {
+  return title.toLowerCase().replace(/[^a-z0-9]+/gi, "-");
+}
+
 function createRecipes(recipes: JsonRecipe[]): Promise<Recipe>[] {
   return recipes.map(recipe => {
     return prisma.recipe.create({
       data: {
         name: recipe.name,
+        slug: slugify(recipe.name),
         createdAt: recipe.dateCreated ? new Date(recipe.dateCreated) : undefined,
         servings: parseOptionalInt(recipe.recipeYield),
         ingredients: {

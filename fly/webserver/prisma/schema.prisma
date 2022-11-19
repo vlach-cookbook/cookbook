@@ -16,6 +16,7 @@ model Recipe {
   createdAt   DateTime           @default(now()) @db.Timestamptz(3)
   updatedAt   DateTime           @updatedAt @db.Timestamptz(3)
   name        String             @unique
+  slug        String             @unique
   servings    Int?
   ingredients RecipeIngredient[]
   categories  Category[]
@@ -35,7 +36,7 @@ model RecipeIngredient {
   id Int @id @default(autoincrement())
 
   amount     String?
-  unit       Unit?  @relation(fields: [unitId], references: [id])
+  unit       Unit?   @relation(fields: [unitId], references: [id])
   unitId     Int?
   ingredient String
 
