@@ -1,39 +1,52 @@
 ---
-import Layout from "../../../layouts/Layout.astro";
+import Layout from "@layouts/Layout.astro";
+import { prisma } from "@lib/prisma";
 
-// Upgrade database first.
-
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+function noSuchRecipe(): Response {
+  return new Response(undefined, {
+    status: 404,
+    statusText: "No such recipe",
+  });
+}
 
 // Grab this recipe.
 const { slug } = Astro.params;
+if (!slug || typeof(slug) === "number") {
+  return noSuchRecipe();
+}
 
-const recipe = await prisma.recipe.findUniqueOrThrow({
+const recipe = await prisma.recipe.findUnique({
   where: { slug },
-  include: { ingredients: true },
+  include: { ingredients: { include: { unit: true } } },
 });
+
+if (!recipe) {
+  return noSuchRecipe();
+}
+
 ---
 
-<Layout title="{recipe.title}">
+<Layout title={recipe.name}>
   <main class="recipe">
     <div>
       <h2>{recipe.name}</h2>
+      {recipe.servings ? <p>{recipe.servings} Servings</p> : null}
+      <h3>Ingredients</h3>
       <ul>
         {
           recipe.ingredients.map((ingredient) => (
             <li>
-              {ingredient.quantity} {ingredient.unit} {ingredient.ingredient}
+              {ingredient.amount} {ingredient.unit?.abbreviation || ingredient.unit?.name} {ingredient.ingredient}
             </li>
           ))
         }
       </ul>
-      <ol>{recipe.steps.map(step=>(<li>{step}</li>))}</ol>
+      <h3>Instructions</h3>
+      <ol>{recipe.steps.map((step) => <li>{step}</li>)}</ol>
       <nav id="options" class="noprint">
         <a href="javascript:;" ng-click="edit()" class="action">Edit</a>
-        <a href="javascript:window.print()" class="action"> Print</a>
-        <a href="" class="action"> Delete</a>
+        <a href="javascript:window.print()" class="action">Print</a>
+        <a href="" class="action">Delete</a>
       </nav>
     </div>
   </main>
