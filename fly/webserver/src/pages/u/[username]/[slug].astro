@@ -1,9 +1,10 @@
 ---
 import Layout from "@layouts/Layout.astro";
+import { getLogin } from "@lib/login-cookie";
 import { prisma } from "@lib/prisma";
 
 function noSuchRecipe(): Response {
-  return new Response(undefined, {
+  return new Response(null, {
     status: 404,
     statusText: "No such recipe",
   });
@@ -24,9 +25,11 @@ if (!recipe) {
   return noSuchRecipe();
 }
 
+const user = await getLogin(Astro.cookies);
+
 ---
 
-<Layout title={recipe.name}>
+<Layout title={recipe.name} user={user}>
   <main class="recipe">
     <div>
       <h2>{recipe.name}</h2>

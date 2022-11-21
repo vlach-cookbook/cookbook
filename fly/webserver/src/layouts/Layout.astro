@@ -1,44 +1,86 @@
 ---
+import { CLIENT_ID } from "@lib/google-auth";
+import type { User } from "@prisma/client";
+
 export interface Props {
-	title: string;
+  title: string;
+  user: User | null;
 }
 
-const { title } = Astro.props;
+const { title, user } = Astro.props;
+
+const login_uri = new URL(
+  `/finish_login?from=${encodeURIComponent(Astro.url.href)}`,
+  Astro.url
+).href;
 ---
 
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<title>{title}</title>
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{title}</title>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
-    <link rel="stylesheet" href="/css/normalize.min.css">
-    <link rel="stylesheet" href="/css/main.css">
-		<meta name="generator" content={Astro.generator} />
-	</head>
-	<body>
+    <link rel="stylesheet" href="/css/normalize.min.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <meta name="generator" content={Astro.generator} />
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+  </head>
+  <body>
     <div id="wrapper">
       <header class="noprint">
-          <a href="home"><h1>Cookbook</h1></a>
+        <a href="/"><h1>Cookbook</h1></a>
       </header>
       <nav id="nav_1" class="noprint">
-          <input type="search" class="nav_style search" placeholder ="Search"/>
-          <div class="browse" ng-include="'browse-view/browse.html'"></div>
+        <input type="search" class="nav_style search" placeholder="Search" />
+        <div class="browse" ng-include="'browse-view/browse.html'"></div>
       </nav>
 
       <nav id="nav_2" class="noprint">
-          <a href="new" class="nav_style"> New Recipe </a>
-          <a href="account" class="nav_style" ng-show-auth>Account</a>
-          <a href="login" class="nav_style" ng-hide-auth>Log In</a>
+        <a href="new" class="nav_style">New Recipe</a>
+        {
+          user ? (
+            <>
+              <a href="/account" class="nav_style">
+                Account
+              </a>
+              <a
+                href={`/logout?from=${encodeURIComponent(Astro.url.href)}`}
+                class="nav_style"
+              >
+                Logout
+              </a>
+            </>
+          ) : (
+            <>
+              <div
+                id="g_id_onload"
+                data-client_id={CLIENT_ID}
+                data-context="signin"
+                data-ux_mode="popup"
+                data-login_uri={login_uri}
+                data-itp_support="true"
+              />
+              <div
+                class="g_id_signin"
+                data-type="standard"
+                data-shape="rectangular"
+                data-theme="outline"
+                data-text="signin_with"
+                data-size="large"
+                data-logo_alignment="left"
+              />
+            </>
+          )
+        }
       </nav>
 
       <main id="main_container">
-        <slot/>
+        <slot />
       </main>
-
-  </div>
-	</body>
+    </div>
+  </body>
 </html>
