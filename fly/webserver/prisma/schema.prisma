@@ -2,20 +2,24 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
   provider          = "postgresql"
   url               = env("DATABASE_URL")
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+  extensions        = [citext]
 }
 
 model Recipe {
   id          Int                @id @default(autoincrement())
   createdAt   DateTime           @default(now()) @db.Timestamptz(3)
   updatedAt   DateTime           @updatedAt @db.Timestamptz(3)
-  name        String             @unique
+  author      User?              @relation(fields: [authorId], references: [id])
+  authorId    String?            @db.Uuid
+  name        String             @unique @db.Citext
   slug        String             @unique
   servings    Int?
   ingredients RecipeIngredient[]
@@ -52,9 +56,10 @@ model Category {
 }
 
 model User {
-  id       String  @id @default(uuid()) @db.Uuid
+  id       String   @id @default(uuid()) @db.Uuid
   name     String?
-  username String? @unique
+  username String?  @unique
+  Recipes  Recipe[]
 
   GoogleUser GoogleUser[]
 }
