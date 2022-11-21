@@ -23,7 +23,11 @@ let cookieKeys: crypto.KeyObject[] = cookieKeySecret.value.map(key => crypto.cre
 assert(cookieKeys.length > 0);
 assert(cookieKeys.every(key => key.type === 'secret'));
 
-export function setLogin(cookies: AstroCookies, user: User): void {
+export function setLogin(cookies: AstroCookies, user: User | null): void {
+  if (user == null) {
+    cookies.delete(LOGIN_COOKIE_NAME);
+    return;
+  }
   const firstKey = cookieKeys[0];
   assert(firstKey !== undefined);
   const cookie_value = cookie.sign(user.id, firstKey);
