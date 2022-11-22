@@ -123,12 +123,10 @@ int main(int argc, char **argv) {
     }
 
     const std::vector<CB_String> &direction_lines = recipe->Get_directions();
-    std::string directions;
+    Value &json_instructions = recipeJson["recipeInstructions"] = emptyArray;
     for (const auto &direction : direction_lines) {
-      directions += direction.str();
-      directions += "\n";
+      json_instructions.append(direction.str());
     }
-    recipeJson["recipeInstructions"] = directions;
   }
   Json::StyledStreamWriter("  ").write(std::cout, root);
 };

@@ -9,7 +9,7 @@ interface JsonRecipe {
   name: string;
   recipeCategory?: (string)[];
   recipeIngredient?: (JsonRecipeIngredient)[];
-  recipeInstructions: string;
+  recipeInstructions: string[];
   recipeYield?: string;
 }
 interface JsonRecipeIngredient {
@@ -54,7 +54,7 @@ function parseOptionalInt(value: string | undefined): number | null {
   return parsed;
 }
 
-function slugify(title: str): str {
+function slugify(title: string): string {
   return title.toLowerCase().replace(/[^a-z0-9]+/gi, "-");
 }
 
@@ -77,7 +77,7 @@ function createRecipes(recipes: JsonRecipe[]): Promise<Recipe>[] {
           })
         },
         categories: { connect: recipe.recipeCategory?.map(name => ({ name })) },
-        steps: [recipe.recipeInstructions],
+        steps: recipe.recipeInstructions,
       }
     });
   });
