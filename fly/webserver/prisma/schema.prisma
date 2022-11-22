@@ -17,8 +17,8 @@ model Recipe {
   id          Int                @id @default(autoincrement())
   createdAt   DateTime           @default(now()) @db.Timestamptz(3)
   updatedAt   DateTime           @updatedAt @db.Timestamptz(3)
-  author      User?              @relation(fields: [authorId], references: [id])
-  authorId    String?            @db.Uuid
+  author      User               @relation(fields: [authorId], references: [id])
+  authorId    String             @db.Uuid
   name        String             @unique @db.Citext
   slug        String             @unique
   servings    Int?
