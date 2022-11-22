@@ -11,13 +11,18 @@ function noSuchRecipe(): Response {
 }
 
 // Grab this recipe.
-const { slug } = Astro.params;
-if (!slug || typeof(slug) === "number") {
+const { username, slug } = Astro.params;
+if (
+  !slug ||
+  typeof slug === "number" ||
+  !username ||
+  typeof username === "number"
+) {
   return noSuchRecipe();
 }
 
-const recipe = await prisma.recipe.findUnique({
-  where: { slug },
+const recipe = await prisma.recipe.findFirst({
+  where: { author: { username }, slug },
   include: { ingredients: { include: { unit: true } } },
 });
 
@@ -26,7 +31,6 @@ if (!recipe) {
 }
 
 const user = await getLogin(Astro.cookies);
-
 ---
 
 <Layout title={recipe.name} user={user}>
@@ -39,7 +43,9 @@ const user = await getLogin(Astro.cookies);
         {
           recipe.ingredients.map((ingredient) => (
             <li>
-              {ingredient.amount} {ingredient.unit?.abbreviation || ingredient.unit?.name} {ingredient.ingredient}
+              {ingredient.amount}{" "}
+              {ingredient.unit?.abbreviation || ingredient.unit?.name}{" "}
+              {ingredient.ingredient}
             </li>
           ))
         }

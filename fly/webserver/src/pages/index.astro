@@ -9,6 +9,7 @@ const recipes = await prisma.recipe.findMany({
   select: {
     name: true,
     slug: true,
+    author: { select: { username: true } },
   },
   orderBy: {
     name: "asc",
@@ -24,11 +25,13 @@ const recipes = await prisma.recipe.findMany({
   <div id="content">
     <h2>Recipes</h2>
     <ul>
-    {recipes.map((recipe) => (
-      <li>
-        <a href={`/r/ignored/${recipe.slug}`}>{recipe.name}</a>
-      </li>
-    ))}
+      {
+        recipes.map((recipe) => (
+          <li>
+            <a href={`/r/${recipe.author.username}/${recipe.slug}`}>{recipe.name}</a>
+          </li>
+        ))
+      }
     </ul>
   </div>
 </Layout>

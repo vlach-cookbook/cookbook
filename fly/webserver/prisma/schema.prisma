@@ -19,12 +19,15 @@ model Recipe {
   updatedAt   DateTime           @updatedAt @db.Timestamptz(3)
   author      User               @relation(fields: [authorId], references: [id])
   authorId    String             @db.Uuid
-  name        String             @unique @db.Citext
-  slug        String             @unique
+  name        String             @db.Citext
+  slug        String
   servings    Int?
   ingredients RecipeIngredient[]
   categories  Category[]
   steps       String[]
+
+  @@unique([authorId, name])
+  @@unique([authorId, slug])
 }
 
 model Unit {
