@@ -23,11 +23,13 @@ export const EditRecipe: Component<{ recipe: RecipeWithIngredients, user: User }
   const [recipe, setRecipe] = createStore(props.recipe);
   let theForm: HTMLFormElement | undefined;
 
-  function beforeStepInput(stepIndex: number, event: InputEvent & { currentTarget: HTMLTextAreaElement }) {
-    console.debug("beforeStepInput(", stepIndex, event.currentTarget, event.inputType, event.data, ")");
+  function onStepKeyDown(stepIndex: number, event: KeyboardEvent & { currentTarget: HTMLTextAreaElement }) {
+    // Don't interfere with composition sessions.
+    if (event.isComposing) return;
+
     // TODO: Make this undoable.
     const textArea = event.currentTarget;
-    if (event.inputType === "deleteContentBackward") {
+    if (event.key === "Backspace") {
       if (textArea.selectionStart === 0 && textArea.selectionEnd === 0) {
         // Merge this step with the previous one.
         const offset = recipe.steps[stepIndex - 1]!.length;
@@ -39,7 +41,7 @@ export const EditRecipe: Component<{ recipe: RecipeWithIngredients, user: User }
         });
         event.preventDefault();
       }
-    } else if (event.inputType === "deleteContentForward") {
+    } else if (event.key === "Delete") {
       if (textArea.selectionStart === textArea.selectionEnd && textArea.selectionStart === textArea.value.length) {
         // Merge this step with the next one.
         const offset = recipe.steps[stepIndex]!.length;
@@ -51,10 +53,7 @@ export const EditRecipe: Component<{ recipe: RecipeWithIngredients, user: User }
         });
         event.preventDefault();
       }
-    } else if (event.inputType === "insertLineBreak" ||
-      event.inputType === "insertParagraphBreak") {
-      console.debug(textArea.selectionStart, textArea.selectionEnd);
-      const offset = textArea.selectionStart;
+    } else if (event.key === "Enter" && !event.shiftKey) {
       setRecipe("steps", [
         ...recipe.steps.slice(0, stepIndex),
         recipe.steps[stepIndex]!.slice(0, textArea.selectionStart),
@@ -109,7 +108,7 @@ export const EditRecipe: Component<{ recipe: RecipeWithIngredients, user: User }
               <li>
                 <GrowingTextarea name={`step.${index}`}
                   onInput={e => { setRecipe("steps", index, e.currentTarget.value); }}
-                  onBeforeInput={[beforeStepInput, index]}>{step()}</GrowingTextarea>
+                  onKeyDown={[onStepKeyDown, index]}>{step()}</GrowingTextarea>
               </li>
             }
           </Index>
