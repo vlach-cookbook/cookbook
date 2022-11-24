@@ -1,0 +1,48 @@
+---
+import { getLogin } from "@lib/login-cookie";
+import { prisma } from "@lib/prisma";
+prisma;
+
+const { username, slug } = Astro.params;
+
+const user = await getLogin(Astro.cookies);
+
+let mayEdit = false;
+if (user && user.username === username) {
+  mayEdit = true;
+}
+
+let formData: FormData | null = null;
+try {
+  formData = await Astro.request.formData();
+} catch (e) {}
+---
+
+<html>
+  <head>
+    <title>My Page</title>
+  </head>
+  <body>
+    <h1>My Page</h1>
+    <p>
+      Welcome, {user?.name || user?.username}, you {mayEdit ? "may edit" : "may not edit"} this recipe.
+    </p>
+    <p><a href={`/edit/${username}/${slug}`}>Back to the edit form.</a></p>
+    {
+      formData ? (
+        <>
+          <p>Submitted:</p>
+          <ul>
+            {[...formData.entries()].map(([key, value]) => (
+              <li>
+                {key}: {value}
+              </li>
+            ))}
+          </ul>
+        </>
+      ) : (
+        <p>Must be a POST.</p>
+      )
+    }
+  </body>
+</html>

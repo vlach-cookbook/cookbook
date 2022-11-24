@@ -1,4 +1,5 @@
-import { PrismaClient, Recipe } from '@prisma/client';
+import { getLogin } from '@lib/login-cookie';
+import { PrismaClient, Recipe, User } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import type { APIRoute } from "astro";
 
@@ -33,20 +34,6 @@ async function importCategories(recipes: JsonRecipe[]): Promise<void> {
   });
 }
 
-async function importUnits(recipes: JsonRecipe[]): Promise<void> {
-  const units = new Set<string>();
-  for (const recipe of recipes) {
-    if (!recipe.recipeIngredient) continue;
-    for (const ingredient of recipe.recipeIngredient) {
-      if (ingredient.unit) units.add(ingredient.unit);
-    }
-  }
-  await prisma.unit.createMany({
-    data: Array.from(units.keys()).map(name => ({ name })),
-    skipDuplicates: true
-  });
-}
-
 function parseOptionalInt(value: string | undefined): number | null {
   if (!value) return null;
   const parsed = Number.parseInt(value);
@@ -58,21 +45,23 @@ function slugify(title: string): string {
   return title.toLowerCase().replace(/[^a-z0-9]+/gi, "-");
 }
 
-function createRecipes(recipes: JsonRecipe[]): Promise<Recipe>[] {
+function createRecipes(recipes: JsonRecipe[], user: User): Promise<Recipe>[] {
   return recipes.map(recipe => {
     return prisma.recipe.create({
       data: {
         name: recipe.name,
+        author: { connect: { id: user.id } },
         slug: slugify(recipe.name),
         createdAt: recipe.dateCreated ? new Date(recipe.dateCreated) : undefined,
         servings: parseOptionalInt(recipe.recipeYield),
         ingredients: {
           create: recipe.recipeIngredient?.map(ingredient => {
-            let ingredientString = [ingredient.name, ingredient.preparation].filter(Boolean).join(" ");
+            if (!ingredient.name) throw new Error(`Missing ingredient name in recipe ${JSON.stringify(recipe, undefined, 2)}`);
             return {
               amount: ingredient.quantity,
-              unit: ingredient.unit ? { connect: { name: ingredient.unit } } : undefined,
-              ingredient: ingredientString,
+              unit: ingredient.unit,
+              ingredient: ingredient.name,
+              preparation: ingredient.preparation,
             };
           })
         },
@@ -83,15 +72,17 @@ function createRecipes(recipes: JsonRecipe[]): Promise<Recipe>[] {
   });
 }
 
-export const post: APIRoute = async ({ request }) => {
+export const post: APIRoute = async ({ request, cookies }) => {
+  const user = await getLogin(cookies);
+
+  if (!user) {
+    return new Response("Must be logged in to import recipes.", { status: 403 });
+  }
+
   const recipes: JsonRecipe[] = await request.json();
 
-  const createCategoriesTask = importCategories(recipes);
-  const createIngredientsTask = importUnits(recipes);
-
   try {
-    await createCategoriesTask;
-    await createIngredientsTask;
+    await importCategories(recipes);
   } catch (e: any) {
     return {
       status: 500,
@@ -104,7 +95,7 @@ export const post: APIRoute = async ({ request }) => {
     errors: [],
   };
   let i = -1;
-  for (const result of await Promise.allSettled(createRecipes(recipes))) {
+  for (const result of await Promise.allSettled(createRecipes(recipes, user))) {
     i++;
     switch (result.status) {
       case "fulfilled":

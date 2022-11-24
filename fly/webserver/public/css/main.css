@@ -132,13 +132,6 @@ p {
   background-size: 18px;
   padding-left: 30px;
 }
-input {
-  width: 95%;
-}
-textarea {
-  flex:1 1 auto;
-  height: 110px;
-}
 button {
   background-color: #fff0e6;
   border-color: #FF6F0D;

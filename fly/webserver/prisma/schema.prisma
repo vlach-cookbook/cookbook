@@ -30,22 +30,16 @@ model Recipe {
   @@unique([authorId, slug])
 }
 
-model Unit {
-  id           Int     @id @default(autoincrement())
-  name         String  @unique
-  abbreviation String? @unique
-
-  RecipeIngredient RecipeIngredient[]
-}
-
 /// An ingredient line in a recipe, like "1 cup sugar".
 model RecipeIngredient {
   id Int @id @default(autoincrement())
 
-  amount     String?
-  unit       Unit?   @relation(fields: [unitId], references: [id])
-  unitId     Int?
-  ingredient String
+  amount      String?
+  /// A missing unit means the ingredient comes in items, like "3 eggs".
+  unit        String?
+  ingredient  String
+  /// How the ingredient was prepared, like "chopped".
+  preparation String?
 
   recipe   Recipe @relation(fields: [recipeId], references: [id])
   recipeId Int
