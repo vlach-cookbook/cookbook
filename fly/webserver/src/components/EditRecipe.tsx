@@ -1,8 +1,10 @@
-import type { Recipe, RecipeIngredient, User } from '@prisma/client';
+import type { Recipe, RecipeIngredient as DBRecipeIngredient, User } from '@prisma/client';
 import { Component, createSignal, createUniqueId, For } from 'solid-js';
 import { createStore, produce } from "solid-js/store";
 
 import { GrowingTextarea } from './GrowingTextarea';
+
+type RecipeIngredient = Omit<DBRecipeIngredient, 'id' | 'recipeId'> & { id: number | undefined };
 
 type RecipeWithIngredients = (Recipe & {
   ingredients: RecipeIngredient[];
@@ -19,6 +21,56 @@ function ingredientToString(ingredient: RecipeIngredient): string {
 const IngredientsEditor: Component<{ ingredients: RecipeIngredient[] }> = (props) => {
   const [ingredients, setIngredients] = createStore(props.ingredients);
   let fields: HTMLFieldSetElement | undefined;
+
+  // Keyboard shortcuts for editing, including arrow-navigation and insertion of new ingredients.
+  /// Splits or merges steps depending on the user's keypress.
+  function onIngredientKeyDown(event: KeyboardEvent & { target: Element }) {
+    // Don't interfere with composition sessions.
+    if (event.isComposing) return;
+
+    // Only deal with keystrokes on the ingredient inputs.
+    if (!(event.target instanceof HTMLInputElement)) return;
+
+    const inputElem = event.target;
+    const nameComponents = inputElem.name.split('.');
+    const index = Number.parseInt(nameComponents[1]!, 10);
+    const field = nameComponents[2];
+    if (!field || !["amount", "unit", "ingredient", "preparation"].includes(field)) {
+      console.trace("Unexpected field name", field);
+      return;
+    }
+
+    function focusIngredientField(index: number, field: string) {
+      const elemName = `ingredient.${index}.${field}`
+      const targetInput = fields?.elements.namedItem(elemName);
+      if (!targetInput || !(targetInput instanceof HTMLInputElement)) {
+        console.trace(`Couldn't find new element; should be ${elemName} in fieldset`, fields);
+        return;
+      }
+      targetInput.focus();
+    }
+
+    if (event.key === "ArrowUp") {
+      if (index > 0) {
+        focusIngredientField(index - 1, field);
+        event.preventDefault();
+      }
+    } else if (event.key === "ArrowDown") {
+      if (index + 1 < ingredients.length) {
+        focusIngredientField(index + 1, field);
+        event.preventDefault();
+      }
+    } else if (event.key === "Enter" && !event.shiftKey) {
+      setIngredients(produce(ingredients => {
+        ingredients.splice(index + 1, 0, { id: undefined, amount: null, unit: null, ingredient: '', preparation: null });
+      }));
+      // Focus the first field of the new line, after its nodes are created.
+      queueMicrotask(() => {
+        focusIngredientField(index + 1, nameComponents[2]!);
+      });
+      event.preventDefault();
+    }
+  };
 
   // Drag & Drop
 
@@ -120,6 +172,7 @@ const IngredientsEditor: Component<{ ingredients: RecipeIngredient[] }> = (props
             onDragEnter={[onDragEnter, index()]}
             onDragOver={onDragOver}
             onDrop={onDrop}
+            onKeyDown={onIngredientKeyDown}
           >
             <input type="hidden" name={`ingredient.${index()}.id`} value={ingredient.id} />
             <input type="text"
