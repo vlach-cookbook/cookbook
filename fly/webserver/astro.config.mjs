@@ -1,5 +1,5 @@
-import { defineConfig } from 'astro/config';
 import node from "@astrojs/node";
+import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
 import solidJs from "@astrojs/solid-js";

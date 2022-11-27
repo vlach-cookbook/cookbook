@@ -6,7 +6,7 @@ specifiers:
   '@prisma/client': ^4.6.1
   '@types/cookie-signature': ^1.0.4
   '@types/node': ^18.11.9
-  astro: ^1.6.10
+  astro: ^1.6.11
   cookie-signature: ^1.2.0
   dotenv-cli: ^6.0.0
   google-auth-library: ^8.7.0
@@ -17,7 +17,7 @@ dependencies:
   '@astrojs/node': 1.1.0
   '@astrojs/solid-js': 1.2.3_35qgajjoxpxbpcnuyad4bewoni
   '@prisma/client': 4.6.1_prisma@4.6.1
-  astro: 1.6.10_@types+node@18.11.9
+  astro: 1.6.11_@types+node@18.11.9
   cookie-signature: 1.2.0
   google-auth-library: 8.7.0
   solid-js: 1.6.2
@@ -52,7 +52,7 @@ packages:
       prettier-plugin-astro: 0.7.0
       source-map: 0.7.4
       vscode-css-languageservice: 6.2.1
-      vscode-html-languageservice: 5.0.2
+      vscode-html-languageservice: 5.0.3
       vscode-languageserver: 8.0.2
       vscode-languageserver-protocol: 3.17.2
       vscode-languageserver-textdocument: 1.0.7
@@ -136,7 +136,7 @@ packages:
     resolution: {integrity: sha512-SJVfZHp00f8VZsT1fsx1+6acJGUNt/84xZytV5znPzzNE8RXjlE0rv03llgTsEeUHYZc6uJah91jNojS7RldFg==}
     engines: {node: ^14.18.0 || >=16.12.0}
     dependencies:
-      ci-info: 3.6.2
+      ci-info: 3.7.0
       debug: 4.3.4
       dlv: 1.1.3
       dset: 3.1.2
@@ -756,8 +756,8 @@ packages:
       tslib: 2.4.1
     dev: false
 
-  /astro/1.6.10_@types+node@18.11.9:
-    resolution: {integrity: sha512-W/ZGROkCKsDicpiXB82n8EkY6I0/12wdXS80NGaBdIUR1jZZxdN+0YMmdz+C2kYbjlo45KUsXpC/Tej+5KQYSQ==}
+  /astro/1.6.11_@types+node@18.11.9:
+    resolution: {integrity: sha512-T0xb0U0FOrqXxl87x4mjpufhf0b47RMPIu8WWK+2ODrRZkPj1sr24alh3Y/PLSyiWSqoGZF7xzQ6hzt0jDCyVQ==}
     engines: {node: ^14.18.0 || >=16.12.0, npm: '>=6.14.0'}
     hasBin: true
     dependencies:
@@ -778,7 +778,7 @@ packages:
       '@types/html-escaper': 3.0.0
       '@types/yargs-parser': 21.0.0
       boxen: 6.2.1
-      ci-info: 3.6.2
+      ci-info: 3.7.0
       common-ancestor-path: 1.0.1
       cookie: 0.5.0
       debug: 4.3.4
@@ -972,8 +972,8 @@ packages:
     resolution: {integrity: sha512-iBZ4F4wRbyORVsu0jPV7gXkOsGYjGHPmAyv+HiHG8gi5PtC9KI2j1+v8/tlibRvjoWX027ypmG/n0HtO5t7unw==}
     dev: false
 
-  /ci-info/3.6.2:
-    resolution: {integrity: sha512-lVZdhvbEudris15CLytp2u6Y0p5EKfztae9Fqa189MfNmln9F33XuH69v5fvNfiRN5/0eAUz2yJL3mo+nhaRKg==}
+  /ci-info/3.7.0:
+    resolution: {integrity: sha512-2CpRNYmImPx+RXKLq6jko/L07phmS9I02TyqkcNU20GCF/GgaWvc58hPtjxDX8lPpkdwc9sNh72V9k00S7ezog==}
     engines: {node: '>=8'}
     dev: false
 
@@ -3318,7 +3318,7 @@ packages:
     resolution: {integrity: sha512-EugY9VASFuDqOexOgXR18ZV+TbFrQHeCpEYaXamO+SZlsnT/2LxuLBX25GGtIrwaEVFXUAbUQ601SWE2rMwWHA==}
     dependencies:
       jsonc-parser: 3.2.0
-      vscode-oniguruma: 1.6.2
+      vscode-oniguruma: 1.7.0
       vscode-textmate: 6.0.0
     dev: false
 
@@ -3767,12 +3767,12 @@ packages:
       vscode-uri: 3.0.6
     dev: false
 
-  /vscode-html-languageservice/5.0.2:
-    resolution: {integrity: sha512-TQmeyE14Ure/w/S+RV2IItuRWmw/i1QaS+om6t70iHCpamuTTWnACQPMSltVGm/DlbdyMquUePJREjd/h3AVkQ==}
+  /vscode-html-languageservice/5.0.3:
+    resolution: {integrity: sha512-6rfrtcHhXDMXmC5pR2WXrx02HiNCzQDynOBMn+53zLxr2hvZrDzoc0QgC0FaFGfcglf7GeOsfhkWvJBFC/a70g==}
     dependencies:
+      '@vscode/l10n': 0.0.10
       vscode-languageserver-textdocument: 1.0.7
       vscode-languageserver-types: 3.17.2
-      vscode-nls: 5.2.0
       vscode-uri: 3.0.6
     dev: false
 
@@ -3807,8 +3807,8 @@ packages:
     resolution: {integrity: sha512-RAaHx7B14ZU04EU31pT+rKz2/zSl7xMsfIZuo8pd+KZO6PXtQmpevpq3vxvWNcrGbdmhM/rr5Uw5Mz+NBfhVng==}
     dev: false
 
-  /vscode-oniguruma/1.6.2:
-    resolution: {integrity: sha512-KH8+KKov5eS/9WhofZR8M8dMHWN2gTxjMsG4jd04YhpbPR91fUj7rYQ2/XjeHCJWbg7X++ApRIU9NUwM2vTvLA==}
+  /vscode-oniguruma/1.7.0:
+    resolution: {integrity: sha512-L9WMGRfrjOhgHSdOYgCt/yRMsXzLDJSL7BPrOZt73gU0iWO4mpqzqQzOz5srxqTvMBaR0XZTSrVWo4j55Rc6cA==}
     dev: false
 
   /vscode-textmate/6.0.0:

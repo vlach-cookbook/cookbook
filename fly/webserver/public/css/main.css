@@ -244,6 +244,9 @@ a.action:hover {
 #content_edit #save {
   margin-top: 10px;
 }
+.dragging {
+  opacity: 40%;
+}
 
 
 /* ==========================================================================

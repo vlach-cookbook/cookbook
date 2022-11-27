@@ -21,7 +21,7 @@
     "@astrojs/node": "^1.1.0",
     "@astrojs/solid-js": "^1.2.3",
     "@prisma/client": "^4.6.1",
-    "astro": "^1.6.10",
+    "astro": "^1.6.11",
     "cookie-signature": "^1.2.0",
     "google-auth-library": "^8.7.0",
     "solid-js": "^1.6.2"
