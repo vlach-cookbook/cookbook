@@ -8,7 +8,7 @@ type RecipeWithIngredients = (Recipe & {
   ingredients: RecipeIngredient[];
 });
 
-function ingredientToString(ingredient: RecipeIngredient) {
+function ingredientToString(ingredient: RecipeIngredient): string {
   let result = [ingredient.amount, ingredient.unit, ingredient.ingredient].filter(Boolean).join(' ');
   if (ingredient.preparation) {
     result += `, ${ingredient.preparation}`;
@@ -49,12 +49,17 @@ const IngredientsEditor: Component<{ ingredients: RecipeIngredient[] }> = (props
   function onDragEnd(event: DragEvent & { currentTarget: HTMLLIElement }) {
     event.currentTarget.classList.remove("dragging");
     const oldIngredients = ingredientsBeforeDrag();
-    if (event.dataTransfer?.dropEffect === "none" && oldIngredients) {
+    if (oldIngredients) {
       // Undo the drag if it was cancelled.
       setIngredients(oldIngredients);
     }
     setIngredientsBeforeDrag(null);
     setDraggedIngredient(null);
+  }
+
+  function onDrop(event: DragEvent & { currentTarget: HTMLLIElement }) {
+    setIngredientsBeforeDrag(null);
+    event.preventDefault();
   }
 
   function onDragEnter(targetIndex: number, event: DragEvent & { currentTarget: HTMLLIElement }) {
@@ -83,6 +88,27 @@ const IngredientsEditor: Component<{ ingredients: RecipeIngredient[] }> = (props
     }
   }
 
+  // Draggable input elements disable selection within the element, so disable draggability on focus
+  // and re-enable it on blur.
+  const [draggableDisabled, setDraggableDisabled] = createSignal<HTMLElement[]>([]);
+  function disableDraggable(event: FocusEvent & { currentTarget: HTMLElement }) {
+    let elemsDisabled: HTMLElement[] = [];
+
+    for (let elem: HTMLElement | null = event.currentTarget; elem; elem = elem.parentElement) {
+      if (elem.draggable) {
+        elemsDisabled.push(elem);
+        elem.draggable = false;
+      }
+    }
+    setDraggableDisabled(elemsDisabled);
+  }
+  function enableDraggable() {
+    for (let elem of draggableDisabled()) {
+      elem.draggable = true;
+    }
+    setDraggableDisabled([]);
+  }
+
   return <fieldset ref={fields}>
     <legend><h3>Ingredients</h3></legend>
     <ul>
@@ -93,20 +119,29 @@ const IngredientsEditor: Component<{ ingredients: RecipeIngredient[] }> = (props
             onDragEnd={onDragEnd}
             onDragEnter={[onDragEnter, index()]}
             onDragOver={onDragOver}
+            onDrop={onDrop}
           >
             <input type="hidden" name={`ingredient.${index()}.id`} value={ingredient.id} />
             <input type="text"
               name={`ingredient.${index()}.amount`} value={ingredient.amount || ""}
-              placeholder="Amount" style={{ width: "5em" }} />
+              onInput={event => setIngredients(index(), "amount", event.currentTarget.value)}
+              placeholder="Amount" style={{ width: "5em" }}
+              onFocus={disableDraggable} onBlur={enableDraggable} />
             <input type="text"
               name={`ingredient.${index()}.unit`} value={ingredient.unit || ""}
-              placeholder="Unit" style={{ width: "3em" }} />
+              onInput={event => setIngredients(index(), "unit", event.currentTarget.value)}
+              placeholder="Unit" style={{ width: "3em" }}
+              onFocus={disableDraggable} onBlur={enableDraggable} />
             <input type="text"
               name={`ingredient.${index()}.ingredient`} value={ingredient.ingredient}
-              placeholder="Ingredient" style={{ width: "10em" }} />
+              onInput={event => setIngredients(index(), "ingredient", event.currentTarget.value)}
+              placeholder="Ingredient" style={{ width: "10em" }}
+              onFocus={disableDraggable} onBlur={enableDraggable} />
             <input type="text"
               name={`ingredient.${index()}.preparation`} value={ingredient.preparation || ""}
-              placeholder="Preparation" style={{ width: "10em" }} />
+              onInput={event => setIngredients(index(), "preparation", event.currentTarget.value)}
+              placeholder="Preparation" style={{ width: "10em" }}
+              onFocus={disableDraggable} onBlur={enableDraggable} />
           </li>
         )
         }
@@ -212,12 +247,18 @@ const InstructionsEditor: Component<{ steps: string[] }> = (props) => {
   function onDragEnd(event: DragEvent & { currentTarget: HTMLLIElement }) {
     event.currentTarget.classList.remove("dragging");
     const oldSteps = stepsBeforeDrag();
-    if (event.dataTransfer?.dropEffect === "none" && oldSteps) {
-      // Undo the drag if it was cancelled.
+    if (oldSteps) {
+      // Undo the drag if it wasn't dropped in this list.
       setSteps(oldSteps);
     }
     setStepsBeforeDrag(null);
     setDraggedStepId(null);
+  }
+
+  function onDrop(event: DragEvent & { currentTarget: HTMLLIElement }) {
+    // Commit the move.
+    setStepsBeforeDrag(null);
+    event.preventDefault();
   }
 
   function onDragEnter(targetIndex: number, event: DragEvent & { currentTarget: HTMLLIElement }) {
@@ -251,13 +292,14 @@ const InstructionsEditor: Component<{ steps: string[] }> = (props) => {
     <ol>
       <For each={steps}>
         {(step, index) =>
-          <li draggable={true}
+          <li draggable={true} style={{ cursor: "move" }}
             onDragStart={[onDragStart, index()]}
             onDragEnd={onDragEnd}
             onDragEnter={[onDragEnter, index()]}
             onDragOver={onDragOver}
+            onDrop={onDrop}
           >
-            <GrowingTextarea name={`step.${index()}`}
+            <GrowingTextarea name={`step.${index()}`} draggable={false}
               onInput={e => { setSteps(index(), "step", e.currentTarget.value); }}
               onKeyDown={[onStepKeyDown, index()]}>{step.step}</GrowingTextarea>
           </li>
