@@ -1,5 +1,5 @@
 import type { Recipe, RecipeIngredient, User } from '@prisma/client';
-import { Component, createSignal, createUniqueId, For, Index } from 'solid-js';
+import { Component, createSignal, createUniqueId, For } from 'solid-js';
 import { createStore, produce } from "solid-js/store";
 
 import { GrowingTextarea } from './GrowingTextarea';
@@ -8,33 +8,109 @@ type RecipeWithIngredients = (Recipe & {
   ingredients: RecipeIngredient[];
 });
 
+function ingredientToString(ingredient: RecipeIngredient) {
+  let result = [ingredient.amount, ingredient.unit, ingredient.ingredient].filter(Boolean).join(' ');
+  if (ingredient.preparation) {
+    result += `, ${ingredient.preparation}`;
+  }
+  return result;
+}
+
 const IngredientsEditor: Component<{ ingredients: RecipeIngredient[] }> = (props) => {
   const [ingredients, setIngredients] = createStore(props.ingredients);
   let fields: HTMLFieldSetElement | undefined;
 
+  // Drag & Drop
+
+  const DRAG_MIMETYPE = "application/x-cookbook-ingredient-drag-id";
+
+  /// Used to undo the drag & drop operation if the drop is cancelled.
+  const [ingredientsBeforeDrag, setIngredientsBeforeDrag] = createSignal<typeof ingredients | null>(null);
+  /// Which ingredient is being dragged.
+  const [draggedIngredient, setDraggedIngredient] = createSignal<RecipeIngredient | null>(null);
+
+  function onDragStart(index: number, event: DragEvent & { currentTarget: HTMLLIElement }) {
+    setIngredientsBeforeDrag(ingredients.slice());
+    const ingredient = ingredients[index];
+    if (!ingredient) {
+      console.trace(`Step index ${index} out of bounds.`);
+      return;
+    }
+    // We can't send the app-local data through dataTransfer.setData because drag data "protected"
+    // mode (https://html.spec.whatwg.org/multipage/dnd.html#concept-dnd-p) hides that value until
+    // the "drop" event, but we want to use it before that.
+    setDraggedIngredient(ingredient);
+    event.dataTransfer!.setData(DRAG_MIMETYPE, "");
+    event.dataTransfer!.setData("text/plain", ingredientToString(ingredient));
+    event.dataTransfer!.effectAllowed = "copyMove";
+    event.currentTarget.classList.add("dragging");
+  }
+
+  function onDragEnd(event: DragEvent & { currentTarget: HTMLLIElement }) {
+    event.currentTarget.classList.remove("dragging");
+    const oldIngredients = ingredientsBeforeDrag();
+    if (event.dataTransfer?.dropEffect === "none" && oldIngredients) {
+      // Undo the drag if it was cancelled.
+      setIngredients(oldIngredients);
+    }
+    setIngredientsBeforeDrag(null);
+    setDraggedIngredient(null);
+  }
+
+  function onDragEnter(targetIndex: number, event: DragEvent & { currentTarget: HTMLLIElement }) {
+    if (event.dataTransfer!.types.includes(DRAG_MIMETYPE)) {
+      event.dataTransfer!.dropEffect = "move";
+      // Show what the list will look like with the dragged item moved here.
+      const source = draggedIngredient();
+      const sourceIndex = ingredients.findIndex(ingredient => ingredient === source);
+      if (sourceIndex === -1) {
+        console.trace("Lost the step being dragged,", source);
+        return;
+      }
+      if (sourceIndex === targetIndex) return;
+      setIngredients(produce(ingredients => {
+        const sourceIngredient = ingredients.splice(sourceIndex, 1);
+        // This works whether we're moving forward or backward because splicing out the source
+        // shifts a later target one earlier so that the insertion splice lands after it.
+        ingredients.splice(targetIndex, 0, ...sourceIngredient);
+      }));
+      event.preventDefault();
+    }
+  }
+  function onDragOver(event: DragEvent & { currentTarget: HTMLLIElement }) {
+    if (event.dataTransfer!.types.includes(DRAG_MIMETYPE)) {
+      event.preventDefault();
+    }
+  }
+
   return <fieldset ref={fields}>
     <legend><h3>Ingredients</h3></legend>
     <ul>
-      <Index each={ingredients}>
+      <For each={ingredients}>
         {(ingredient, index) => (
-          <li draggable={true} style={{ cursor: "move" }}>
-            <input type="hidden" name={`ingredient.${index}.id`} value={ingredient().id} />
+          <li draggable={true} style={{ cursor: "move" }}
+            onDragStart={[onDragStart, index()]}
+            onDragEnd={onDragEnd}
+            onDragEnter={[onDragEnter, index()]}
+            onDragOver={onDragOver}
+          >
+            <input type="hidden" name={`ingredient.${index()}.id`} value={ingredient.id} />
             <input type="text"
-              name={`ingredient.${index}.amount`} value={ingredient().amount || ""}
+              name={`ingredient.${index()}.amount`} value={ingredient.amount || ""}
               placeholder="Amount" style={{ width: "5em" }} />
             <input type="text"
-              name={`ingredient.${index}.unit`} value={ingredient().unit || ""}
+              name={`ingredient.${index()}.unit`} value={ingredient.unit || ""}
               placeholder="Unit" style={{ width: "3em" }} />
             <input type="text"
-              name={`ingredient.${index}.ingredient`} value={ingredient().ingredient}
+              name={`ingredient.${index()}.ingredient`} value={ingredient.ingredient}
               placeholder="Ingredient" style={{ width: "10em" }} />
             <input type="text"
-              name={`ingredient.${index}.preparation`} value={ingredient().preparation || ""}
+              name={`ingredient.${index()}.preparation`} value={ingredient.preparation || ""}
               placeholder="Preparation" style={{ width: "10em" }} />
           </li>
         )
         }
-      </Index>
+      </For>
     </ul>
   </fieldset>;
 }
