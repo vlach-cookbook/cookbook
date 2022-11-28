@@ -22,6 +22,10 @@ const IngredientsEditor: Component<{ ingredients: RecipeIngredient[] }> = (props
   const [ingredients, setIngredients] = createStore(props.ingredients);
   let fields: HTMLFieldSetElement | undefined;
 
+  function removeIngredient(ingredient: RecipeIngredient) {
+    setIngredients(ingredients.filter(i => i !== ingredient));
+  }
+
   // Keyboard shortcuts for editing, including arrow-navigation and insertion of new ingredients.
   /// Splits or merges steps depending on the user's keypress.
   function onIngredientKeyDown(event: KeyboardEvent & { target: Element }) {
@@ -81,13 +85,8 @@ const IngredientsEditor: Component<{ ingredients: RecipeIngredient[] }> = (props
   /// Which ingredient is being dragged.
   const [draggedIngredient, setDraggedIngredient] = createSignal<RecipeIngredient | null>(null);
 
-  function onDragStart(index: number, event: DragEvent & { currentTarget: HTMLLIElement }) {
+  function onDragStart(ingredient: RecipeIngredient, event: DragEvent & { currentTarget: HTMLLIElement }) {
     setIngredientsBeforeDrag(ingredients.slice());
-    const ingredient = ingredients[index];
-    if (!ingredient) {
-      console.trace(`Step index ${index} out of bounds.`);
-      return;
-    }
     // We can't send the app-local data through dataTransfer.setData because drag data "protected"
     // mode (https://html.spec.whatwg.org/multipage/dnd.html#concept-dnd-p) hides that value until
     // the "drop" event, but we want to use it before that.
@@ -114,12 +113,13 @@ const IngredientsEditor: Component<{ ingredients: RecipeIngredient[] }> = (props
     event.preventDefault();
   }
 
-  function onDragEnter(targetIndex: number, event: DragEvent & { currentTarget: HTMLLIElement }) {
+  function onDragEnter(targetIngredient: RecipeIngredient, event: DragEvent & { currentTarget: HTMLLIElement }) {
     if (event.dataTransfer!.types.includes(DRAG_MIMETYPE)) {
       event.dataTransfer!.dropEffect = "move";
       // Show what the list will look like with the dragged item moved here.
       const source = draggedIngredient();
       const sourceIndex = ingredients.findIndex(ingredient => ingredient === source);
+      const targetIndex = ingredients.findIndex(ingredient => ingredient === targetIngredient);
       if (sourceIndex === -1) {
         console.trace("Lost the step being dragged,", source);
         return;
@@ -127,8 +127,9 @@ const IngredientsEditor: Component<{ ingredients: RecipeIngredient[] }> = (props
       if (sourceIndex === targetIndex) return;
       setIngredients(produce(ingredients => {
         const sourceIngredient = ingredients.splice(sourceIndex, 1);
-        // This works whether we're moving forward or backward because splicing out the source
-        // shifts a later target one earlier so that the insertion splice lands after it.
+        // Moving backward should land one before the target, and moving forward should land one
+        // after. This splice works either way because splicing out the source shifts a later target
+        // one earlier so that the insertion splice lands after it.
         ingredients.splice(targetIndex, 0, ...sourceIngredient);
       }));
       event.preventDefault();
@@ -167,9 +168,9 @@ const IngredientsEditor: Component<{ ingredients: RecipeIngredient[] }> = (props
       <For each={ingredients}>
         {(ingredient, index) => (
           <li draggable={true} style={{ cursor: "move" }}
-            onDragStart={[onDragStart, index()]}
+            onDragStart={[onDragStart, ingredient]}
             onDragEnd={onDragEnd}
-            onDragEnter={[onDragEnter, index()]}
+            onDragEnter={[onDragEnter, ingredient]}
             onDragOver={onDragOver}
             onDrop={onDrop}
             onKeyDown={onIngredientKeyDown}
@@ -177,24 +178,26 @@ const IngredientsEditor: Component<{ ingredients: RecipeIngredient[] }> = (props
             <input type="hidden" name={`ingredient.${index()}.id`} value={ingredient.id} />
             <input type="text"
               name={`ingredient.${index()}.amount`} value={ingredient.amount || ""}
-              onInput={event => setIngredients(index(), "amount", event.currentTarget.value)}
-              placeholder="Amount" style={{ width: "5em" }}
+              onInput={event => setIngredients(i => i === ingredient, "amount", event.currentTarget.value)}
+              placeholder="Amount" style={{ width: "3em" }}
               onFocus={disableDraggable} onBlur={enableDraggable} />
             <input type="text"
               name={`ingredient.${index()}.unit`} value={ingredient.unit || ""}
-              onInput={event => setIngredients(index(), "unit", event.currentTarget.value)}
+              onInput={event => setIngredients(i => i === ingredient, "unit", event.currentTarget.value)}
               placeholder="Unit" style={{ width: "3em" }}
               onFocus={disableDraggable} onBlur={enableDraggable} />
             <input type="text"
               name={`ingredient.${index()}.ingredient`} value={ingredient.ingredient}
-              onInput={event => setIngredients(index(), "ingredient", event.currentTarget.value)}
+              onInput={event => setIngredients(i => i === ingredient, "ingredient", event.currentTarget.value)}
               placeholder="Ingredient" style={{ width: "10em" }}
               onFocus={disableDraggable} onBlur={enableDraggable} />
             <input type="text"
               name={`ingredient.${index()}.preparation`} value={ingredient.preparation || ""}
-              onInput={event => setIngredients(index(), "preparation", event.currentTarget.value)}
+              onInput={event => setIngredients(i => i === ingredient, "preparation", event.currentTarget.value)}
               placeholder="Preparation" style={{ width: "10em" }}
               onFocus={disableDraggable} onBlur={enableDraggable} />
+            <button type="button" title="Remove this ingredient"
+              onClick={[removeIngredient, ingredient]}>🗑️</button>
           </li>
         )
         }
@@ -203,8 +206,11 @@ const IngredientsEditor: Component<{ ingredients: RecipeIngredient[] }> = (props
   </fieldset>;
 }
 
+type StepObj = {
+  step: string;
+};
 const InstructionsEditor: Component<{ steps: string[] }> = (props) => {
-  const [steps, setSteps] = createStore(props.steps.map(step => ({ id: createUniqueId(), step })));
+  const [steps, setSteps] = createStore(props.steps.map(step => ({ step })));
   let fields: HTMLFieldSetElement | undefined;
 
   // Keyboard shortcuts to merge and split steps.
@@ -243,12 +249,14 @@ const InstructionsEditor: Component<{ steps: string[] }> = (props) => {
   }
 
   /// Splits or merges steps depending on the user's keypress.
-  function onStepKeyDown(stepIndex: number, event: KeyboardEvent & { currentTarget: HTMLTextAreaElement }) {
+  function onStepKeyDown(step: StepObj, event: KeyboardEvent & { currentTarget: HTMLTextAreaElement }) {
     // Don't interfere with composition sessions.
     if (event.isComposing) return;
 
     // TODO: Make this undoable.
     const textArea = event.currentTarget;
+
+    const stepIndex = steps.indexOf(step);
 
     if (event.key === "Backspace") {
       if (textArea.selectionStart === 0 && textArea.selectionEnd === 0) {
@@ -279,19 +287,14 @@ const InstructionsEditor: Component<{ steps: string[] }> = (props) => {
   /// Used to undo the drag & drop operation if the drop is cancelled.
   const [stepsBeforeDrag, setStepsBeforeDrag] = createSignal<typeof steps | null>(null);
   /// Which step is being dragged.
-  const [draggedStepId, setDraggedStepId] = createSignal<string | null>(null);
+  const [draggedStep, setDraggedStep] = createSignal<StepObj | null>(null);
 
-  function onDragStart(index: number, event: DragEvent & { currentTarget: HTMLLIElement }) {
+  function onDragStart(step: StepObj, event: DragEvent & { currentTarget: HTMLLIElement }) {
     setStepsBeforeDrag(steps.slice());
-    const step = steps[index];
-    if (!step) {
-      console.trace(`Step index ${index} out of bounds.`);
-      return;
-    }
     // Drag data "protected" mode (https://html.spec.whatwg.org/multipage/dnd.html#concept-dnd-p)
     // hides the step ID until the "drop" event, but we want to use it before that.
-    setDraggedStepId(step.id);
-    event.dataTransfer!.setData(DRAG_MIMETYPE, step.id);
+    setDraggedStep(step);
+    event.dataTransfer!.setData(DRAG_MIMETYPE, "");
     event.dataTransfer!.setData("text/plain", step.step);
     event.dataTransfer!.effectAllowed = "copyMove";
     event.currentTarget.classList.add("dragging");
@@ -305,7 +308,7 @@ const InstructionsEditor: Component<{ steps: string[] }> = (props) => {
       setSteps(oldSteps);
     }
     setStepsBeforeDrag(null);
-    setDraggedStepId(null);
+    setDraggedStep(null);
   }
 
   function onDrop(event: DragEvent & { currentTarget: HTMLLIElement }) {
@@ -314,14 +317,15 @@ const InstructionsEditor: Component<{ steps: string[] }> = (props) => {
     event.preventDefault();
   }
 
-  function onDragEnter(targetIndex: number, event: DragEvent & { currentTarget: HTMLLIElement }) {
+  function onDragEnter(targetStep: StepObj, event: DragEvent & { currentTarget: HTMLLIElement }) {
     if (event.dataTransfer!.types.includes(DRAG_MIMETYPE)) {
       event.dataTransfer!.dropEffect = "move";
       // Show what the list will look like with the dragged item moved here.
-      const sourceId = draggedStepId();
-      const sourceIndex = steps.findIndex(step => step.id === sourceId);
+      const source = draggedStep();
+      const sourceIndex = steps.findIndex(step => step === source);
+      const targetIndex = steps.findIndex(step => step === targetStep);
       if (sourceIndex === -1) {
-        console.trace(`Lost the step being dragged, with ID ${sourceId}`);
+        console.trace(`Lost the step being dragged, ${source}`);
         return;
       }
       if (sourceIndex === targetIndex) return;
@@ -346,15 +350,15 @@ const InstructionsEditor: Component<{ steps: string[] }> = (props) => {
       <For each={steps}>
         {(step, index) =>
           <li draggable={true} style={{ cursor: "move" }}
-            onDragStart={[onDragStart, index()]}
+            onDragStart={[onDragStart, step]}
             onDragEnd={onDragEnd}
-            onDragEnter={[onDragEnter, index()]}
+            onDragEnter={[onDragEnter, step]}
             onDragOver={onDragOver}
             onDrop={onDrop}
           >
             <GrowingTextarea name={`step.${index()}`} draggable={false}
-              onInput={e => { setSteps(index(), "step", e.currentTarget.value); }}
-              onKeyDown={[onStepKeyDown, index()]}>{step.step}</GrowingTextarea>
+              onInput={e => { setSteps(s => s === step, "step", e.currentTarget.value); }}
+              onKeyDown={[onStepKeyDown, step]}>{step.step}</GrowingTextarea>
           </li>
         }
       </For>
