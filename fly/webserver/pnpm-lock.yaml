@@ -9,6 +9,7 @@ specifiers:
   astro: ^1.6.11
   cookie-signature: ^1.2.0
   dotenv-cli: ^6.0.0
+  dset: ^3.1.2
   google-auth-library: ^8.7.0
   prisma: ^4.6.1
   solid-js: ^1.6.2
@@ -19,6 +20,7 @@ dependencies:
   '@prisma/client': 4.6.1_prisma@4.6.1
   astro: 1.6.11_@types+node@18.11.9
   cookie-signature: 1.2.0
+  dset: 3.1.2
   google-auth-library: 8.7.0
   solid-js: 1.6.2
 

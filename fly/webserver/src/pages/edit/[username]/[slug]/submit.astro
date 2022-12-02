@@ -1,48 +1,158 @@
 ---
+import Layout from "@layouts/Layout.astro";
 import { getLogin } from "@lib/login-cookie";
 import { prisma } from "@lib/prisma";
+import type { Prisma } from "@prisma/client";
+import { dset } from "dset";
 prisma;
 
 const { username, slug } = Astro.params;
 
 const user = await getLogin(Astro.cookies);
 
-let mayEdit = false;
-if (user && user.username === username) {
-  mayEdit = true;
+const mayEdit = user && user.username === username;
+if (!mayEdit) {
+  Astro.response.status = 403;
 }
 
 let formData: FormData | null = null;
 try {
   formData = await Astro.request.formData();
-} catch (e) {}
+} catch (e) {
+  Astro.response.status = 400;
+}
+
+function parseIntOrUndefined(value: unknown) {
+  // parseInt() takes all types.
+  const result = parseInt(value as string);
+  return Number.isNaN(result) ? undefined : result;
+}
+
+type StructuredFormData =
+  | {
+      [key: string]:
+        | string
+        | StructuredFormData
+        | Array<string | StructuredFormData>;
+    }
+  | StructuredFormData[];
+
+function structureFormData(
+  data: FormData
+): Exclude<StructuredFormData, StructuredFormData[]> {
+  const result: StructuredFormData = {};
+  for (const [key, value] of data) {
+    // Ignore files.
+    if (typeof value === "string") dset(result, key, value);
+  }
+  return result;
+}
+
+if (mayEdit && formData) {
+  const structuredData = structureFormData(formData);
+
+  const recipeId: number | undefined = parseIntOrUndefined(structuredData.id);
+
+  const recipeData: Prisma.RecipeUpdateInput = {};
+  if (typeof structuredData.name === "string")
+    recipeData.name = structuredData.name;
+
+  // parseInt() actually takes any type, but TypeScript doesn't know that.
+  const inputServings = parseInt(structuredData.servings as string);
+  recipeData.servings = isNaN(inputServings) ? null : inputServings;
+
+  if (structuredData.step instanceof Array) {
+    const inputSteps: Array<string | StructuredFormData> = structuredData.step;
+    recipeData.steps = inputSteps.filter(
+      (step): step is string => typeof step === "string"
+    );
+  }
+
+  /// Maybe-sparse array of ingredient info.
+  const newIngredients: Prisma.RecipeIngredientCreateWithoutRecipeInput[] = [];
+  const updatedIngredients = new Map<
+    number,
+    Prisma.RecipeIngredientUpdateInput
+  >();
+  if (structuredData.ingredient instanceof Array) {
+    for (const ingredient of structuredData.ingredient) {
+      if (typeof ingredient !== "object" || ingredient instanceof Array)
+        continue;
+
+      const ingredientId = parseIntOrUndefined(ingredient.id);
+      if (ingredientId === undefined) {
+        // New ingredient.
+        const name = ingredient.ingredient;
+        if (typeof name !== "string") continue;
+        const newIngredient: Prisma.RecipeIngredientCreateWithoutRecipeInput = {
+          ingredient: name,
+        };
+        if (typeof ingredient.amount === "string")
+          newIngredient.amount = ingredient.amount;
+        if (typeof ingredient.unit === "string")
+          newIngredient.unit = ingredient.unit;
+        newIngredients.push(newIngredient);
+      } else {
+        // Existing ingredient.
+        if (updatedIngredients.has(ingredientId)) continue;
+        if (typeof ingredient.ingredient !== "string") continue;
+        const updatedIngredient: Prisma.RecipeIngredientUpdateInput = {};
+        updatedIngredient.ingredient = ingredient.ingredient;
+        updatedIngredient.amount =
+          typeof ingredient.amount === "string" ? ingredient.amount : null;
+        updatedIngredient.unit =
+          typeof ingredient.unit === "string" ? ingredient.unit : null;
+        updatedIngredient.preparation =
+          typeof ingredient.preparation === "string"
+            ? ingredient.preparation
+            : null;
+        updatedIngredients.set(ingredientId, updatedIngredient);
+      }
+    }
+  }
+
+  recipeData.ingredients = {
+    deleteMany: { id: { notIn: [...updatedIngredients.keys()] } },
+    // Run the create after the delete so that its new ID doesn't get immediately deleted.
+    // https://github.com/prisma/prisma/issues/16606
+    createMany: {
+      data: newIngredients,
+    },
+    update: [...updatedIngredients.entries()].map(([id, update]) => ({
+      where: { id },
+      data: update,
+    })),
+  };
+
+  await prisma.recipe.update({
+    where: { id: recipeId },
+    data: recipeData,
+    include: { ingredients: true },
+  });
+  return Astro.redirect(`/r/${username}/${slug}`, 303);
+}
 ---
 
-<html>
-  <head>
-    <title>My Page</title>
-  </head>
-  <body>
-    <h1>My Page</h1>
-    <p>
-      Welcome, {user?.name || user?.username}, you {mayEdit ? "may edit" : "may not edit"} this recipe.
-    </p>
-    <p><a href={`/edit/${username}/${slug}`}>Back to the edit form.</a></p>
+<Layout title="Couldn't edit recipe" user={user}>
+  <p>
     {
-      formData ? (
-        <>
-          <p>Submitted:</p>
-          <ul>
-            {[...formData.entries()].map(([key, value]) => (
-              <li>
-                {key}: {value}
-              </li>
-            ))}
-          </ul>
-        </>
-      ) : (
-        <p>Must be a POST.</p>
-      )
+      user
+        ? `Welcome, ${user?.name || user?.username}.`
+        : `You are not logged in.`
     }
-  </body>
-</html>
+    {
+      user?.username === username
+        ? null
+        : ` Only ${username} may edit this recipe.`
+    }
+  </p>
+  {
+    formData ? null : (
+      <p>
+        You must submit the <a href={`/edit/${username}/${slug}`}>edit form</a>{" "}
+        to change a recipe.
+      </p>
+    )
+  }
+  <p><a href={`/edit/${username}/${slug}`}>Back to the edit form.</a></p>
+</Layout>

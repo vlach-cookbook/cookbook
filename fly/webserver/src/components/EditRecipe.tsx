@@ -175,7 +175,9 @@ const IngredientsEditor: Component<{ ingredients: RecipeIngredient[] }> = (props
             onDrop={onDrop}
             onKeyDown={onIngredientKeyDown}
           >
-            <input type="hidden" name={`ingredient.${index()}.id`} value={ingredient.id} />
+            {ingredient.id ?
+              <input type="hidden" name={`ingredient.${index()}.id`} value={ingredient.id} />
+              : null}
             <input type="text"
               name={`ingredient.${index()}.amount`} value={ingredient.amount || ""}
               onInput={event => setIngredients(i => i === ingredient, "amount", event.currentTarget.value)}
@@ -373,7 +375,7 @@ export const EditRecipe: Component<{ recipe: RecipeWithIngredients, user: User }
       <p><label>Recipe name:
         <input style={{ "font-size": "1.5em", "font-style": "bold", "margin-bottom": ".5em" }}
           type="text" name="title" value={props.recipe.name}></input></label></p>
-      {props.recipe.servings ? <p>{props.recipe.servings} Servings</p> : null}
+      <p><label><input type="number" name="servings" value={props.recipe.servings || undefined}></input> Servings</label></p>
       <IngredientsEditor ingredients={props.recipe.ingredients}></IngredientsEditor>
       <InstructionsEditor steps={props.recipe.steps}></InstructionsEditor>
       <nav id="options" class="noprint">
