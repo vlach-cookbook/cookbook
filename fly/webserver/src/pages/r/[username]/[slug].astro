@@ -43,10 +43,10 @@ const user = await getLogin(Astro.cookies);
         {
           recipe.ingredients.map((ingredient) => (
             <li>
-              {ingredient.amount}{" "}
-              {ingredient.unit}{" "}
-              {ingredient.ingredient}
-              {ingredient.preparation ? `, ${ingredient.preparation}` : null}
+              {ingredient.amount}
+              {ingredient.unit}
+              {ingredient.ingredient +
+                (ingredient.preparation ? `, ${ingredient.preparation}` : "")}
             </li>
           ))
         }

@@ -1,6 +1,6 @@
 import type { Recipe, RecipeIngredient as DBRecipeIngredient, User } from '@prisma/client';
 import { Component, createSignal, createUniqueId, For } from 'solid-js';
-import { createStore, produce } from "solid-js/store";
+import { createStore, produce, unwrap } from "solid-js/store";
 
 import { GrowingTextarea } from './GrowingTextarea';
 
@@ -359,7 +359,7 @@ const InstructionsEditor: Component<{ steps: string[] }> = (props) => {
             onDrop={onDrop}
           >
             <GrowingTextarea name={`step.${index()}`} draggable={false}
-              onInput={e => { setSteps(s => s === step, "step", e.currentTarget.value); }}
+              onInput={e => setSteps(s => s === unwrap(step), "step", e.currentTarget.value)}
               onKeyDown={[onStepKeyDown, step]}>{step.step}</GrowingTextarea>
           </li>
         }
