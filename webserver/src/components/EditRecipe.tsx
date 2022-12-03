@@ -4,14 +4,14 @@ import { createStore, produce, unwrap } from "solid-js/store";
 
 import { GrowingTextarea } from './GrowingTextarea';
 
-type RecipeIngredient = Omit<DBRecipeIngredient, 'id' | 'recipeId'> & { id: number | undefined };
+type RecipeIngredient = Omit<DBRecipeIngredient, 'id' | 'recipeId' | 'order'> & { id: number | undefined };
 
 type RecipeWithIngredients = (Recipe & {
   ingredients: RecipeIngredient[];
 });
 
 function ingredientToString(ingredient: RecipeIngredient): string {
-  let result = [ingredient.amount, ingredient.unit, ingredient.ingredient].filter(Boolean).join(' ');
+  let result = [ingredient.amount, ingredient.unit, ingredient.name].filter(Boolean).join(' ');
   if (ingredient.preparation) {
     result += `, ${ingredient.preparation}`;
   }
@@ -66,7 +66,7 @@ const IngredientsEditor: Component<{ ingredients: RecipeIngredient[] }> = (props
       }
     } else if (event.key === "Enter" && !event.shiftKey) {
       setIngredients(produce(ingredients => {
-        ingredients.splice(index + 1, 0, { id: undefined, amount: null, unit: null, ingredient: '', preparation: null });
+        ingredients.splice(index + 1, 0, { id: undefined, amount: null, unit: null, name: '', preparation: null });
       }));
       // Focus the first field of the new line, after its nodes are created.
       queueMicrotask(() => {
@@ -189,8 +189,8 @@ const IngredientsEditor: Component<{ ingredients: RecipeIngredient[] }> = (props
               placeholder="Unit" style={{ width: "3em" }}
               onFocus={disableDraggable} onBlur={enableDraggable} />
             <input type="text"
-              name={`ingredient.${index()}.ingredient`} value={ingredient.ingredient}
-              onInput={event => setIngredients(i => i === ingredient, "ingredient", event.currentTarget.value)}
+              name={`ingredient.${index()}.name`} value={ingredient.name}
+              onInput={event => setIngredients(i => i === ingredient, "name", event.currentTarget.value)}
               placeholder="Ingredient" style={{ width: "10em" }}
               onFocus={disableDraggable} onBlur={enableDraggable} />
             <input type="text"

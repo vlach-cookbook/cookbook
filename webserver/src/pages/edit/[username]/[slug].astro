@@ -45,7 +45,7 @@ if (user?.username !== username) {
 
 const recipe = await prisma.recipe.findFirst({
   where: { author: { username }, slug },
-  include: { ingredients: true },
+  include: { ingredients: { orderBy: { order: "asc" } } },
 });
 
 if (!recipe) {
@@ -55,53 +55,4 @@ if (!recipe) {
 
 <Layout title={recipe.name} user={user}>
   <EditRecipe recipe={recipe} user={user} client:load />
-
-  <!--
-<main ng-if="editing">
-  <div id="content_edit">
-    <h3>Title</h3>
-    <input type="text" class="title" ng-model="recipeMeta.title" placeholder="Title" ng-change="setTitle()">
-
-    <h3>Ingredients</h3>
-    <div class="ingredient" ng-repeat="ingredient in recipe_ingredients">
-      <div class="ingredient_short">
-        <input type="text"
-               placeholder="Qty"
-               ng-model="ingredient.quantity"
-               ng-change="recipe_ingredients.$save(ingredient)"
-               >
-      </div>
-      <div class="ingredient_short">
-        <input type="text"
-               placeholder="Unit"
-               ng-model="ingredient.unit"
-               ng-change="recipe_ingredients.$save(ingredient)"
-               >
-      </div>
-      <div class="ingredient_long">
-        <input type="text"
-               placeholder="Ingredient"
-               ng-model="ingredient.name"
-               ng-change="ingredientNameChanged(ingredient)"
-               >
-      </div>
-      <div class="ingredient_long">
-        <input type="text"
-               placeholder="Preparation"
-               ng-model="ingredient.preparation"
-               ng-change="recipe_ingredients.$save(ingredient)"
-               >
-      </div>
-      <button ng-click="removeIngredient(ingredient)"
-          id="minus"
-          >-</button>
-      </div>
-      <button ng-click="addIngredient()"
-          id="plus"
-          >+</button>
-    <h3>Directions</h3>
-    <textarea ng-model="recipeDetails.directions" ng-change="setDirections()" ></textarea>
-    <a href="javascript:;" ng-click="save()" class="action" id="save">Save</a>
-  </div>
-</main> -->
 </Layout>

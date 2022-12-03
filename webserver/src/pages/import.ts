@@ -60,7 +60,7 @@ function createRecipes(recipes: JsonRecipe[], user: User): Promise<Recipe>[] {
             return {
               amount: ingredient.quantity,
               unit: ingredient.unit,
-              ingredient: ingredient.name,
+              name: ingredient.name,
               preparation: ingredient.preparation,
             };
           })

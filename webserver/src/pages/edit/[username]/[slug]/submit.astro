@@ -75,6 +75,7 @@ if (mayEdit && formData) {
     Prisma.RecipeIngredientUpdateInput
   >();
   if (structuredData.ingredient instanceof Array) {
+    let order = 0;
     for (const ingredient of structuredData.ingredient) {
       if (typeof ingredient !== "object" || ingredient instanceof Array)
         continue;
@@ -82,10 +83,11 @@ if (mayEdit && formData) {
       const ingredientId = parseIntOrUndefined(ingredient.id);
       if (ingredientId === undefined) {
         // New ingredient.
-        const name = ingredient.ingredient;
+        const name = ingredient.name;
         if (typeof name !== "string") continue;
         const newIngredient: Prisma.RecipeIngredientCreateWithoutRecipeInput = {
-          ingredient: name,
+          name,
+          order: order++,
         };
         if (typeof ingredient.amount === "string")
           newIngredient.amount = ingredient.amount;
@@ -95,9 +97,11 @@ if (mayEdit && formData) {
       } else {
         // Existing ingredient.
         if (updatedIngredients.has(ingredientId)) continue;
-        if (typeof ingredient.ingredient !== "string") continue;
-        const updatedIngredient: Prisma.RecipeIngredientUpdateInput = {};
-        updatedIngredient.ingredient = ingredient.ingredient;
+        if (typeof ingredient.name !== "string") continue;
+        const updatedIngredient: Prisma.RecipeIngredientUpdateInput = {
+          order: order++,
+        };
+        updatedIngredient.name = ingredient.name;
         updatedIngredient.amount =
           typeof ingredient.amount === "string" ? ingredient.amount : null;
         updatedIngredient.unit =

@@ -23,7 +23,7 @@ if (
 
 const recipe = await prisma.recipe.findFirst({
   where: { author: { username }, slug },
-  include: { ingredients: true },
+  include: { ingredients: { orderBy: { order: "asc" } } },
 });
 
 if (!recipe) {
@@ -45,7 +45,7 @@ const user = await getLogin(Astro.cookies);
             <li>
               {ingredient.amount}
               {ingredient.unit}
-              {ingredient.ingredient +
+              {ingredient.name +
                 (ingredient.preparation ? `, ${ingredient.preparation}` : "")}
             </li>
           ))

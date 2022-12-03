@@ -34,15 +34,19 @@ model Recipe {
 model RecipeIngredient {
   id Int @id @default(autoincrement())
 
+  /// Gives the ingredients an order in the recipe.
+  order       Int?
   amount      String?
   /// A missing unit means the ingredient comes in items, like "3 eggs".
   unit        String?
-  ingredient  String
+  name        String
   /// How the ingredient was prepared, like "chopped".
   preparation String?
 
   recipe   Recipe @relation(fields: [recipeId], references: [id])
   recipeId Int
+
+  @@unique([recipeId, order])
 }
 
 model Category {
