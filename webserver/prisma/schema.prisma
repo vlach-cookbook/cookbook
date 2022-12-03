@@ -20,7 +20,7 @@ model Recipe {
   author      User               @relation(fields: [authorId], references: [id])
   authorId    String             @db.Uuid
   name        String             @db.Citext
-  slug        String
+  slug        String             @db.Citext
   servings    Int?
   ingredients RecipeIngredient[]
   categories  Category[]
@@ -51,7 +51,7 @@ model RecipeIngredient {
 
 model Category {
   id   Int    @id @default(autoincrement())
-  name String @unique
+  name String @unique @db.Citext
 
   Recipes Recipe[]
 }
@@ -59,7 +59,7 @@ model Category {
 model User {
   id       String   @id @default(uuid()) @db.Uuid
   name     String?
-  username String?  @unique
+  username String?  @unique @db.Citext
   Recipes  Recipe[]
 
   GoogleUser GoogleUser[]

@@ -53,6 +53,6 @@ if (!recipe) {
 }
 ---
 
-<Layout title={recipe.name} user={user}>
+<Layout title={recipe.name} user={user} needLogin>
   <EditRecipe recipe={recipe} user={user} client:load />
 </Layout>

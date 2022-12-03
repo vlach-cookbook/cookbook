@@ -20,8 +20,8 @@
   "dependencies": {
     "@astrojs/node": "^1.1.0",
     "@astrojs/solid-js": "^1.2.3",
-    "@prisma/client": "^4.6.1",
-    "astro": "^1.6.11",
+    "@prisma/client": "^4.7.1",
+    "astro": "^1.6.12",
     "cookie-signature": "^1.2.0",
     "dset": "^3.1.2",
     "google-auth-library": "^8.7.0",
@@ -29,8 +29,8 @@
   },
   "devDependencies": {
     "@types/cookie-signature": "^1.0.4",
-    "@types/node": "^18.11.9",
+    "@types/node": "^18.11.10",
     "dotenv-cli": "^6.0.0",
-    "prisma": "^4.6.1"
+    "prisma": "^4.7.1"
   }
 }

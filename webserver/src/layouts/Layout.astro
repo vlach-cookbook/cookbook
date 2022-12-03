@@ -4,10 +4,14 @@ import type { User } from "@prisma/client";
 
 export interface Props {
   title: string;
+  /// The result of `@lib.login-cookie.getLogin()``.
   user: User | null;
+  /// True if this page needs the user to log in, so Google sign-in should be more aggressive.
+  needLogin?: boolean;
+  children: any;
 }
 
-const { title, user } = Astro.props;
+const { title, user, needLogin = false } = Astro.props;
 
 const login_uri = new URL(
   `/finish_login?from=${encodeURIComponent(Astro.url.href)}`,
@@ -49,7 +53,7 @@ const login_uri = new URL(
               </a>
               <a
                 href={`/logout?from=${encodeURIComponent(Astro.url.href)}`}
-                class="nav_style"
+                class="nav_style g_id_signout"
               >
                 Logout
               </a>
@@ -61,6 +65,7 @@ const login_uri = new URL(
                 data-client_id={CLIENT_ID}
                 data-context="signin"
                 data-ux_mode="popup"
+                data-auto_prompt={needLogin}
                 data-login_uri={login_uri}
                 data-itp_support="true"
               />

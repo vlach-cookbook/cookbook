@@ -118,8 +118,12 @@ int main(int argc, char **argv) {
       Value &json_ingredient = json_ingredients.append(emptyObject);
       maybe_set(json_ingredient, "quantity", ingredient->Get_quantity());
       maybe_set(json_ingredient, "unit", ingredient->Get_measurement());
-      maybe_set(json_ingredient, "name", ingredient->Get_ingredient());
-      maybe_set(json_ingredient, "preparation", ingredient->Get_preparation());
+      if (ingredient->Get_ingredient().size() == 0) {
+        maybe_set(json_ingredient, "name", ingredient->Get_preparation());
+      } else {
+        maybe_set(json_ingredient, "name", ingredient->Get_ingredient());
+        maybe_set(json_ingredient, "preparation", ingredient->Get_preparation());
+      }
     }
 
     const std::vector<CB_String> &direction_lines = recipe->Get_directions();
