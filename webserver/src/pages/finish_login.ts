@@ -2,6 +2,7 @@
 import { verify } from "@lib/google-auth";
 import { setLogin } from "@lib/login-cookie";
 import { prisma } from "@lib/prisma";
+import { Prisma } from "@prisma/client";
 import type { APIRoute } from "astro";
 
 export const post: APIRoute = async ({ request, cookies, redirect }) => {
@@ -35,18 +36,35 @@ export const post: APIRoute = async ({ request, cookies, redirect }) => {
     include: { User: true },
   });
   if (!googleUser) {
-    googleUser = await prisma.googleUser.create({
+    const creationObject = {
       data: {
         gid: userInfo.sub,
         email: userInfo.email,
         User: {
           create: {
             name: userInfo.name,
+            // Guess at their desired username:
+            username: userInfo.email.split('@')[0],
           },
         },
       },
       include: { User: true },
-    });
+    };
+    try {
+      googleUser = await prisma.googleUser.create(creationObject);
+    } catch (e) {
+      if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2002') {
+        // Violated a unique constraint:
+        // https://www.prisma.io/docs/reference/api-reference/error-reference#p2002.
+        //
+        // Assume it's the username field that's not unique.
+        delete creationObject.data.User.create.username;
+        googleUser = await prisma.googleUser.create(creationObject);
+
+      } else {
+        throw e;
+      }
+    }
   }
 
   setLogin(cookies, googleUser.User);
