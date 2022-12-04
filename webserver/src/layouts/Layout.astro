@@ -65,7 +65,7 @@ const login_uri = new URL(
                 data-client_id={CLIENT_ID}
                 data-context="signin"
                 data-ux_mode="popup"
-                data-auto_prompt={needLogin}
+                data-auto_prompt={String(needLogin)}
                 data-login_uri={login_uri}
                 data-itp_support="true"
               />
