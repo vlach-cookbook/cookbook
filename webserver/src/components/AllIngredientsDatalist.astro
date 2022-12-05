@@ -1,0 +1,15 @@
+---
+import { prisma } from "@lib/prisma";
+
+type Props = { id: string };
+
+const allIngredients = await prisma.recipeIngredient.findMany({
+  select: {name: true},
+  distinct: ["name"],
+  orderBy: { name: "asc" },
+});
+---
+
+<datalist id={Astro.props.id}>
+  {allIngredients.map((ingredient) => <option>{ingredient.name}</option>)}
+</datalist>

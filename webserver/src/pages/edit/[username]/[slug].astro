@@ -1,5 +1,7 @@
 ---
 import AllCategoriesDatalist from "@components/AllCategoriesDatalist.astro";
+import AllIngredientsDatalist from "@components/AllIngredientsDatalist.astro";
+import AllUnitsDatalist from "@components/AllUnitsDatalist.astro";
 import { EditRecipe } from "@components/EditRecipe";
 import Layout from "@layouts/Layout.astro";
 import { getLogin } from "@lib/login-cookie";
@@ -62,7 +64,11 @@ if (!recipe) {
     recipe={recipe}
     user={user}
     categoriesDatalistId="all-categories"
+    unitsDatalistId="all-units"
+    ingredientsDatalistId="all-ingredients"
     client:load
   />
   <AllCategoriesDatalist id="all-categories" />
+  <AllUnitsDatalist id="all-units" />
+  <AllIngredientsDatalist id="all-ingredients" />
 </Layout>

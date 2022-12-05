@@ -19,7 +19,11 @@ function ingredientToString(ingredient: RecipeIngredient): string {
   return result;
 }
 
-const IngredientsEditor: Component<{ ingredients: RecipeIngredient[] }> = (props) => {
+const IngredientsEditor: Component<{
+  ingredients: RecipeIngredient[],
+  unitsDatalistId: string,
+  ingredientsDatalistId: string
+}> = (props) => {
   const [ingredients, setIngredients] = createStore(props.ingredients);
   let fields: HTMLFieldSetElement | undefined;
 
@@ -186,11 +190,13 @@ const IngredientsEditor: Component<{ ingredients: RecipeIngredient[] }> = (props
               onFocus={disableDraggable} onBlur={enableDraggable} />
             <input type="text"
               name={`ingredient.${index()}.unit`} value={ingredient.unit || ""}
+              list={props.unitsDatalistId}
               onInput={event => setIngredients(i => i === ingredient, "unit", event.currentTarget.value)}
               placeholder="Unit" style={{ width: "3em" }}
               onFocus={disableDraggable} onBlur={enableDraggable} />
             <input type="text"
               name={`ingredient.${index()}.name`} value={ingredient.name}
+              list={props.ingredientsDatalistId}
               onInput={event => setIngredients(i => i === ingredient, "name", event.currentTarget.value)}
               placeholder="Ingredient" style={{ width: "10em" }}
               onFocus={disableDraggable} onBlur={enableDraggable} />
@@ -423,7 +429,13 @@ const CategoriesEditor: Component<{ categories: Category[], categoriesDatalistId
   </fieldset>;
 }
 
-export const EditRecipe: Component<{ recipe: RecipeWithIngredients, user: User, categoriesDatalistId: string }> = (props) => {
+export const EditRecipe: Component<{
+  recipe: RecipeWithIngredients,
+  user: User,
+  categoriesDatalistId: string,
+  unitsDatalistId: string,
+  ingredientsDatalistId: string
+}> = (props) => {
   return <form method="post" action={`/edit/${props.user.username}/${props.recipe.slug}/submit`}>
     <input type="hidden" name="id" value={props.recipe.id} />
     <div>
@@ -431,9 +443,12 @@ export const EditRecipe: Component<{ recipe: RecipeWithIngredients, user: User, 
         <input style={{ "font-size": "1.5em", "font-style": "bold", "margin-bottom": ".5em" }}
           type="text" name="title" value={props.recipe.name}></input></label></p>
       <p><label><input type="number" name="servings" value={props.recipe.servings || ""}></input> Servings</label></p>
-      <IngredientsEditor ingredients={props.recipe.ingredients}></IngredientsEditor>
-      <InstructionsEditor steps={props.recipe.steps}></InstructionsEditor>
-      <CategoriesEditor categories={props.recipe.categories} categoriesDatalistId={props.categoriesDatalistId}></CategoriesEditor>
+      <IngredientsEditor ingredients={props.recipe.ingredients}
+        unitsDatalistId={props.unitsDatalistId}
+        ingredientsDatalistId={props.ingredientsDatalistId} />
+      <InstructionsEditor steps={props.recipe.steps} />
+      <CategoriesEditor categories={props.recipe.categories}
+        categoriesDatalistId={props.categoriesDatalistId} />
       <nav id="options" class="noprint">
         <button type="submit">Save</button>
       </nav>
