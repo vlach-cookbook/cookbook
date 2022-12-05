@@ -44,10 +44,12 @@ const login_uri = new URL(
       </nav>
 
       <nav id="nav_2" class="noprint">
-        <a href="new" class="nav_style">New Recipe</a>
         {
           user ? (
             <>
+              <a href="/new" class="nav_style">
+                New Recipe
+              </a>
               <a href="/account" class="nav_style">
                 Account
               </a>

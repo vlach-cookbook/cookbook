@@ -2,6 +2,7 @@
 import Layout from "@layouts/Layout.astro";
 import { getLogin } from "@lib/login-cookie";
 import { prisma } from "@lib/prisma";
+import slugify from "@lib/slugify";
 import type { Recipe,User } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 
@@ -42,10 +43,6 @@ function parseOptionalInt(value: string | undefined): number | null {
   const parsed = Number.parseInt(value);
   if (Number.isNaN(parsed)) return null;
   return parsed;
-}
-
-function slugify(title: string): string {
-  return title.toLowerCase().replace(/[^a-z0-9]+/gi, "-");
 }
 
 async function createRecipe(recipe: JsonRecipe, user: User): Promise<Recipe> {

@@ -48,14 +48,34 @@ function structureFormData(
   return result;
 }
 
-if (mayEdit && formData) {
+type UpdateResult = {
+  success: boolean;
+  error?: "may-not-edit" | "no-form-data" | "missing-field";
+};
+async function updateRecipe(): Promise<UpdateResult> {
+  if (!mayEdit) {
+    return { success: false, error: "may-not-edit" };
+  }
+  if (!formData) {
+    return { success: false, error: "no-form-data" };
+  }
+
   const structuredData = structureFormData(formData);
 
   const recipeId: number | undefined = parseIntOrUndefined(structuredData.id);
 
-  const recipeData: Prisma.RecipeUpdateInput = {};
-  if (typeof structuredData.name === "string")
-    recipeData.name = structuredData.name;
+  console.log(structuredData.name);
+  if (typeof structuredData.name !== "string")
+    return { success: false, error: "missing-field" };
+  const name = structuredData.name;
+
+  if (!slug) return { success: false, error: "missing-field" };
+
+  const recipeData: Prisma.RecipeUpdateInput & Prisma.RecipeCreateInput = {
+    author: { connect: { id: user.id } },
+    name,
+    slug,
+  };
 
   // parseInt() actually takes any type, but TypeScript doesn't know that.
   const inputServings = parseInt(structuredData.servings as string);
@@ -143,14 +163,38 @@ if (mayEdit && formData) {
       data: categories,
       skipDuplicates: true,
     });
-    recipeData.categories = { set: categories };
+    // For an existing recipe, use "set" to delete old values. For a new recipe, use "connect"
+    // since .create() doesn't accept "set".
+    recipeData.categories = { [recipeId ? "set" : "connect"]: categories };
   }
 
-  await prisma.recipe.update({
-    where: { id: recipeId },
-    data: recipeData,
-    include: { ingredients: true },
-  });
+  if (recipeId) {
+    // Update the existing recipe.
+    const recipeUpdateData: Prisma.RecipeUpdateInput = recipeData;
+    // Ensure things don't change unexpectedly.
+    delete recipeUpdateData.author;
+    delete recipeUpdateData.slug;
+    await prisma.recipe.update({
+      where: { id: recipeId },
+      data: recipeUpdateData,
+    });
+  } else {
+    // Create a new recipe.
+    const recipeCreateData: Prisma.RecipeCreateInput = Object.assign(
+      recipeData,
+      {
+        // Strip out the deleteMany and update fields from RecipeUpdateInput.ingredients.
+        ingredients: { createMany: recipeData.ingredients.createMany },
+      }
+    );
+    await prisma.recipe.create({
+      data: recipeCreateData,
+    });
+  }
+  return { success: true };
+}
+const result = await updateRecipe();
+if (result.success) {
   return Astro.redirect(`/r/${username}/${slug}`, 303);
 }
 ---
@@ -169,12 +213,17 @@ if (mayEdit && formData) {
     }
   </p>
   {
-    formData ? null : (
+    result.error === "no-form-data" ? (
       <p>
         You must submit the <a href={`/edit/${username}/${slug}`}>edit form</a>{" "}
         to change a recipe.
       </p>
-    )
+    ) : null
+  }
+  {
+    result.error === "missing-field" ? (
+      <p>You must provide a name and slug for the recipe.</p>
+    ) : null
   }
   <p><a href={`/edit/${username}/${slug}`}>Back to the edit form.</a></p>
 </Layout>

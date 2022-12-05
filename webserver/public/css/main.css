@@ -248,6 +248,10 @@ a.action:hover {
   opacity: 40%;
 }
 
+.hidden {
+  visibility: hidden;
+}
+
 
 /* ==========================================================================
    Browsing Twisties

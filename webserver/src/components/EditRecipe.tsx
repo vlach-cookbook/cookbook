@@ -1,10 +1,11 @@
+import slugify from '@lib/slugify';
 import type { Category, Recipe, RecipeIngredient as DBRecipeIngredient, User } from '@prisma/client';
-import { Component, createSignal, createUniqueId, For } from 'solid-js';
+import { batch, Component, createSignal, createUniqueId, For } from 'solid-js';
 import { createStore, produce, unwrap } from "solid-js/store";
 
 import { GrowingTextarea } from './GrowingTextarea';
 
-type RecipeIngredient = Omit<DBRecipeIngredient, 'id' | 'recipeId' | 'order'> & { id: number | undefined };
+type RecipeIngredient = Omit<DBRecipeIngredient, 'id' | 'recipeId' | 'order'> & { id?: number | undefined };
 
 type RecipeWithIngredients = (Recipe & {
   ingredients: RecipeIngredient[];
@@ -19,16 +20,27 @@ function ingredientToString(ingredient: RecipeIngredient): string {
   return result;
 }
 
+function emptyIngredient(): RecipeIngredient {
+  return { amount: "", unit: "", name: "", preparation: "" };
+}
+
 const IngredientsEditor: Component<{
   ingredients: RecipeIngredient[],
   unitsDatalistId: string,
   ingredientsDatalistId: string
 }> = (props) => {
-  const [ingredients, setIngredients] = createStore(props.ingredients);
+  const [ingredients, setIngredients] = createStore<RecipeIngredient[]>(props.ingredients.length === 0 ?
+    [emptyIngredient()]
+    : props.ingredients);
   let fields: HTMLFieldSetElement | undefined;
 
   function removeIngredient(ingredient: RecipeIngredient) {
-    setIngredients(ingredients.filter(i => i !== ingredient));
+    if (ingredients.length === 1) {
+      setIngredients(0, emptyIngredient())
+    }
+    else {
+      setIngredients(ingredients.filter(i => i !== ingredient));
+    }
   }
 
   // Keyboard shortcuts for editing, including arrow-navigation and insertion of new ingredients.
@@ -44,7 +56,7 @@ const IngredientsEditor: Component<{
     const nameComponents = inputElem.name.split('.');
     const index = Number.parseInt(nameComponents[1]!, 10);
     const field = nameComponents[2];
-    if (!field || !["amount", "unit", "ingredient", "preparation"].includes(field)) {
+    if (!field || !["amount", "unit", "name", "preparation"].includes(field)) {
       console.trace("Unexpected field name", field);
       return;
     }
@@ -185,28 +197,34 @@ const IngredientsEditor: Component<{
               : null}
             <input type="text"
               name={`ingredient.${index()}.amount`} value={ingredient.amount || ""}
-              onInput={event => setIngredients(i => i === ingredient, "amount", event.currentTarget.value)}
+              onInput={event => setIngredients(i => i === unwrap(ingredient), "amount", event.currentTarget.value)}
               placeholder="Amount" style={{ width: "3em" }}
               onFocus={disableDraggable} onBlur={enableDraggable} />
             <input type="text"
               name={`ingredient.${index()}.unit`} value={ingredient.unit || ""}
               list={props.unitsDatalistId}
-              onInput={event => setIngredients(i => i === ingredient, "unit", event.currentTarget.value)}
+              onInput={event => setIngredients(i => i === unwrap(ingredient), "unit", event.currentTarget.value)}
               placeholder="Unit" style={{ width: "3em" }}
               onFocus={disableDraggable} onBlur={enableDraggable} />
             <input type="text"
               name={`ingredient.${index()}.name`} value={ingredient.name}
               list={props.ingredientsDatalistId}
-              onInput={event => setIngredients(i => i === ingredient, "name", event.currentTarget.value)}
+              onInput={event => setIngredients(i => i === unwrap(ingredient), "name", event.currentTarget.value)}
               placeholder="Ingredient" style={{ width: "10em" }}
               onFocus={disableDraggable} onBlur={enableDraggable} />
             <input type="text"
               name={`ingredient.${index()}.preparation`} value={ingredient.preparation || ""}
-              onInput={event => setIngredients(i => i === ingredient, "preparation", event.currentTarget.value)}
+              onInput={event => setIngredients(i => i === unwrap(ingredient), "preparation", event.currentTarget.value)}
               placeholder="Preparation" style={{ width: "10em" }}
               onFocus={disableDraggable} onBlur={enableDraggable} />
             <button type="button" title="Remove this ingredient"
-              onClick={[removeIngredient, ingredient]}>🗑️</button>
+              onClick={[removeIngredient, ingredient]}
+              classList={{
+                "hidden": ingredients.length === 1
+                  && !ingredient.amount && !ingredient.unit
+                  && !ingredient.name && !ingredient.preparation
+              }}
+            >🗑️</button>
           </li>
         )
         }
@@ -219,7 +237,9 @@ type StepObj = {
   step: string;
 };
 const InstructionsEditor: Component<{ steps: string[] }> = (props) => {
-  const [steps, setSteps] = createStore(props.steps.map(step => ({ step })));
+  const [steps, setSteps] = createStore(props.steps.length === 0
+    ? [{ step: "" }]
+    : props.steps.map(step => ({ step })));
   let fields: HTMLFieldSetElement | undefined;
 
   // Keyboard shortcuts to merge and split steps.
@@ -268,12 +288,16 @@ const InstructionsEditor: Component<{ steps: string[] }> = (props) => {
     const stepIndex = steps.indexOf(step);
 
     if (event.key === "Backspace") {
-      if (textArea.selectionStart === 0 && textArea.selectionEnd === 0) {
+      if (textArea.selectionStart === 0
+        && textArea.selectionEnd === 0
+        && stepIndex > 0) {
         mergeSteps(stepIndex - 1);
         event.preventDefault();
       }
     } else if (event.key === "Delete") {
-      if (textArea.selectionStart === textArea.selectionEnd && textArea.selectionStart === textArea.value.length) {
+      if (textArea.selectionStart === textArea.selectionEnd
+        && textArea.selectionStart === textArea.value.length
+        && stepIndex + 1 < steps.length) {
         mergeSteps(stepIndex);
         event.preventDefault();
       }
@@ -376,7 +400,10 @@ const InstructionsEditor: Component<{ steps: string[] }> = (props) => {
 }
 
 const CategoriesEditor: Component<{ categories: Category[], categoriesDatalistId: string }> = (props) => {
-  const [categories, setCategories] = createStore(props.categories.map(c => ({ name: c.name })));
+  const [categories, setCategories] = createStore(
+    props.categories.length === 0 ?
+      [{ name: "" }]
+      : props.categories.map(c => ({ name: c.name })));
   let fields: HTMLFieldSetElement | undefined;
 
   function onKeyDown(category: { name: string }, event: KeyboardEvent & { currentTarget: HTMLInputElement }) {
@@ -403,9 +430,10 @@ const CategoriesEditor: Component<{ categories: Category[], categoriesDatalistId
   }
 
   function removeCategory(category: { name: string }) {
-    const index = categories.findIndex(c => c === category);
-    if (index !== -1) {
-      setCategories(produce(categories => categories.splice(index, 1)));
+    if (categories.length === 1) {
+      setCategories(0, "name", "");
+    } else {
+      setCategories(categories.filter(c => c !== category));
     }
   }
 
@@ -421,7 +449,8 @@ const CategoriesEditor: Component<{ categories: Category[], categoriesDatalistId
               onInput={e => setCategories(c => c === unwrap(category), "name", e.currentTarget.value)}
               onKeyDown={[onKeyDown, category]} />
             <button type="button" title="Remove this category"
-              onClick={[removeCategory, category]}>🗑️</button>
+              onClick={[removeCategory, category]}
+              classList={{ hidden: categories.length === 1 && !categories[0]?.name }}>🗑️</button>
           </li>
         }
       </For>
@@ -430,24 +459,55 @@ const CategoriesEditor: Component<{ categories: Category[], categoriesDatalistId
 }
 
 export const EditRecipe: Component<{
-  recipe: RecipeWithIngredients,
+  recipe?: RecipeWithIngredients,
   user: User,
   categoriesDatalistId: string,
   unitsDatalistId: string,
   ingredientsDatalistId: string
 }> = (props) => {
-  return <form method="post" action={`/edit/${props.user.username}/${props.recipe.slug}/submit`}>
-    <input type="hidden" name="id" value={props.recipe.id} />
+  const [slug, setSlug] = createSignal(props.recipe?.slug || "");
+  const [slugManuallyEdited, setSlugManuallyEdited] = createSignal(!!props.recipe?.id);
+  let nameInput: HTMLInputElement | undefined;
+
+  function onNameInput(event: Event & { currentTarget: HTMLInputElement }) {
+    if (!slugManuallyEdited()) {
+      setSlug(slugify(event.currentTarget.value));
+    }
+  }
+
+  function onSlugInput(event: Event & { currentTarget: HTMLInputElement }) {
+    setSlug(event.currentTarget.value);
+  }
+
+  function resetSlug() {
+    batch(() => {
+      setSlugManuallyEdited(false);
+      setSlug(slugify(nameInput?.value || ""));
+    })
+  }
+
+  return <form method="post" action={`/edit/${props.user.username}/${slug()}/submit`}>
+    {props.recipe ? <input type="hidden" name="id" value={props.recipe.id} /> : null}
     <div>
       <p><label>Recipe name:
         <input style={{ "font-size": "1.5em", "font-style": "bold", "margin-bottom": ".5em" }}
-          type="text" name="title" value={props.recipe.name}></input></label></p>
-      <p><label><input type="number" name="servings" value={props.recipe.servings || ""}></input> Servings</label></p>
-      <IngredientsEditor ingredients={props.recipe.ingredients}
+          type="text" name="name" value={props.recipe?.name || ""}
+          ref={nameInput} onInput={onNameInput} /></label></p>
+      {props.recipe ? null : <p>
+        <label>Recipe URL: <code>/r/{props.user.username}/{slugManuallyEdited() ?
+          <input
+            type="text" name="slug" value={slug()} onInput={onSlugInput}
+          /> : slug()}</code></label>
+        {slugManuallyEdited() ?
+          <button type="button" title="Reset URL to default." onClick={resetSlug}>🔄</button>
+          : <button type="button" title="Edit URL." onClick={() => setSlugManuallyEdited(true)}>✏️</button>}
+      </p>}
+      <p><label><input type="number" name="servings" value={props.recipe?.servings || ""}></input> Servings</label></p>
+      <IngredientsEditor ingredients={props.recipe?.ingredients || []}
         unitsDatalistId={props.unitsDatalistId}
         ingredientsDatalistId={props.ingredientsDatalistId} />
-      <InstructionsEditor steps={props.recipe.steps} />
-      <CategoriesEditor categories={props.recipe.categories}
+      <InstructionsEditor steps={props.recipe?.steps || []} />
+      <CategoriesEditor categories={props.recipe?.categories || []}
         categoriesDatalistId={props.categoriesDatalistId} />
       <nav id="options" class="noprint">
         <button type="submit">Save</button>

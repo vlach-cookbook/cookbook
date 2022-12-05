@@ -12,7 +12,7 @@ const user = await getLogin(Astro.cookies);
 const { username, slug } = Astro.params;
 
 if (!user) {
-  Astro.redirect(
+  return Astro.redirect(
     `/login?user=${encodeURIComponent(
       String(username)
     )}&from=${encodeURIComponent(Astro.request.url)}`
@@ -34,7 +34,7 @@ if (
   return noSuchRecipe();
 }
 
-if (user?.username !== username) {
+if (user.username !== username) {
   return new Response(
     `<meta http-equiv="refresh" content="3;/r/${username}/${slug}">
      <h1>Can't edit someone else's recipe.</h1>`,

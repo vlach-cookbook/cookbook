@@ -1,0 +1,27 @@
+---
+import AllCategoriesDatalist from "@components/AllCategoriesDatalist.astro";
+import AllIngredientsDatalist from "@components/AllIngredientsDatalist.astro";
+import AllUnitsDatalist from "@components/AllUnitsDatalist.astro";
+import { EditRecipe } from "@components/EditRecipe";
+import Layout from "@layouts/Layout.astro";
+import { getLogin } from "@lib/login-cookie";
+
+const user = await getLogin(Astro.cookies);
+
+if (!user) {
+  return Astro.redirect(`/login?from=${encodeURIComponent(Astro.request.url)}`);
+}
+---
+
+<Layout title="New Recipe" user={user} needLogin>
+  <EditRecipe
+    user={user}
+    categoriesDatalistId="all-categories"
+    unitsDatalistId="all-units"
+    ingredientsDatalistId="all-ingredients"
+    client:load
+  />
+  <AllCategoriesDatalist id="all-categories" />
+  <AllUnitsDatalist id="all-units" />
+  <AllIngredientsDatalist id="all-ingredients" />
+</Layout>
