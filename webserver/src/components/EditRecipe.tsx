@@ -1,4 +1,4 @@
-import type { Recipe, RecipeIngredient as DBRecipeIngredient, User } from '@prisma/client';
+import type { Category, Recipe, RecipeIngredient as DBRecipeIngredient, User } from '@prisma/client';
 import { Component, createSignal, createUniqueId, For } from 'solid-js';
 import { createStore, produce, unwrap } from "solid-js/store";
 
@@ -8,6 +8,7 @@ type RecipeIngredient = Omit<DBRecipeIngredient, 'id' | 'recipeId' | 'order'> & 
 
 type RecipeWithIngredients = (Recipe & {
   ingredients: RecipeIngredient[];
+  categories: Category[];
 });
 
 function ingredientToString(ingredient: RecipeIngredient): string {
@@ -368,16 +369,71 @@ const InstructionsEditor: Component<{ steps: string[] }> = (props) => {
   </fieldset>;
 }
 
-export const EditRecipe: Component<{ recipe: RecipeWithIngredients, user: User }> = (props) => {
+const CategoriesEditor: Component<{ categories: Category[], categoriesDatalistId: string }> = (props) => {
+  const [categories, setCategories] = createStore(props.categories.map(c => ({ name: c.name })));
+  let fields: HTMLFieldSetElement | undefined;
+
+  function onKeyDown(category: { name: string }, event: KeyboardEvent & { currentTarget: HTMLInputElement }) {
+    // Don't interfere with composition sessions.
+    if (event.isComposing) return;
+
+    if (event.key === "Enter" || event.key === "," || event.key === ";") {
+      const index = categories.findIndex(c => c === category);
+      if (index === -1) {
+        console.trace(`Lost the category being edited, ${category.name}`);
+      }
+      setCategories(produce(categories => { categories.splice(index + 1, 0, { name: "" }) }));
+      queueMicrotask(() => {
+        // Focus the new element after it's created.
+        const newInput = fields?.elements.namedItem(`category.${index + 1}`);
+        if (newInput instanceof HTMLInputElement) {
+          newInput.focus();
+        } else {
+          console.trace(`Couldn't find new element; should be category ${index + 1} in fieldset`, fields);
+        }
+      });
+      event.preventDefault();
+    }
+  }
+
+  function removeCategory(category: { name: string }) {
+    const index = categories.findIndex(c => c === category);
+    if (index !== -1) {
+      setCategories(produce(categories => categories.splice(index, 1)));
+    }
+  }
+
+  return <fieldset ref={fields}>
+    <legend><h3>Categories</h3></legend>
+    <ul>
+      <For each={categories}>
+        {(category, index) =>
+          <li>
+            <input name={`category.${index()}`} type="text"
+              value={category.name}
+              list={props.categoriesDatalistId}
+              onInput={e => setCategories(c => c === unwrap(category), "name", e.currentTarget.value)}
+              onKeyDown={[onKeyDown, category]} />
+            <button type="button" title="Remove this category"
+              onClick={[removeCategory, category]}>🗑️</button>
+          </li>
+        }
+      </For>
+    </ul>
+  </fieldset>;
+}
+
+export const EditRecipe: Component<{ recipe: RecipeWithIngredients, user: User, categoriesDatalistId: string }> = (props) => {
   return <form method="post" action={`/edit/${props.user.username}/${props.recipe.slug}/submit`}>
     <input type="hidden" name="id" value={props.recipe.id} />
     <div>
       <p><label>Recipe name:
         <input style={{ "font-size": "1.5em", "font-style": "bold", "margin-bottom": ".5em" }}
           type="text" name="title" value={props.recipe.name}></input></label></p>
-      <p><label><input type="number" name="servings" value={props.recipe.servings || undefined}></input> Servings</label></p>
+      <p><label><input type="number" name="servings" value={props.recipe.servings || ""}></input> Servings</label></p>
       <IngredientsEditor ingredients={props.recipe.ingredients}></IngredientsEditor>
       <InstructionsEditor steps={props.recipe.steps}></InstructionsEditor>
+      <CategoriesEditor categories={props.recipe.categories} categoriesDatalistId={props.categoriesDatalistId}></CategoriesEditor>
       <nav id="options" class="noprint">
         <button type="submit">Save</button>
       </nav>

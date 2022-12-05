@@ -1,0 +1,13 @@
+---
+import { prisma } from "@lib/prisma";
+
+type Props = { id: string };
+
+const allCategories = await prisma.category.findMany({
+  orderBy: { name: "asc" },
+});
+---
+
+<datalist id={Astro.props.id}>
+  {allCategories.map((category) => <option>{category.name}</option>)}
+</datalist>

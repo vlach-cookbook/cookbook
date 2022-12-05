@@ -1,4 +1,5 @@
 ---
+import AllCategoriesDatalist from "@components/AllCategoriesDatalist.astro";
 import { EditRecipe } from "@components/EditRecipe";
 import Layout from "@layouts/Layout.astro";
 import { getLogin } from "@lib/login-cookie";
@@ -45,7 +46,10 @@ if (user?.username !== username) {
 
 const recipe = await prisma.recipe.findFirst({
   where: { author: { username }, slug },
-  include: { ingredients: { orderBy: { order: "asc" } } },
+  include: {
+    ingredients: { orderBy: { order: "asc" } },
+    categories: { orderBy: { name: "asc" } },
+  },
 });
 
 if (!recipe) {
@@ -54,5 +58,11 @@ if (!recipe) {
 ---
 
 <Layout title={recipe.name} user={user} needLogin>
-  <EditRecipe recipe={recipe} user={user} client:load />
+  <EditRecipe
+    recipe={recipe}
+    user={user}
+    categoriesDatalistId="all-categories"
+    client:load
+  />
+  <AllCategoriesDatalist id="all-categories" />
 </Layout>

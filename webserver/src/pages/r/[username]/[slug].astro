@@ -23,7 +23,10 @@ if (
 
 const recipe = await prisma.recipe.findFirst({
   where: { author: { username }, slug },
-  include: { ingredients: { orderBy: { order: "asc" } } },
+  include: {
+    ingredients: { orderBy: { order: "asc" } },
+    categories: { orderBy: { name: "asc" } },
+  },
 });
 
 if (!recipe) {
@@ -53,6 +56,19 @@ const user = await getLogin(Astro.cookies);
       </ul>
       <h3>Instructions</h3>
       <ol>{recipe.steps.map((step) => <li>{step}</li>)}</ol>
+
+      <h3>Categories</h3>
+      <ul>
+        {
+          recipe.categories.map((category) => (
+            <li>
+              <a href={`/search?category=${encodeURIComponent(category.name)}`}>
+                {category.name}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
       <nav id="options" class="noprint">
         <a href={`/edit/${username}/${slug}`} class="action">Edit</a>
         <a href="javascript:window.print()" class="action">Print</a>

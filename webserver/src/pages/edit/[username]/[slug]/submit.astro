@@ -128,6 +128,24 @@ if (mayEdit && formData) {
     })),
   };
 
+  /// Maybe-sparse array of category names.
+  if (structuredData.category instanceof Array) {
+    const inputCategories: Array<string | StructuredFormData> =
+      structuredData.category;
+    const categories = inputCategories
+      .filter((category): category is string => typeof category === "string")
+      .map((name) => ({ name }));
+    // Make sure all the categories exist, because the only way to disconnect removed categories is
+    // to use `set:`, which can't create categories, and because connectOrCreate has a race
+    // condition anyway
+    // (https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#connectorcreate)
+    await prisma.category.createMany({
+      data: categories,
+      skipDuplicates: true,
+    });
+    recipeData.categories = { set: categories };
+  }
+
   await prisma.recipe.update({
     where: { id: recipeId },
     data: recipeData,
