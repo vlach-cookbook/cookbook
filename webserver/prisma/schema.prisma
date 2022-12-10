@@ -63,6 +63,7 @@ model User {
   Recipes  Recipe[]
 
   GoogleUser GoogleUser[]
+  sessions   Session[]
 }
 
 model GoogleUser {
@@ -75,12 +76,10 @@ model GoogleUser {
   userId String @db.Uuid
 }
 
-/// Saves app-level secrets. Values are arrays to support key rotation: the first element is used
-/// for creating values, but received values are checked against all elements.
-///
-/// Current secrets are:
-/// * cookie_key: Used to sign cookies.
-model Secret {
-  name  String  @id
-  value Bytes[]
+model Session {
+  // 128-bit random ID, for storing in a client-side cookie.
+  id      Bytes    @id
+  user    User     @relation(fields: [userId], references: [id])
+  userId  String   @db.Uuid
+  expires DateTime @db.Timestamptz(3)
 }

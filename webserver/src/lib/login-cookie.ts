@@ -1,36 +1,30 @@
 import { prisma } from "@lib/prisma";
-import type { Secret, User } from "@prisma/client";
+import type { User } from "@prisma/client";
 import type { AstroCookies } from "astro/dist/core/cookies";
-import cookie from 'cookie-signature';
-import assert from "node:assert";
 import crypto from 'node:crypto';
 import util from 'node:util';
 
 const LOGIN_COOKIE_NAME = 'Login';
 
-const generateKey = util.promisify(crypto.generateKey);
+const randomBytes = util.promisify(crypto.randomBytes);
 
-let cookieKeySecret: Secret | null = await prisma.secret.findUnique({
-  where: { name: "cookie_key" }
-});
-if (!cookieKeySecret) {
-  const new_key = await generateKey('hmac', { length: 256 });
-  cookieKeySecret = await prisma.secret.create({
-    data: { name: "cookie_key", value: [new_key.export()] }
-  })
-}
-let cookieKeys: crypto.KeyObject[] = cookieKeySecret.value.map(key => crypto.createSecretKey(key));
-assert(cookieKeys.length > 0);
-assert(cookieKeys.every(key => key.type === 'secret'));
-
-export function setLogin(cookies: AstroCookies, user: User | null): void {
+export async function setLogin(cookies: AstroCookies, user: User | null): Promise<void> {
   if (user == null) {
     cookies.delete(LOGIN_COOKIE_NAME);
     return;
   }
-  const firstKey = cookieKeys[0];
-  assert(firstKey !== undefined);
-  const cookie_value = cookie.sign(user.id, firstKey);
+  const sessionId = await randomBytes(128 / 8);
+  const expires = new Date();
+  expires.setDate(expires.getDate() + 31);
+  await prisma.session.create({
+    data: {
+      // 2^-128 chance of collision; just let it cause a 500.
+      id: sessionId,
+      user: { connect: { id: user.id } },
+      expires,
+    }
+  });
+  const cookie_value = sessionId.toString("base64url");
   cookies.set(LOGIN_COOKIE_NAME, cookie_value, {
     secure: true,
     httpOnly: true,
@@ -42,14 +36,19 @@ export function setLogin(cookies: AstroCookies, user: User | null): void {
 export async function getLogin(cookies: AstroCookies): Promise<User | null> {
   const cookie_value = cookies.get(LOGIN_COOKIE_NAME).value;
   if (!cookie_value) return null;
-  let user_id: string | false = false;
-  for (const key of cookieKeys) {
-    user_id = cookie.unsign(cookie_value, key);
-    if (user_id) break;
-  }
-  if (!user_id) {
+  const sessionId = Buffer.from(cookie_value, "base64url");
+  const session = await prisma.session.findUnique({
+    where: { id: sessionId },
+    include: { user: true },
+  });
+  if (!session) return null;
+  const now = new Date();
+  if (session.expires < now) {
+    prisma.session.deleteMany({
+      where: { expires: { lte: now } }
+    }).catch(e => console.error(e.stack || e));
     cookies.delete(LOGIN_COOKIE_NAME, { path: '/' });
     return null;
   }
-  return await prisma.user.findUnique({ where: { id: user_id } });
+  return session.user;
 }

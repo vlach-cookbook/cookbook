@@ -67,7 +67,7 @@ export const post: APIRoute = async ({ request, cookies, redirect }) => {
     }
   }
 
-  setLogin(cookies, googleUser.User);
+  await setLogin(cookies, googleUser.User);
 
   return redirect(new URL(request.url).searchParams.get("from") || "/", 303);
 }
