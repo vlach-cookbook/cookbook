@@ -13,7 +13,7 @@ export async function setLogin(cookies: AstroCookies, user: User | null): Promis
     cookies.delete(LOGIN_COOKIE_NAME);
     return;
   }
-  const sessionId = await randomBytes(128 / 8);
+  const sessionId = (await randomBytes(128 / 8)).toString("base64url");
   const expires = new Date();
   expires.setDate(expires.getDate() + 31);
   await prisma.session.create({
@@ -24,8 +24,7 @@ export async function setLogin(cookies: AstroCookies, user: User | null): Promis
       expires,
     }
   });
-  const cookie_value = sessionId.toString("base64url");
-  cookies.set(LOGIN_COOKIE_NAME, cookie_value, {
+  cookies.set(LOGIN_COOKIE_NAME, sessionId, {
     secure: true,
     httpOnly: true,
     path: '/',
@@ -34,9 +33,8 @@ export async function setLogin(cookies: AstroCookies, user: User | null): Promis
 }
 
 export async function getLogin(cookies: AstroCookies): Promise<User | null> {
-  const cookie_value = cookies.get(LOGIN_COOKIE_NAME).value;
-  if (!cookie_value) return null;
-  const sessionId = Buffer.from(cookie_value, "base64url");
+  const sessionId = cookies.get(LOGIN_COOKIE_NAME).value;
+  if (!sessionId) return null;
   const session = await prisma.session.findUnique({
     where: { id: sessionId },
     include: { user: true },

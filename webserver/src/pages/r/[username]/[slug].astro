@@ -38,9 +38,9 @@ const user = await getLogin(Astro.cookies);
 
 <Layout title={recipe.name} user={user}>
   <main class="recipe">
-    <div>
-      <h2>{recipe.name}</h2>
-      {recipe.servings ? <p>{recipe.servings} Servings</p> : null}
+    <h2>{recipe.name}</h2>
+    {recipe.servings ? <p>{recipe.servings} Servings</p> : null}
+    <section>
       <h3>Ingredients</h3>
       <ul>
         {
@@ -54,9 +54,14 @@ const user = await getLogin(Astro.cookies);
           ))
         }
       </ul>
+    </section>
+
+    <section>
       <h3>Instructions</h3>
       <ol>{recipe.steps.map((step) => <li>{step}</li>)}</ol>
+    </section>
 
+    <section>
       <h3>Categories</h3>
       <ul>
         {
@@ -69,11 +74,12 @@ const user = await getLogin(Astro.cookies);
           ))
         }
       </ul>
-      <nav id="options" class="noprint">
-        <a href={`/edit/${username}/${slug}`} class="action">Edit</a>
-        <a href="javascript:window.print()" class="action">Print</a>
-        <a href="" class="action">Delete</a>
-      </nav>
-    </div>
+    </section>
+
+    <nav id="options" class="noprint">
+      <a href={`/edit/${username}/${slug}`} class="action">Edit</a>
+      <a href="javascript:window.print()" class="action">Print</a>
+      <a href="" class="action">Delete</a>
+    </nav>
   </main>
 </Layout>

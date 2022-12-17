@@ -1,0 +1,15 @@
+{
+  "cookies": [
+    {
+      "name": "Login",
+      "value": "Login for Test",
+      "domain": "localhost",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": []
+}

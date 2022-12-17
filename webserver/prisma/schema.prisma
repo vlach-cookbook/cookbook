@@ -77,8 +77,8 @@ model GoogleUser {
 }
 
 model Session {
-  // 128-bit random ID, for storing in a client-side cookie.
-  id      Bytes    @id
+  // 128-bit random ID, base64url-encoded, for storing in a client-side cookie.
+  id      String   @id
   user    User     @relation(fields: [userId], references: [id])
   userId  String   @db.Uuid
   expires DateTime @db.Timestamptz(3)
