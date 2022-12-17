@@ -10,8 +10,8 @@ test('import page imports a json recipe', async ({ page }) => {
     mimeType: 'application/json',
     buffer: Buffer.from(JSON.stringify([{
       "dateCreated": "1996-05-31",
-      "name": "APPLE CRISP",
-      "recipeCategory": ["janv. 95", "dessert", "fruits"],
+      "name": "Apple Crisp",
+      "recipeCategory": ["dessert", "fruits"],
       "recipeIngredient":
         [
           {
@@ -21,9 +21,9 @@ test('import page imports a json recipe', async ({ page }) => {
         ],
       "recipeInstructions":
         [
-          "Couper les pommes en quartiers dans un pirex. Ne pas trop melanger les",
-          "autres ingredients. Verser sur les pommes. Cuire a chaleur 3/4. Servir avec",
-          "de la creme ou de la glace."
+          "Step 1",
+          "Step 2",
+          "Last step."
         ]
     },])),
   });
@@ -34,5 +34,17 @@ test('import page imports a json recipe', async ({ page }) => {
 
   await page.goto('/r/testuser/apple-crisp');
 
-  await expect(page.getByRole("listitem")).toContainText(["3-4 pomme", "Couper les pommes", "dessert"]);
+  await expect(page.getByRole('heading', { name: "Apple Crisp" })).toBeVisible();
+  await expect(page.getByRole('heading', { name: "Ingredients" })
+    .locator("xpath=ancestor::section[1]")
+    .getByRole("listitem")
+  ).toHaveText(["3-4 pomme"]);
+  await expect(page.getByRole('heading', { name: "Instructions" })
+    .locator("xpath=ancestor::section[1]")
+    .getByRole("listitem")
+  ).toHaveText(["Step 1", "Step 2", "Last step."]);
+  await expect(page.getByRole('heading', { name: "Categories" })
+    .locator("xpath=ancestor::section[1]")
+    .getByRole("listitem")
+  ).toHaveText(["dessert", "fruits"]);
 });
