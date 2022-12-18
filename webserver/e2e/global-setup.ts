@@ -13,7 +13,7 @@ async function globalSetup(config: FullConfig) {
   if (stdout) console.log(stdout);
 
   const sessionId = `Login for Test`
-  await prisma.session.create({
+  const session = await prisma.session.create({
     data: {
       id: sessionId,
       expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
@@ -23,8 +23,11 @@ async function globalSetup(config: FullConfig) {
           username: `testuser`,
         }
       }
-    }
+    },
+    include: { user: true }
   });
+  process.env.TEST_USERNAME = session.user.username || undefined;
+  process.env.TEST_USER_ID = session.userId;
 }
 
 export default globalSetup;

@@ -123,11 +123,16 @@ async function updateRecipe(): Promise<UpdateResult> {
         };
         updatedIngredient.name = ingredient.name;
         updatedIngredient.amount =
-          typeof ingredient.amount === "string" ? ingredient.amount : null;
+          typeof ingredient.amount === "string" && ingredient.amount.length > 0
+            ? ingredient.amount
+            : null;
         updatedIngredient.unit =
-          typeof ingredient.unit === "string" ? ingredient.unit : null;
+          typeof ingredient.unit === "string" && ingredient.unit.length > 0
+            ? ingredient.unit
+            : null;
         updatedIngredient.preparation =
-          typeof ingredient.preparation === "string"
+          typeof ingredient.preparation === "string" &&
+          ingredient.preparation.length > 0
             ? ingredient.preparation
             : null;
         updatedIngredients.set(ingredientId, updatedIngredient);
