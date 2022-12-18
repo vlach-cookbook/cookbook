@@ -28,7 +28,7 @@ jobs:
         path: '~/.cache/ms-playwright'
         key: ${{ hashFiles('webserver/pnpm-lock.yaml') }}
     - name: Install Playwright Browsers
-      run: pnpm dlx playwright install --with-deps
+      run: pnpm exec playwright install --with-deps
     - name: Start Docker Compose services
       uses: isbang/compose-action@v1.4.1
       with:
@@ -36,7 +36,7 @@ jobs:
     - name: Initialize Prisma and DB
       run: pnpm dotenv -e .env.test -- pnpm prisma db push --force-reset
     - name: Run Playwright tests
-      run: pnpm dotenv -e .env.test -- pnpm dlx playwright test
+      run: pnpm dotenv -e .env.test -- pnpm exec playwright test
     - uses: actions/upload-artifact@v3
       if: always()
       with:
