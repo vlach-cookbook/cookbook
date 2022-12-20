@@ -124,3 +124,12 @@ test('basic editing modifies the recipe', async ({ page }) => {
     ]
   });
 });
+
+test('Arrows navigate ingredients', async ({ page }) => {
+  for (const field of ["amount", "unit", "name", "preparation"]) {
+    await page.locator(`input[name="ingredient\\.1\\.${field}"]`).press('ArrowUp');
+    await expect(page.locator(`input[name="ingredient\\.0\\.${field}"]`)).toBeFocused();
+    await page.locator(`input[name="ingredient\\.0\\.${field}"]`).press('ArrowDown');
+    await expect(page.locator(`input[name="ingredient\\.1\\.${field}"]`)).toBeFocused();
+  }
+});
