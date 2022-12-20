@@ -127,9 +127,80 @@ test('basic editing modifies the recipe', async ({ page }) => {
 
 test('Arrows navigate ingredients', async ({ page }) => {
   for (const field of ["amount", "unit", "name", "preparation"]) {
-    await page.locator(`input[name="ingredient\\.1\\.${field}"]`).press('ArrowUp');
-    await expect(page.locator(`input[name="ingredient\\.0\\.${field}"]`)).toBeFocused();
-    await page.locator(`input[name="ingredient\\.0\\.${field}"]`).press('ArrowDown');
-    await expect(page.locator(`input[name="ingredient\\.1\\.${field}"]`)).toBeFocused();
+    await page.locator(`input[name="ingredient.1.${field}"]`).press('ArrowUp');
+    await expect(page.locator(`input[name="ingredient.0.${field}"]`)).toBeFocused();
+    await page.locator(`input[name="ingredient.0.${field}"]`).press('ArrowDown');
+    await expect(page.locator(`input[name="ingredient.1.${field}"]`)).toBeFocused();
   }
+});
+
+test('Can drag ingredients', async ({ page }) => {
+  // Make a third ingredient.
+  await page.locator('input[name="ingredient.1.name"]').press('Enter');
+  await page.locator('input[name="ingredient.2.name"]').fill("Spices");
+  // Drag them into the opposite order, using one forward drag and one backward drag.
+  const ingredients = page.getByRole("group")
+    .filter({ has: page.getByRole("heading", { name: "Ingredients" }) })
+    .getByRole("listitem");
+  await ingredients.nth(0).dragTo(ingredients.nth(2), { sourcePosition: { x: 0, y: 0 } });
+  await ingredients.nth(1).dragTo(ingredients.nth(0), { sourcePosition: { x: 0, y: 0 } });
+  await expect.soft(ingredients.nth(0).getByPlaceholder("Ingredient")).toHaveValue("Spices");
+  await expect.soft(ingredients.nth(1).getByPlaceholder("Ingredient")).toHaveValue("sucre");
+  await expect.soft(ingredients.nth(2).getByPlaceholder("Ingredient")).toHaveValue("pomme");
+
+  // Make sure the form field names are also right.
+  await expect.soft(page.locator('input[name="ingredient.0.name"]')).toHaveValue("Spices");
+  await expect.soft(page.locator('input[name="ingredient.1.name"]')).toHaveValue("sucre");
+  await expect.soft(page.locator('input[name="ingredient.2.name"]')).toHaveValue("pomme");
+});
+
+test('Split instructions with enter', async ({ page }) => {
+  const step0 = page.locator('textarea[name="step.0"]');
+  await step0.selectText();
+  // Put the cursor before the first character.
+  await step0.press('ArrowLeft');
+  // Put the cursor after the first character.
+  await step0.press('ArrowRight');
+  // Split the step.
+  await step0.press('Enter');
+  // Insert a newline at the beginning of the new step.
+  await step0.press('Shift+Enter');
+
+  await expect(page.getByRole("group")
+    .filter({ has: page.getByRole("heading", { name: "Instructions" }) })
+    .getByRole("textbox")
+  ).toHaveText(["S", "\ntep 1", "Step 2", "Last step."]);
+});
+
+test('Join instructions with del and backspace', async ({ page }) => {
+  const step2 = page.locator('textarea[name="step.2"]');
+  await step2.selectText();
+  // Put the cursor before the first character.
+  await step2.press('ArrowLeft');
+  // Join to the previous step.
+  await step2.press('Backspace');
+
+  // Check that the cursor is at the end of "Step 2".
+  expect(await page.locator('textarea[name="step.1"]')
+    .evaluate(node => node instanceof HTMLTextAreaElement
+      ? [node.selectionStart, node.selectionEnd] : undefined)
+  ).toEqual([6, 6]);
+
+  const step0 = page.locator('textarea[name="step.0"]');
+  // Now delete from the end of step 0.
+  await step0.selectText();
+  await step0.press('ArrowRight');
+  await step0.press('Delete');
+
+  // Check that the cursor is at the end of "Step 1".
+  expect(await step0
+    .evaluate(node => node instanceof HTMLTextAreaElement
+      ? [node.selectionStart, node.selectionEnd] : undefined)
+  ).toEqual([6, 6]);
+
+
+  await expect(page.getByRole("group")
+    .filter({ has: page.getByRole("heading", { name: "Instructions" }) })
+    .getByRole("textbox")
+  ).toHaveText(["Step 1Step 2Last step."]);
 });
