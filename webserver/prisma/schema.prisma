@@ -72,14 +72,14 @@ model GoogleUser {
   /// The user's verified email address, which this app uses to create inter-user trust
   /// relationships.
   email  String @unique
-  User   User   @relation(fields: [userId], references: [id])
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @db.Uuid
 }
 
 model Session {
   // 128-bit random ID, base64url-encoded, for storing in a client-side cookie.
   id      String   @id
-  user    User     @relation(fields: [userId], references: [id])
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId  String   @db.Uuid
   expires DateTime @db.Timestamptz(3)
 }

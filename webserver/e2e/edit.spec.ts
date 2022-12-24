@@ -1,5 +1,5 @@
+import { prisma } from '@lib/prisma.js';
 import { expect, test } from '@playwright/test';
-import { prisma } from '../src/lib/prisma.js';
 
 let recipeId: number | undefined;
 

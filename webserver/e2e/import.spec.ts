@@ -1,5 +1,5 @@
+import { prisma } from '@lib/prisma.js';
 import { expect, test } from '@playwright/test';
-import { prisma } from '../src/lib/prisma.js';
 
 test('import page imports a json recipe', async ({ page }) => {
   await page.goto('/import');

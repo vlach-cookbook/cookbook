@@ -1,0 +1,137 @@
+---
+import { EditAccount } from "@components/EditAccount";
+import Layout from "@layouts/Layout.astro";
+import { getLogin } from "@lib/login-cookie";
+import { prisma } from "@lib/prisma";
+import { usernameRegex } from "@lib/valid-username";
+import type { User } from "@prisma/client";
+import { Prisma } from "@prisma/client";
+
+const user = await getLogin(Astro.cookies);
+
+if (!user) {
+  return Astro.redirect(`/login?from=${encodeURIComponent(Astro.request.url)}`);
+}
+
+const [googleUsers, recipeCount, otherUsernames] = await Promise.all([
+  prisma.googleUser.findMany({
+    where: { userId: user.id },
+  }),
+  prisma.recipe.count({ where: { authorId: user.id } }),
+  prisma.user.findMany({
+    where: { username: { not: user.username } },
+    select: { username: true },
+  }),
+]);
+
+type AccountEditResultType = {
+  result:
+    | "success"
+    | "wrongId"
+    | "invalidName"
+    | "invalidUsername"
+    | "duplicateUsername";
+  username?: string | undefined;
+  name?: string | undefined;
+};
+let accountEditResult: AccountEditResultType | undefined = undefined;
+
+async function saveAccount(
+  formData: FormData,
+  user: User
+): Promise<AccountEditResultType> {
+  if (formData.get("id") !== user.id) {
+    return { result: "wrongId" };
+  }
+  const username = formData.get("username");
+  let name = formData.get("name");
+  const result: AccountEditResultType = {
+    result: "success",
+  };
+
+  if (typeof username === "string") {
+    result.username = username;
+    if (!usernameRegex.test(username)) {
+      result.result = "invalidUsername";
+    }
+  } else {
+    result.result = "invalidUsername";
+  }
+
+  if (typeof name === "string") {
+    name = name.trim();
+    result.name = name;
+    if (name.length === 0) {
+      result.result = "invalidName";
+    }
+  } else {
+    result.result = "invalidName";
+  }
+
+  if (result.result === "success") {
+    try {
+      await prisma.user.update({
+        where: { id: user.id },
+        data: {
+          username: result.username,
+          name: result.name,
+        },
+      });
+    } catch (e) {
+      if (
+        e instanceof Prisma.PrismaClientKnownRequestError &&
+        e.code === "P2002" &&
+        (e.meta?.target as string[]).includes("username")
+      ) {
+        result.result = "duplicateUsername";
+      } else {
+        throw e;
+      }
+    }
+  }
+  return result;
+}
+
+if (Astro.request.method === "POST") {
+  accountEditResult = await saveAccount(await Astro.request.formData(), user);
+  // Render the stuff the user just submitted so they don't lose their work if their change failed.
+  if (accountEditResult.username) {
+    user.username = accountEditResult.username;
+  }
+  if (accountEditResult.name) {
+    user.name = accountEditResult.name;
+  }
+}
+---
+
+<Layout title="Edit your account" user={user}>
+  <main class="account">
+    {
+      accountEditResult ? (
+        <p class:list={{ error: accountEditResult.result !== "success" }}>
+          {
+            {
+              success: "Your account has been updated.",
+              wrongId:
+                "Somehow you tried to update a different user's account.",
+              invalidName: "You need to have a non-empty display name.",
+              invalidUsername:
+                "Your username needs to be made of letters, numbers, and hyphens.",
+              duplicateUsername: "Another user is already using that username.",
+            }[accountEditResult.result]
+          }
+        </p>
+      ) : null
+    }
+    <EditAccount
+      hasRecipes={recipeCount > 0}
+      user={user}
+      otherUsernames={otherUsernames
+        .map((u) => u.username)
+        .filter((u): u is string => u !== null)}
+      serverOrigin={Astro.url.origin}
+      connectedAccounts={{ google: googleUsers }}
+      client:idle
+    />
+  </main>
+</Layout>
