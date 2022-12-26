@@ -1,15 +1,7 @@
 import { prisma } from '@lib/prisma.js';
 import { usernameRegex } from '@lib/valid-username';
-import { expect, test } from '@playwright/test';
-
-let userIds: string[] = [];
-
-test.afterEach(async () => {
-  if (userIds.length > 0) {
-    await prisma.user.deleteMany({ where: { id: { in: userIds } } });
-  }
-  userIds = [];
-});
+import { expect } from '@playwright/test';
+import { test } from './fixtures.js';
 
 test('Valid usernames', async () => {
   expect("").not.toMatch(usernameRegex);
@@ -23,44 +15,35 @@ test('Valid usernames', async () => {
   expect("a?b").not.toMatch(usernameRegex);
 });
 
-test('Empty user needs to pick a unique username', async ({ page }) => {
-  const otherUser = await prisma.user.create({
+test('When not logged in, redirects to /login', async ({ page }) => {
+  await page.goto('/account');
+  expect(new URL(page.url()).pathname).toBe('/login');
+  await expect(page.getByRole('paragraph')).toContainText("Please login to the account you wish to edit.");
+});
+
+test('Empty user needs to pick a unique username', async ({ page, testSession }) => {
+  await prisma.user.create({
     data: {
       name: "Existing User",
       username: "existinguser",
     }
   });
-  userIds.push(otherUser.id);
   const sessionId = "Session for Test Empty User";
-  const session = await prisma.session.create({
-    data: {
-      id: sessionId,
-      expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
-      user: {
-        create: {
-          GoogleUser: {
-            create: {
-              gid: "Test Google SID",
-              email: "test-email@gmail.com"
-            }
+  const session = await testSession.create(sessionId, {
+    user: {
+      create: {
+        GoogleUser: {
+          create: {
+            gid: "Test Google SID",
+            email: "test-email@gmail.com"
           }
         }
       }
-    },
-    include: { user: { include: { GoogleUser: true } } }
+    }
   });
-  const testUserId = session.user.id;
-  userIds.push(testUserId);
-  page.context().addCookies([{
-    "name": "Login",
-    "value": sessionId,
-    "domain": "localhost",
-    "path": "/",
-    "expires": -1,
-    "httpOnly": true,
-    "secure": true,
-    "sameSite": "Lax"
-  }]);
+  const user = session.user;
+  const testUserId = user.id;
+  testSession.addLoginCookie(page.context(), sessionId);
 
   await page.goto('/account');
 

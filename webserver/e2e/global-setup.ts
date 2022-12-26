@@ -1,7 +1,6 @@
 import type { FullConfig } from '@playwright/test';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
-import { prisma } from '../src/lib/prisma.js';
 
 const execFileP = promisify(execFile);
 
@@ -11,23 +10,6 @@ async function globalSetup(config: FullConfig) {
     ['prisma', 'db', 'push', '--skip-generate', '--force-reset']);
   if (stderr) console.error(stderr);
   if (stdout) console.log(stdout);
-
-  const sessionId = `Login for Test`
-  const session = await prisma.session.create({
-    data: {
-      id: sessionId,
-      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
-      user: {
-        create: {
-          name: "Test User's Name",
-          username: `testuser`,
-        }
-      }
-    },
-    include: { user: true }
-  });
-  process.env.TEST_USERNAME = session.user.username || undefined;
-  process.env.TEST_USER_ID = session.userId;
 }
 
 export default globalSetup;

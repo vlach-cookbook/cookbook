@@ -1,7 +1,8 @@
 import { prisma } from '@lib/prisma.js';
-import { expect, test } from '@playwright/test';
+import { expect } from '@playwright/test';
+import { test } from './fixtures.js';
 
-test('import page imports a json recipe', async ({ page }) => {
+test('import page imports a json recipe', async ({ page, testLogin }) => {
   await page.goto('/import');
 
   await expect(page).toHaveTitle("Import recipes");
@@ -29,7 +30,7 @@ test('import page imports a json recipe', async ({ page }) => {
 
   await expect(page.getByRole('paragraph')).toHaveText("Success! 1 recipes imported.");
 
-  await page.goto(`/r/${process.env.TEST_USERNAME}/apple-crisp`);
+  await page.goto(`/r/${testLogin.username}/apple-crisp`);
 
   await expect(page.getByRole('heading', { name: "Apple Crisp" })).toBeVisible();
   await expect(page.getByRole('heading', { name: "Ingredients" })
@@ -45,10 +46,10 @@ test('import page imports a json recipe', async ({ page }) => {
     .getByRole("listitem")
   ).toHaveText(["dessert", "fruits"]);
 
-  prisma.recipe.delete({
+  await prisma.recipe.delete({
     where: {
       authorId_name: {
-        authorId: process.env.TEST_USER_ID!, name: "Apple Crisp"
+        authorId: testLogin.userId, name: "Apple Crisp"
       }
     }
   });

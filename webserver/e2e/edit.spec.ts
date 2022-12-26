@@ -1,9 +1,11 @@
 import { prisma } from '@lib/prisma.js';
-import { expect, test } from '@playwright/test';
+import { expect } from '@playwright/test';
+import { test } from './fixtures.js';
 
 let recipeId: number | undefined;
 
-test.beforeEach(async ({ page }) => {
+test.beforeEach(async ({ page, testLogin }) => {
+  const { userId, username } = testLogin;
   await page.goto('/import');
 
   const recipeName = "Test Recipe for Editing";
@@ -37,13 +39,13 @@ test.beforeEach(async ({ page }) => {
   const recipe = await prisma.recipe.findUniqueOrThrow({
     where: {
       authorId_name: {
-        authorId: process.env.TEST_USER_ID!, name: recipeName
+        authorId: userId, name: recipeName
       }
     }
   });
   recipeId = recipe.id;
 
-  await page.goto(`/edit/${process.env.TEST_USERNAME}/${recipe.slug}`);
+  await page.goto(`/edit/${username}/${recipe.slug}`);
 });
 
 test.afterEach(async () => {
