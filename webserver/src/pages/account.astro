@@ -10,7 +10,10 @@ import { Prisma } from "@prisma/client";
 const user = await getLogin(Astro.cookies);
 
 if (!user) {
-  return Astro.redirect(`/login?from=${encodeURIComponent(Astro.request.url)}`);
+  const target = new URL("/login", Astro.url);
+  target.searchParams.set("from", Astro.request.url);
+  target.searchParams.set("message", "Please login to the account you wish to edit.");
+  return Astro.redirect(target.href, 303);
 }
 
 const [googleUsers, recipeCount, otherUsernames] = await Promise.all([
@@ -104,7 +107,7 @@ if (Astro.request.method === "POST") {
 }
 ---
 
-<Layout title="Edit your account" user={user}>
+<Layout title="Edit your account" user={user} needLogin>
   <main class="account">
     {
       accountEditResult ? (

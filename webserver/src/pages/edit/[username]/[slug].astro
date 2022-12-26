@@ -11,39 +11,14 @@ const user = await getLogin(Astro.cookies);
 
 const { username, slug } = Astro.params;
 
-if (!user) {
-  return Astro.redirect(
-    `/login?user=${encodeURIComponent(
-      String(username)
-    )}&from=${encodeURIComponent(Astro.request.url)}`
-  );
-}
-
 // Grab this recipe.
 
 function noSuchRecipe(): Response {
   return Astro.redirect(`/r/${username}/${slug}`, 303);
 }
 
-if (
-  !slug ||
-  typeof slug === "number" ||
-  !username ||
-  typeof username === "number"
-) {
+if (!slug || !username) {
   return noSuchRecipe();
-}
-
-if (user.username !== username) {
-  return new Response(
-    `<meta http-equiv="refresh" content="3;/r/${username}/${slug}">
-     <h1>Can't edit someone else's recipe.</h1>`,
-    {
-      status: 403,
-      statusText: "Can't edit someone else's recipe.",
-      headers: { "content-type": "text/html" },
-    }
-  );
 }
 
 const recipe = await prisma.recipe.findFirst({
@@ -56,6 +31,28 @@ const recipe = await prisma.recipe.findFirst({
 
 if (!recipe) {
   return noSuchRecipe();
+}
+
+if (!user) {
+  const target = new URL("/login", Astro.url);
+  target.searchParams.set("from", Astro.request.url);
+  target.searchParams.set(
+    "message",
+    `Please login to edit the ${recipe.name} recipe.`
+  );
+  return Astro.redirect(target.href, 303);
+}
+
+if (user.username !== username) {
+  return new Response(
+    `<meta http-equiv="refresh" content="3;/r/${username}/${slug}">
+     <h1>Can't edit someone else's recipe.</h1>`,
+    {
+      status: 403,
+      statusText: "Can't edit someone else's recipe.",
+      headers: { "content-type": "text/html" },
+    }
+  );
 }
 ---
 

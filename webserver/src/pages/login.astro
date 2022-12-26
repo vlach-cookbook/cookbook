@@ -1,0 +1,18 @@
+---
+import Layout from "@layouts/Layout.astro";
+import { getLogin } from "@lib/login-cookie";
+
+const user = await getLogin(Astro.cookies);
+
+if (user) {
+  return Astro.redirect(Astro.url.searchParams.get("from") ?? "/");
+}
+
+const message = Astro.url.searchParams.get("message") ?? "Please Login.";
+---
+
+<Layout title="Login" user={user} needLogin>
+  <main class="login">
+    <p>{message}</p>
+  </main>
+</Layout>

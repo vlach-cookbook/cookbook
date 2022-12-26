@@ -9,7 +9,10 @@ import { getLogin } from "@lib/login-cookie";
 const user = await getLogin(Astro.cookies);
 
 if (!user) {
-  return Astro.redirect(`/login?from=${encodeURIComponent(Astro.request.url)}`);
+  const target = new URL("/login", Astro.url);
+  target.searchParams.set("from", Astro.request.url);
+  target.searchParams.set("message", "Please login to add a new recipe.");
+  return Astro.redirect(target.href, 303);
 }
 ---
 
