@@ -2,6 +2,12 @@ import { prisma } from '@lib/prisma.js';
 import { expect } from '@playwright/test';
 import { test } from './fixtures.js';
 
+test('When not logged in, redirects to /login', async ({ page }) => {
+  await page.goto('/import');
+  expect(new URL(page.url()).pathname).toBe('/login');
+  await expect(page.getByRole('paragraph')).toContainText("Please login to import recipes.");
+});
+
 test('import page imports a json recipe', async ({ page, testLogin }) => {
   await page.goto('/import');
 

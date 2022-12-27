@@ -8,6 +8,13 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 
 const user = await getLogin(Astro.cookies);
 
+if (!user) {
+  const target = new URL("/login", Astro.url);
+  target.searchParams.set("from", Astro.request.url);
+  target.searchParams.set("message", "Please login to import recipes.");
+  return Astro.redirect(target.href, 303);
+}
+
 interface JsonRecipe {
   dateCreated?: string;
   name: string;

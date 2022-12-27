@@ -21,22 +21,18 @@ test('When not logged in, redirects to /login', async ({ page }) => {
   await expect(page.getByRole('paragraph')).toContainText("Please login to the account you wish to edit.");
 });
 
-test('Empty user needs to pick a unique username', async ({ page, testSession }) => {
-  await prisma.user.create({
-    data: {
-      name: "Existing User",
-      username: "existinguser",
-    }
+test('Empty user needs to pick a unique username', async ({ page, testUser, testSession }) => {
+  await testUser.create({
+    name: "Existing User",
+    username: "existinguser",
   });
   const sessionId = "Session for Test Empty User";
   const session = await testSession.create(sessionId, {
     user: {
-      create: {
-        GoogleUser: {
-          create: {
-            gid: "Test Google SID",
-            email: "test-email@gmail.com"
-          }
+      GoogleUser: {
+        create: {
+          gid: "Test Google SID",
+          email: "test-email@gmail.com"
         }
       }
     }
@@ -46,6 +42,7 @@ test('Empty user needs to pick a unique username', async ({ page, testSession })
   testSession.addLoginCookie(page.context(), sessionId);
 
   await page.goto('/account');
+  expect(new URL(page.url()).pathname).toBe('/account');
 
   await expect.soft(page.getByText(/Your recipes will appear/))
     .toContainText("/r/your-username/recipe-name");

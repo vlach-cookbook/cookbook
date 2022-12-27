@@ -64,7 +64,6 @@ async function updateRecipe(): Promise<UpdateResult> {
 
   const recipeId: number | undefined = parseIntOrUndefined(structuredData.id);
 
-  console.log(structuredData.name);
   if (typeof structuredData.name !== "string")
     return { success: false, error: "missing-field" };
   const name = structuredData.name;
