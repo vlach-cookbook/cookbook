@@ -16,7 +16,10 @@ const { title, user, needLogin = false } = Astro.props;
 const login_uri = new URL(
   `/finish_login?from=${encodeURIComponent(Astro.url.href)}`,
   Astro.url
-).href;
+);
+if (login_uri.hostname !== "localhost") {
+  login_uri.protocol = "https";
+}
 ---
 
 <!DOCTYPE html>
@@ -68,7 +71,7 @@ const login_uri = new URL(
                 data-context="signin"
                 data-ux_mode="popup"
                 data-auto_prompt={String(needLogin)}
-                data-login_uri={login_uri}
+                data-login_uri={login_uri.href}
                 data-itp_support="true"
               />
               <div
