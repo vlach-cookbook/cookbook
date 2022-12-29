@@ -35,8 +35,12 @@ jobs:
         compose-file: 'webserver/docker-compose.yml'
     - name: Initialize Prisma and DB
       run: pnpm dotenv -e .env.test -- pnpm prisma db push --force-reset
+    - name: Build
+      run: pnpm run build
     - name: Run Playwright tests
       run: pnpm dotenv -e .env.test -- pnpm exec playwright test
+      env:
+        DEBUG: "pw:webserver"
     - uses: actions/upload-artifact@v3
       if: failure()
       with:
