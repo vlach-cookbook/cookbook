@@ -1,0 +1,8 @@
+.dockerignore
+.env*
+.gitignore
+Dockerfile
+e2e
+fly.toml
+node_modules/
+playwright*

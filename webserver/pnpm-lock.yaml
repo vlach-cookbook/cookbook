@@ -20,13 +20,13 @@ dependencies:
   astro: 1.7.2_@types+node@18.11.17
   dset: 3.1.2
   google-auth-library: 8.7.0
+  prisma: 4.8.0
   solid-js: 1.6.6
 
 devDependencies:
   '@playwright/test': 1.29.1
   '@types/node': 18.11.17
   dotenv-cli: 6.0.0
-  prisma: 4.8.0
 
 packages:
 
@@ -545,6 +545,7 @@ packages:
   /@prisma/engines/4.8.0:
     resolution: {integrity: sha512-A1Asn2rxZMlLAj1HTyfaCv0VQrLUv034jVay05QlqZg1qiHPeA3/pGTfNMijbsMYCsGVxfWEJuaZZuNxXGMCrA==}
     requiresBuild: true
+    dev: false
 
   /@proload/core/0.3.3:
     resolution: {integrity: sha512-7dAFWsIK84C90AMl24+N/ProHKm4iw0akcnoKjRvbfHifJZBLhaDsDus1QJmhG12lXj4e/uB/8mB/0aduCW+NQ==}
@@ -2940,6 +2941,7 @@ packages:
     requiresBuild: true
     dependencies:
       '@prisma/engines': 4.8.0
+    dev: false
 
   /prismjs/1.29.0:
     resolution: {integrity: sha512-Kx/1w86q/epKcmte75LNrEoT+lX8pBpavuAbvJWRXar7Hz8jrtF+e3vY751p0R8H9HdArwaCTNDDzHg/ScJK1Q==}

@@ -33,6 +33,8 @@ jobs:
       uses: isbang/compose-action@v1.4.1
       with:
         compose-file: 'webserver/docker-compose.yml'
+        services: |
+          db
     - name: Initialize Prisma and DB
       run: pnpm dotenv -e .env.test -- pnpm prisma db push --force-reset
     - name: Build

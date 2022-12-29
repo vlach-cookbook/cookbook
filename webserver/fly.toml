@@ -1,18 +1,12 @@
 # fly.toml file generated for vlach-cookbook on 2022-10-08T14:51:25-07:00
 
-app = "vlach-cookbook"
+# Use `-a vlach-cookbook` to deploy the production app.
+app = "vlach-cookbook-staging"
 kill_signal = "SIGINT"
 kill_timeout = 5
 
 [env]
   PORT = "8080"
-
-[build]
-  builder = "paketobuildpacks/builder:base"
-  buildpacks = ["gcr.io/paketo-buildpacks/nodejs"]
-
-[build.args]
-  BP_NODE_RUN_SCRIPTS = "build"
 
 [experimental]
   allowed_public_ports = []
