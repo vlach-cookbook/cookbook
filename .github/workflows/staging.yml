@@ -17,3 +17,4 @@ jobs:
     - run: flyctl deploy --remote-only webserver
       env:
         FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        NO_COLOR: 1
