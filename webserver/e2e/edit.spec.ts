@@ -169,7 +169,7 @@ test.describe("Logged in", () => {
     await expect.soft(page.locator('input[name="ingredient.2.name"]')).toHaveValue("pomme");
   });
 
-  test('Split instructions with enter', async ({ page }) => {
+  test('Split instructions with shift+enter', async ({ page }) => {
     const step0 = page.locator('textarea[name="step.0"]');
     await step0.selectText();
     // Put the cursor before the first character.
@@ -177,9 +177,11 @@ test.describe("Logged in", () => {
     // Put the cursor after the first character.
     await step0.press('ArrowRight');
     // Split the step.
-    await step0.press('Enter');
-    // Insert a newline at the beginning of the new step.
     await step0.press('Shift+Enter');
+    const step1 = page.locator('textarea[name="step.1"]');
+    await expect(step1).toBeFocused();
+    // Insert a letter and a newline at the beginning of the new step.
+    await step1.press('Enter');
 
     await expect(page.getByRole("group")
       .filter({ has: page.getByRole("heading", { name: "Instructions" }) })
@@ -219,4 +221,26 @@ test.describe("Logged in", () => {
       .getByRole("textbox")
     ).toHaveText(["Step 1Step 2Last step."]);
   });
+});
+
+test("Single-step recipe doesn't have a list, but adding a step creates the list", async ({ testLogin, testRecipe, page }) => {
+  const { username } = testLogin;
+  await testRecipe.create({
+    author: { connect: { username } },
+    name: "Test Recipe",
+    slug: "test-recipe",
+    ingredients: {
+      create: [{
+        name: "Pears",
+      }]
+    },
+    steps: ["Only step."],
+  });
+  await page.goto(`/edit/${username}/test-recipe`);
+  const instructionsSection = page.getByRole("group")
+    .filter({ has: page.getByRole("heading", { name: "Instructions" }) });
+  await expect(instructionsSection.getByRole("listitem")).toHaveCount(0);
+
+  await page.locator('textarea[name="step.0"]').press('Shift+Enter');
+  await expect(instructionsSection.getByRole("listitem")).toHaveCount(2);
 });

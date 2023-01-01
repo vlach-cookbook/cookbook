@@ -1,0 +1,13 @@
+---
+import MarkdownIt from "markdown-it";
+
+type Props = {
+  source: string;
+};
+
+const { source } = Astro.props;
+
+const md = new MarkdownIt();
+---
+
+<Fragment set:html={md.render(source)} />

@@ -122,15 +122,21 @@ int main(int argc, char **argv) {
         maybe_set(json_ingredient, "name", ingredient->Get_preparation());
       } else {
         maybe_set(json_ingredient, "name", ingredient->Get_ingredient());
-        maybe_set(json_ingredient, "preparation", ingredient->Get_preparation());
+        maybe_set(json_ingredient, "preparation",
+                  ingredient->Get_preparation());
       }
     }
 
+    // Users aren't treating the lines as numbered steps, so just concatenate
+    // them into a single step.
     const std::vector<CB_String> &direction_lines = recipe->Get_directions();
-    Value &json_instructions = recipeJson["recipeInstructions"] = emptyArray;
+    std::string directions;
     for (const auto &direction : direction_lines) {
-      json_instructions.append(direction.str());
+      directions += direction.str();
+      directions += '\n';
     }
+    Value &json_instructions = recipeJson["recipeInstructions"] = emptyArray;
+    json_instructions.append(directions);
   }
   Json::StyledStreamWriter("  ").write(std::cout, root);
 };

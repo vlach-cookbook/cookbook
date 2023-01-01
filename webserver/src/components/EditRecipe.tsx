@@ -301,7 +301,7 @@ const InstructionsEditor: Component<{ steps: string[] }> = (props) => {
         mergeSteps(stepIndex);
         event.preventDefault();
       }
-    } else if (event.key === "Enter" && !event.shiftKey) {
+    } else if (event.key === "Enter" && event.shiftKey) {
       setSteps(produce(steps => {
         const adjustedStep = steps[stepIndex]!;
         const newStep = { id: createUniqueId(), step: adjustedStep.step.slice(textArea.selectionEnd) }
@@ -379,23 +379,29 @@ const InstructionsEditor: Component<{ steps: string[] }> = (props) => {
 
   return <fieldset ref={fields}>
     <legend><h3>Instructions</h3></legend>
-    <ol>
-      <For each={steps}>
-        {(step, index) =>
-          <li draggable={true} style={{ cursor: "move" }}
-            onDragStart={[onDragStart, step]}
-            onDragEnd={onDragEnd}
-            onDragEnter={[onDragEnter, step]}
-            onDragOver={onDragOver}
-            onDrop={onDrop}
-          >
-            <GrowingTextarea name={`step.${index()}`} draggable={false}
-              onInput={e => setSteps(s => s === unwrap(step), "step", e.currentTarget.value)}
-              onKeyDown={[onStepKeyDown, step]}>{step.step}</GrowingTextarea>
-          </li>
-        }
-      </For>
-    </ol>
+    {steps.length === 1 ?
+      <GrowingTextarea name={`step.0`}
+        onInput={e => setSteps(0, "step", e.currentTarget.value)}
+        onKeyDown={[onStepKeyDown, steps[0]]}>{steps[0]!.step}</GrowingTextarea>
+      :
+      <ol>
+        <For each={steps}>
+          {(step, index) =>
+            <li draggable={true} style={{ cursor: "move" }}
+              onDragStart={[onDragStart, step]}
+              onDragEnd={onDragEnd}
+              onDragEnter={[onDragEnter, step]}
+              onDragOver={onDragOver}
+              onDrop={onDrop}
+            >
+              <GrowingTextarea name={`step.${index()}`} draggable={false}
+                onInput={e => setSteps(s => s === unwrap(step), "step", e.currentTarget.value)}
+                onKeyDown={[onStepKeyDown, step]}>{step.step}</GrowingTextarea>
+            </li>
+          }
+        </For>
+      </ol>
+    }
   </fieldset>;
 }
 

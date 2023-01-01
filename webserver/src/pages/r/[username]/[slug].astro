@@ -1,4 +1,5 @@
 ---
+import Markdown from "@components/Markdown.astro";
 import Layout from "@layouts/Layout.astro";
 import { getLogin } from "@lib/login-cookie";
 import { prisma } from "@lib/prisma";
@@ -58,7 +59,19 @@ const user = await getLogin(Astro.cookies);
 
     <section>
       <h3>Instructions</h3>
-      <ol>{recipe.steps.map((step) => <li>{step}</li>)}</ol>
+      {
+        recipe.steps.length === 1 ? (
+          <Markdown source={recipe.steps[0]!} />
+        ) : (
+          <ol>
+            {recipe.steps.map((step) => (
+              <li>
+                <Markdown source={step} />
+              </li>
+            ))}
+          </ol>
+        )
+      }
     </section>
 
     <section>
