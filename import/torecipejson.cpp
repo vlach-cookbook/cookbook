@@ -1,6 +1,8 @@
 #include "cb_database.h"
 
 #include "time.h"
+#include "unicode/schriter.h"
+#include "unicode/uchar.h"
 #include "unicode/unistr.h"
 #include "json/json.h"
 #include <fmt/core.h>
@@ -70,6 +72,19 @@ std::string escapeKey(const std::string &unescaped) {
   return result;
 }
 
+// If a string is only lowercase or only uppercase, we should transform it to
+// titlecase. Otherwise, assume the capitalization was intentional.
+bool needsTitleCasing(const icu::UnicodeString &str) {
+  bool hasLower = false, hasUpper = false;
+  for (icu::StringCharacterIterator iter(str); iter.hasNext(); iter.next32()) {
+    if (u_islower(iter.current32()))
+      hasLower = true;
+    if (u_isupper(iter.current32()))
+      hasUpper = true;
+  }
+  return !(hasLower && hasUpper);
+}
+
 int main(int argc, char **argv) {
   if (argc < 2) {
     std::cout << "Pass the name of the recipe database to this program, "
@@ -94,7 +109,13 @@ int main(int argc, char **argv) {
   ) {
     Value &recipeJson = root.append(emptyObject);
 
-    recipeJson["name"] = recipe->Get_name().str();
+    std::string recipeName = recipe->Get_name().str();
+    if (auto icuRecipeName = icu::UnicodeString::fromUTF8(recipeName);
+        needsTitleCasing(icuRecipeName)) {
+      recipeName.clear();
+      icuRecipeName.toTitle(nullptr).toUTF8String<std::string>(recipeName);
+    }
+    recipeJson["name"] = recipeName;
 
     maybe_set(recipeJson, "recipeYield", recipe->Get_serves());
     int year, month, day;
