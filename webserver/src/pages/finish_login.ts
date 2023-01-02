@@ -42,7 +42,8 @@ export const post: APIRoute = async ({ request, cookies, redirect }) => {
         email: userInfo.email,
         User: {
           create: {
-            name: userInfo.name,
+            // If their account doesn't have a name attached, use their email instead.
+            name: userInfo.name || userInfo.email,
             // Guess at their desired username:
             username: userInfo.email.split('@')[0],
           },

@@ -29,6 +29,8 @@ test('Empty user needs to pick a unique username', async ({ page, testUser, test
   const sessionId = "Session for Test Empty User";
   const session = await testSession.create(sessionId, {
     user: {
+      name: "test-email@gmail.com",
+      username: "test-email",
       GoogleUser: {
         create: {
           gid: "Test Google SID",
@@ -45,7 +47,7 @@ test('Empty user needs to pick a unique username', async ({ page, testUser, test
   expect(new URL(page.url()).pathname).toBe('/account');
 
   await expect.soft(page.getByText(/Your recipes will appear/))
-    .toContainText("/r/your-username/recipe-name");
+    .toContainText("/r/test-email/recipe-name");
 
   await page.getByLabel("Display Name").fill("User's Display Name");
   const usernameField = page.getByLabel("Username");
@@ -60,7 +62,7 @@ test('Empty user needs to pick a unique username', async ({ page, testUser, test
   await page.getByRole("button", { name: "Save" }).click();
 
   expect((await prisma.user.findUniqueOrThrow({ where: { id: testUserId } })).username
-  ).toBe(null);
+  ).toBe("test-email");
   await expect.soft(usernameField).toHaveValue("existinguser");
 
   // Check that the server also rejects duplicate usernames.

@@ -1,6 +1,7 @@
 import { prisma } from '@lib/prisma';
 import { BrowserContext, test as base } from '@playwright/test';
-import type { Prisma, Recipe, RecipeIngredient, Session, User } from '@prisma/client';
+import type { Recipe, RecipeIngredient, Session, User } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 
 // The creation fixtures all delete the things they created at the end of the test.
 type Fixtures = {
@@ -27,9 +28,25 @@ export const test = base.extend<Fixtures>({
     const userIds: string[] = [];
     await use({
       async create(user) {
-        const dbUser = await prisma.user.create({ data: user });
-        userIds.push(dbUser.id);
-        return dbUser;
+        try {
+          const dbUser = await prisma.user.create({ data: user });
+          userIds.push(dbUser.id);
+          return dbUser;
+        } catch (e) {
+          if (e instanceof Prisma.PrismaClientKnownRequestError
+            && e.code === "P2002"
+            && ((e.meta?.target ?? []) as string[]).includes("username")) {
+            const allUsernames = (await prisma.user.findMany({
+              select: { username: true },
+              orderBy: { username: "asc" }
+            })).map(u => u.username);
+            throw new Error(
+              `Username ${user.username} already exists. Existing usernames: [${allUsernames.join(", ")}]`,
+              { cause: e, });
+          } else {
+            throw e;
+          }
+        }
       }
     });
     await prisma.user.deleteMany({ where: { id: { in: userIds } } });

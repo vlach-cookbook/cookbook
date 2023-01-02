@@ -25,6 +25,7 @@ if (
 const recipe = await prisma.recipe.findFirst({
   where: { author: { username }, slug },
   include: {
+    author: true,
     ingredients: { orderBy: { order: "asc" } },
     categories: { orderBy: { name: "asc" } },
   },
@@ -40,6 +41,16 @@ const user = await getLogin(Astro.cookies);
 <Layout title={recipe.name} user={user}>
   <main class="recipe">
     <h2>{recipe.name}</h2>
+    <p>
+      by <a href={`/r/${recipe.author.username}`}>{recipe.author.name}</a>
+      {
+        recipe.authorId === user?.id ? (
+          <a href="/account" title="Edit your name">
+            ✏️
+          </a>
+        ) : null
+      }
+    </p>
     {recipe.servings ? <p>{recipe.servings} Servings</p> : null}
     <section>
       <h3>Ingredients</h3>

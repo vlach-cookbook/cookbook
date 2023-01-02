@@ -3,7 +3,7 @@ import { expect } from '@playwright/test';
 import { test } from './fixtures.js';
 
 test('When not logged in, redirects to /login', async ({ page, testUser, testRecipe }) => {
-  const user = await testUser.create({ username: "testuser" });
+  const user = await testUser.create({ username: "testuser", name: "testuser@email" });
   const recipe = await testRecipe.create({
     name: "A Recipe",
     slug: "a-recipe",

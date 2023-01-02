@@ -39,8 +39,8 @@ CREATE TABLE "Category" (
 -- CreateTable
 CREATE TABLE "User" (
     "id" UUID NOT NULL,
-    "name" TEXT,
-    "username" CITEXT,
+    "name" TEXT NOT NULL,
+    "username" CITEXT NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );

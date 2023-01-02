@@ -1,0 +1,53 @@
+---
+import { RecipeList } from "@components/RecipeList";
+import Layout from "@layouts/Layout.astro";
+import { getLogin } from "@lib/login-cookie";
+import { prisma } from "@lib/prisma";
+import type { Recipe } from "@prisma/client";
+
+const user = await getLogin(Astro.cookies);
+
+const { username } = Astro.params;
+
+if (!username) {
+  // This shouldn't happen, but just in case, redirect to the root.
+  return Astro.redirect("/", 303);
+}
+
+const author = await prisma.user.findUnique({ where: { username } });
+
+let title: string;
+let recipes: (Recipe & {
+  author: {
+    username: string;
+  };
+})[];
+
+if (author) {
+  title = `${author.name}'s Recipes`;
+  recipes = await prisma.recipe.findMany({
+    where: { author: { username } },
+    include: { author: { select: { username: true } } },
+    orderBy: {
+      name: "asc",
+    },
+  });
+} else {
+  Astro.response.status = 404;
+  title = `No user ${username}`;
+  recipes = [];
+}
+---
+
+<Layout title={title} user={user}>
+  <h2>{title}</h2>
+  {
+    author ? (
+      <RecipeList recipes={recipes} />
+    ) : (
+      <p>
+        Return <a href="/">home</a>.
+      </p>
+    )
+  }
+</Layout>
