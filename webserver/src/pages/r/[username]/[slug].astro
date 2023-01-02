@@ -1,5 +1,6 @@
 ---
 import Markdown from "@components/Markdown.astro";
+import { AddRecipeNote,RecipeNote } from "@components/RecipeNote";
 import Layout from "@layouts/Layout.astro";
 import { getLogin } from "@lib/login-cookie";
 import { prisma } from "@lib/prisma";
@@ -22,29 +23,39 @@ if (
   return noSuchRecipe();
 }
 
+const activeUser = await getLogin(Astro.cookies);
+
 const recipe = await prisma.recipe.findFirst({
   where: { author: { username }, slug },
   include: {
     author: true,
     ingredients: { orderBy: { order: "asc" } },
     categories: { orderBy: { name: "asc" } },
+    notes: {
+      where: {
+        content: { not: "" },
+        OR: [{ public: true, hidden: false }, { authorId: activeUser?.id }],
+      },
+      orderBy: { createdAt: "asc" },
+      include: {
+        author: { select: { name: true, username: true } },
+      },
+    },
   },
 });
 
 if (!recipe) {
   return noSuchRecipe();
 }
-
-const user = await getLogin(Astro.cookies);
 ---
 
-<Layout title={recipe.name} user={user}>
+<Layout title={recipe.name} user={activeUser}>
   <main class="recipe">
     <h2>{recipe.name}</h2>
     <p>
       by <a href={`/r/${recipe.author.username}`}>{recipe.author.name}</a>
       {
-        recipe.authorId === user?.id ? (
+        recipe.authorId === activeUser?.id ? (
           <a href="/account" title="Edit your name">
             ✏️
           </a>
@@ -98,6 +109,36 @@ const user = await getLogin(Astro.cookies);
           ))
         }
       </ul>
+    </section>
+
+    <section id="notes">
+      <h3>Notes</h3>
+      <ol style={{ "padding-left": "0px" }}>
+        {
+          recipe.notes.map((note) =>
+            note.authorId === activeUser?.id ||
+            recipe.authorId == activeUser?.id ? (
+              <RecipeNote
+                note={note}
+                activeUserWroteNote={note.authorId === activeUser?.id}
+                activeUserWroteRecipe={recipe.authorId == activeUser?.id}
+                client:idle
+              />
+            ) : (
+              <RecipeNote note={note} />
+            )
+          )
+        }
+      </ol>
+      {
+        activeUser ? (
+          <AddRecipeNote
+            recipeId={recipe.id}
+            editingUser={activeUser}
+            client:idle
+          />
+        ) : null
+      }
     </section>
 
     <nav id="options" class="noprint">

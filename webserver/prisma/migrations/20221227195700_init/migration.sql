@@ -29,6 +29,24 @@ CREATE TABLE "RecipeIngredient" (
 );
 
 -- CreateTable
+CREATE TABLE "RecipeNote" (
+    "id" SERIAL NOT NULL,
+    "createdAt" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMPTZ(3) NOT NULL,
+    "recipeId" INTEGER NOT NULL,
+    "authorId" UUID NOT NULL,
+    "content" TEXT NOT NULL DEFAULT '',
+    "public" BOOLEAN NOT NULL DEFAULT true,
+    "hidden" BOOLEAN NOT NULL DEFAULT false,
+    "authorCookedRecipeAt" TIMESTAMPTZ(0),
+    "totalTimeSeconds" INTEGER,
+    "prepTimeSeconds" INTEGER,
+    "cookTimeSeconds" INTEGER,
+
+    CONSTRAINT "RecipeNote_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "Category" (
     "id" SERIAL NOT NULL,
     "name" CITEXT NOT NULL,
@@ -98,6 +116,12 @@ ALTER TABLE "Recipe" ADD CONSTRAINT "Recipe_authorId_fkey" FOREIGN KEY ("authorI
 
 -- AddForeignKey
 ALTER TABLE "RecipeIngredient" ADD CONSTRAINT "RecipeIngredient_recipeId_fkey" FOREIGN KEY ("recipeId") REFERENCES "Recipe"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "RecipeNote" ADD CONSTRAINT "RecipeNote_recipeId_fkey" FOREIGN KEY ("recipeId") REFERENCES "Recipe"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "RecipeNote" ADD CONSTRAINT "RecipeNote_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "GoogleUser" ADD CONSTRAINT "GoogleUser_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -24,6 +24,7 @@ model Recipe {
   ingredients RecipeIngredient[]
   categories  Category[]
   steps       String[]
+  notes       RecipeNote[]
 
   @@unique([authorId, name])
   @@unique([authorId, slug])
@@ -48,6 +49,39 @@ model RecipeIngredient {
   @@unique([recipeId, order])
 }
 
+// Anyone can add a note to any recipe. These notes hold both free-form comments and information on
+// when someone cooked the recipe. Empty comments won't be shown on the default recipe view, but
+// they can contribute to an average cooking time or help someone find a recipe based on when they
+// cooked it.
+model RecipeNote {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  recipeId Int
+
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId String @db.Uuid
+
+  // Markdown-formatted. Not shown if it's empty.
+  content String @default("")
+
+  // True if the author wants to show this note to other people.
+  public Boolean @default(true)
+  // True if the recipe's author doesn't want the note to appear on their recipe.
+  hidden Boolean @default(false)
+
+  // This is the time the author clicked "I'm making this recipe."
+  authorCookedRecipeAt DateTime? @db.Timestamptz(0)
+  // These times are whole numbers of seconds, both because Prisma doesn't support an interval type,
+  // and because Postgres' interval type is 16 bytes, compared to the 4 bytes we're using for
+  // intervals here.
+  totalTimeSeconds     Int?
+  prepTimeSeconds      Int?
+  cookTimeSeconds      Int?
+}
+
 model Category {
   id   Int    @id @default(autoincrement())
   name String @unique @db.Citext
@@ -61,8 +95,9 @@ model User {
   username String   @unique @db.Citext
   Recipes  Recipe[]
 
-  GoogleUser GoogleUser[]
-  sessions   Session[]
+  GoogleUser  GoogleUser[]
+  sessions    Session[]
+  recipeNotes RecipeNote[]
 }
 
 model GoogleUser {
