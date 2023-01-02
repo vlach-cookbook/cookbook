@@ -28,7 +28,8 @@ export const EditAccount: Component<{
     <input type="hidden" name="id" value={props.user.id} />
     <div>
       <label>
-        Display Name <input type="text" name="name" value={props.user.name || ""} minlength="1" />
+        Display Name <input type="text" name="name" value={props.user.name || ""}
+          minlength="1" autocapitalize="words" />
       </label>
       <p><small>
         When another user sees one of your recipes, we'll use this name for you.

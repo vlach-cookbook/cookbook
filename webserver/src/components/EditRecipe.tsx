@@ -497,6 +497,7 @@ export const EditRecipe: Component<{
     <div>
       <p><label>Recipe name:
         <input style={{ "font-size": "1.5em", "font-style": "bold", "margin-bottom": ".5em" }}
+          autocapitalize="words"
           type="text" name="name" value={props.recipe?.name || ""}
           ref={nameInput} onInput={onNameInput} /></label></p>
       {props.recipe ? null : <p>
