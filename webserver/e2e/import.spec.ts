@@ -50,7 +50,7 @@ test('import page imports a json recipe', async ({ page, testLogin }) => {
   await expect(page.getByRole('heading', { name: "Categories" })
     .locator("xpath=ancestor::section[1]")
     .getByRole("listitem")
-  ).toHaveText(["dessert", "fruits"]);
+  ).toHaveText([/dessert/i, /fruits/i]);
 
   await prisma.recipe.delete({
     where: {

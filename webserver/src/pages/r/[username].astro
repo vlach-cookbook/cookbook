@@ -1,9 +1,9 @@
 ---
-import { RecipeList } from "@components/RecipeList";
+import { RecipeList,RecipeTitleWithLinkFields } from "@components/RecipeList";
 import Layout from "@layouts/Layout.astro";
 import { getLogin } from "@lib/login-cookie";
 import { prisma } from "@lib/prisma";
-import type { Recipe } from "@prisma/client";
+import type { Category } from "@prisma/client";
 
 const user = await getLogin(Astro.cookies);
 
@@ -17,25 +17,38 @@ if (!username) {
 const author = await prisma.user.findUnique({ where: { username } });
 
 let title: string;
-let recipes: (Recipe & {
-  author: {
-    username: string;
-  };
-})[];
+let recipes: RecipeTitleWithLinkFields[];
+let allIngredients: { name: string }[];
+let allCategories: Category[];
 
 if (author) {
   title = `${author.name}'s Recipes`;
   recipes = await prisma.recipe.findMany({
     where: { author: { username } },
-    include: { author: { select: { username: true } } },
+    select: {
+      name: true,
+      slug: true,
+      author: { select: { username: true } },
+    },
     orderBy: {
       name: "asc",
     },
+  });
+  allIngredients = await prisma.recipeIngredient.findMany({
+    where: { recipe: { author: { username } } },
+    select: { name: true },
+    distinct: ["name"],
+  });
+
+  allCategories = await prisma.category.findMany({
+    where: { Recipes: { some: { author: { username } } } },
   });
 } else {
   Astro.response.status = 404;
   title = `No user ${username}`;
   recipes = [];
+  allIngredients = [];
+  allCategories = [];
 }
 ---
 
@@ -43,7 +56,14 @@ if (author) {
   <h2>{title}</h2>
   {
     author ? (
-      <RecipeList recipes={recipes} />
+      <RecipeList
+        recipes={recipes}
+        initialQuery={Astro.url.search}
+        username={username}
+        allIngredients={allIngredients}
+        allCategories={allCategories}
+        client:load
+      />
     ) : (
       <p>
         Return <a href="/">home</a>.

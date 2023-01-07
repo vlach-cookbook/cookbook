@@ -1,6 +1,6 @@
 import { prisma } from '@lib/prisma';
 import { BrowserContext, test as base } from '@playwright/test';
-import type { Recipe, RecipeIngredient, Session, User } from '@prisma/client';
+import type { Category, Recipe, RecipeIngredient, Session, User } from '@prisma/client';
 import { Prisma } from '@prisma/client';
 
 // The creation fixtures all delete the things they created at the end of the test.
@@ -17,6 +17,9 @@ type Fixtures = {
     session: Session & { user: User },
     userId: string,
     username: string,
+  };
+  testCategory: {
+    create: (name: string) => Promise<Category>;
   };
   testRecipe: {
     create: (recipe: Prisma.RecipeCreateInput) => Promise<Recipe & { ingredients: RecipeIngredient[]; }>;
@@ -42,7 +45,7 @@ export const test = base.extend<Fixtures>({
             })).map(u => u.username);
             throw new Error(
               `Username ${user.username} already exists. Existing usernames: [${allUsernames.join(", ")}]`,
-              { cause: e, });
+              { cause: e });
           } else {
             throw e;
           }
@@ -90,16 +93,37 @@ export const test = base.extend<Fixtures>({
     testSession.addLoginCookie(context, sessionId);
     await use({ session, userId: session.userId, username: session.user.username! });
   },
+  testCategory: async ({ }, use) => {
+    await use({
+      async create(name) {
+        return await prisma.category.upsert({ where: { name }, create: { name }, update: {} });
+      }
+    });
+  },
   testRecipe: async ({ }, use) => {
     const recipeIds: number[] = [];
     await use({
       async create(recipe) {
-        const dbRecipe = await prisma.recipe.create({
-          data: recipe,
-          include: { ingredients: true }
-        });
-        recipeIds.push(dbRecipe.id);
-        return dbRecipe;
+        try {
+          const dbRecipe = await prisma.recipe.create({
+            data: recipe,
+            include: { ingredients: true }
+          });
+          recipeIds.push(dbRecipe.id);
+          return dbRecipe;
+        } catch (e) {
+          if (e instanceof Prisma.PrismaClientKnownRequestError
+            && e.code === "P2002") {
+            const allNames = await prisma.recipe.findMany({ select: { name: true, slug: true } });
+            throw new Error(
+              `${e.message}: Trying to create recipe ${JSON.stringify(recipe)}.
+Existing recipe names: [${allNames.map(r => r.name).join(", ")}]
+Existing recipe slugs: [${allNames.map(r => r.slug).join(", ")}]`,
+              { cause: e });
+          } else {
+            throw e;
+          }
+        }
       }
     });
     await prisma.recipe.deleteMany({ where: { id: { in: recipeIds } } });

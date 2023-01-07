@@ -7,10 +7,23 @@ import { prisma } from "@lib/prisma";
 const user = await getLogin(Astro.cookies);
 
 const recipes = await prisma.recipe.findMany({
-  include: {author: true},
+  select: {
+    name: true,
+    slug: true,
+    author: { select: { username: true } },
+  },
   orderBy: {
     name: "asc",
   },
+});
+
+const allIngredients = await prisma.recipeIngredient.findMany({
+  select: { name: true },
+  distinct: ["name"],
+});
+
+const allCategories = await prisma.category.findMany({
+  where: { Recipes: { some: {} } },
 });
 ---
 
@@ -20,7 +33,12 @@ const recipes = await prisma.recipe.findMany({
   </div>
 
   <div id="content">
-    <h2>Recipes</h2>
-    <RecipeList recipes={recipes} />
+    <RecipeList
+      recipes={recipes}
+      initialQuery={Astro.url.search}
+      allIngredients={allIngredients}
+      allCategories={allCategories}
+      client:load
+    />
   </div>
 </Layout>
