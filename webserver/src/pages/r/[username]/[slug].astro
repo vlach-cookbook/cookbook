@@ -4,147 +4,148 @@ import { AddRecipeNote,RecipeNote } from "@components/RecipeNote";
 import Layout from "@layouts/Layout.astro";
 import { getLogin } from "@lib/login-cookie";
 import { prisma } from "@lib/prisma";
-
-function noSuchRecipe(): Response {
-  return new Response(null, {
-    status: 404,
-    statusText: "No such recipe",
-  });
-}
-
-// Grab this recipe.
-const { username, slug } = Astro.params;
-if (
-  !slug ||
-  typeof slug === "number" ||
-  !username ||
-  typeof username === "number"
-) {
-  return noSuchRecipe();
-}
+import type {
+Category,
+Recipe,
+RecipeIngredient,
+RecipeNote as DBRecipeNote,
+User
+} from "@prisma/client";
 
 const activeUser = await getLogin(Astro.cookies);
 
-const recipe = await prisma.recipe.findFirst({
-  where: { author: { username }, slug },
-  include: {
-    author: true,
-    ingredients: { orderBy: { order: "asc" } },
-    categories: { orderBy: { name: "asc" } },
-    notes: {
-      where: {
-        content: { not: "" },
-        OR: [{ public: true, hidden: false }, { authorId: activeUser?.id }],
-      },
-      orderBy: { createdAt: "asc" },
-      include: {
-        author: { select: { name: true, username: true } },
+// Grab this recipe.
+const { username, slug } = Astro.params;
+let recipe:
+  | (Recipe & {
+      author: User;
+      ingredients: RecipeIngredient[];
+      categories: Category[];
+      notes: (DBRecipeNote & {
+        author: Pick<User, "name" | "username">;
+      })[];
+    })
+  | null = null;
+if (slug && username) {
+  recipe = await prisma.recipe.findFirst({
+    where: { author: { username }, slug },
+    include: {
+      author: true,
+      ingredients: { orderBy: { order: "asc" } },
+      categories: { orderBy: { name: "asc" } },
+      notes: {
+        where: {
+          content: { not: "" },
+          OR: [{ public: true, hidden: false }, { authorId: activeUser?.id }],
+        },
+        orderBy: { createdAt: "asc" },
+        include: {
+          author: { select: { name: true, username: true } },
+        },
       },
     },
-  },
-});
-
-if (!recipe) {
-  return noSuchRecipe();
+  });
 }
 ---
 
-<Layout title={recipe.name} user={activeUser}>
-  <main class="recipe">
-    <h2>{recipe.name}</h2>
-    <p>
-      by <a href={`/r/${recipe.author.username}`}>{recipe.author.name}</a>
-      {
-        recipe.authorId === activeUser?.id ? (
-          <a href="/account" title="Edit your name">
-            ✏️
-          </a>
-        ) : null
-      }
-    </p>
-    {recipe.servings ? <p>{recipe.servings} Servings</p> : null}
-    <section>
-      <h3>Ingredients</h3>
-      <ul>
-        {
-          recipe.ingredients.map((ingredient) => (
-            <li>
-              {ingredient.amount}
-              {ingredient.unit}
-              {ingredient.name +
-                (ingredient.preparation ? `, ${ingredient.preparation}` : "")}
-            </li>
-          ))
-        }
-      </ul>
-    </section>
-
-    <section>
-      <h3>Instructions</h3>
-      {
-        recipe.steps.length === 1 ? (
-          <Markdown source={recipe.steps[0]!} />
-        ) : (
-          <ol>
-            {recipe.steps.map((step) => (
+<Layout title={recipe?.name ?? "No such recipe"} user={activeUser}>
+  {
+    recipe ? (
+      <main class="recipe">
+        <h2>{recipe.name}</h2>
+        <p>
+          by <a href={`/r/${recipe.author.username}`}>{recipe.author.name}</a>
+          {recipe.authorId === activeUser?.id ? (
+            <a href="/account" title="Edit your name">
+              ✏️
+            </a>
+          ) : null}
+        </p>
+        {recipe.servings ? <p>{recipe.servings} Servings</p> : null}
+        <section>
+          <h3>Ingredients</h3>
+          <ul>
+            {recipe.ingredients.map((ingredient) => (
               <li>
-                <Markdown source={step} />
+                {ingredient.amount}
+                {ingredient.unit}
+                {ingredient.name +
+                  (ingredient.preparation ? `, ${ingredient.preparation}` : "")}
               </li>
             ))}
+          </ul>
+        </section>
+
+        <section>
+          <h3>Instructions</h3>
+          {recipe.steps.length === 1 ? (
+            <Markdown source={recipe.steps[0]!} />
+          ) : (
+            <ol>
+              {recipe.steps.map((step) => (
+                <li>
+                  <Markdown source={step} />
+                </li>
+              ))}
+            </ol>
+          )}
+        </section>
+
+        <section>
+          <h3>Categories</h3>
+          <ul>
+            {recipe.categories.map((category) => (
+              <li>
+                <a
+                  href={`/search?category=${encodeURIComponent(category.name)}`}
+                >
+                  {category.name}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section id="notes">
+          <h3>Notes</h3>
+          <ol style={{ "padding-left": "0px" }}>
+            {recipe.notes.map((note) =>
+              note.authorId === activeUser?.id ||
+              recipe!.authorId == activeUser?.id ? (
+                <RecipeNote
+                  note={note}
+                  activeUserWroteNote={note.authorId === activeUser?.id}
+                  activeUserWroteRecipe={recipe!.authorId == activeUser?.id}
+                  client:idle
+                />
+              ) : (
+                <RecipeNote note={note} />
+              )
+            )}
           </ol>
-        )
-      }
-    </section>
+          {activeUser ? (
+            <AddRecipeNote
+              recipeId={recipe.id}
+              editingUser={activeUser}
+              client:idle
+            />
+          ) : null}
+        </section>
 
-    <section>
-      <h3>Categories</h3>
-      <ul>
-        {
-          recipe.categories.map((category) => (
-            <li>
-              <a href={`/search?category=${encodeURIComponent(category.name)}`}>
-                {category.name}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </section>
-
-    <section id="notes">
-      <h3>Notes</h3>
-      <ol style={{ "padding-left": "0px" }}>
-        {
-          recipe.notes.map((note) =>
-            note.authorId === activeUser?.id ||
-            recipe.authorId == activeUser?.id ? (
-              <RecipeNote
-                note={note}
-                activeUserWroteNote={note.authorId === activeUser?.id}
-                activeUserWroteRecipe={recipe.authorId == activeUser?.id}
-                client:idle
-              />
-            ) : (
-              <RecipeNote note={note} />
-            )
-          )
-        }
-      </ol>
-      {
-        activeUser ? (
-          <AddRecipeNote
-            recipeId={recipe.id}
-            editingUser={activeUser}
-            client:idle
-          />
-        ) : null
-      }
-    </section>
-
-    <nav id="options" class="noprint">
-      <a href={`/edit/${username}/${slug}`} class="action">Edit</a>
-      <a href="javascript:window.print()" class="action">Print</a>
-      <a href="" class="action">Delete</a>
-    </nav>
-  </main>
+        <nav id="options" class="noprint">
+          <a href={`/edit/${username}/${slug}`} class="action">
+            Edit
+          </a>
+          <a href="javascript:window.print()" class="action">
+            Print
+          </a>
+          <a href="" class="action">
+            Delete
+          </a>
+        </nav>
+      </main>
+    ) : (
+      <p>No such recipe.</p>
+    )
+  }
 </Layout>

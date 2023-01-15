@@ -11,16 +11,11 @@ const user = await getLogin(Astro.cookies);
 
 const { username, slug } = Astro.params;
 
-// Grab this recipe.
-
-function noSuchRecipe(): Response {
+if (!slug || !username) {
   return Astro.redirect(`/r/${username}/${slug}`, 303);
 }
 
-if (!slug || !username) {
-  return noSuchRecipe();
-}
-
+// Grab this recipe.
 const recipe = await prisma.recipe.findFirst({
   where: { author: { username }, slug },
   include: {
@@ -30,7 +25,7 @@ const recipe = await prisma.recipe.findFirst({
 });
 
 if (!recipe) {
-  return noSuchRecipe();
+  return Astro.redirect(`/r/${username}/${slug}`, 303);
 }
 
 if (!user) {
