@@ -35,11 +35,12 @@ export const RecipeNote: Component<{
     }
   }
 
-  return <li id={`note-${props.note.id}`} style={{ display: "block" }}>
+  return <li id={`note-${props.note.id}`} style={{ display: "block" }}
+    itemprop="comment" itemscope itemtype="https://schema.org/Comment">
     <form method="post" action="/save_note" onSubmit={onSubmit}>
       <input type="hidden" name="noteId" value={props.note.id} />
       <div style={{ display: "flex", "flex-flow": "row wrap", "justify-content": "space-between" }}>
-        <span><a href={`/r/${props.note.author.username}`}>{props.note.author.name}</a></span>
+        <span itemprop="author"><a href={`/r/${props.note.author.username}`}>{props.note.author.name}</a></span>
         <span><time datetime={props.note.createdAt.toISOString()}>{dateFormatter.format(props.note.createdAt)}</time></span>
         <Switch>
           <Match when={props.activeUserWroteNote}>
@@ -64,9 +65,9 @@ export const RecipeNote: Component<{
         </label>
           <GrowingTextarea ref={contentTextarea} name="content" onInput={onContentInput}>{note.content}</GrowingTextarea>
           <p>Preview:</p>
-          <Markdown source={note.content} />
+          <Markdown source={note.content} itemprop="text" />
         </>
-        : <Markdown source={note.content} />
+        : <Markdown source={note.content} itemprop="text" />
       }
     </form>
   </li>;

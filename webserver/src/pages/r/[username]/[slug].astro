@@ -51,26 +51,49 @@ if (slug && username) {
 <Layout title={recipe?.name ?? "No such recipe"} user={activeUser}>
   {
     recipe ? (
-      <main class="recipe">
-        <h2>{recipe.name}</h2>
+      <main class="recipe" itemscope itemtype="https://schema.org/Recipe">
+        <h2 itemprop="name">{recipe.name}</h2>
         <p>
-          by <a href={`/r/${recipe.author.username}`}>{recipe.author.name}</a>
+          by
+          <a href={`/r/${recipe.author.username}`} itemprop="author">
+            {recipe.author.name}
+          </a>
           {recipe.authorId === activeUser?.id ? (
             <a href="/account" title="Edit your name">
               ✏️
             </a>
           ) : null}
         </p>
-        {recipe.servings ? <p>{recipe.servings} Servings</p> : null}
+        {recipe.servings ? (
+          <p itemprop="recipeYield">{recipe.servings} Servings</p>
+        ) : null}
         <section>
           <h3>Ingredients</h3>
           <ul>
             {recipe.ingredients.map((ingredient) => (
-              <li>
-                {ingredient.amount}
-                {ingredient.unit}
-                {ingredient.name +
-                  (ingredient.preparation ? `, ${ingredient.preparation}` : "")}
+              <li
+                itemprop="recipeIngredient"
+                itemscope
+                itemtype="https://schema.org/HowToSupply"
+              >
+                {ingredient.amount ? (
+                  <span
+                    itemprop="requiredQuantity"
+                    itemscope
+                    itemtype="https://schema.org/QuantitativeValue"
+                  >
+                    <span itemprop="value">{ingredient.amount}</span>
+                    {ingredient.unit ? (
+                      <span itemprop="unitText">{ingredient.unit}</span>
+                    ) : null}
+                  </span>
+                ) : null}
+                <span itemprop="name">
+                  {ingredient.name +
+                    (ingredient.preparation
+                      ? `, ${ingredient.preparation}`
+                      : "")}
+                </span>
               </li>
             ))}
           </ul>
@@ -79,11 +102,13 @@ if (slug && username) {
         <section>
           <h3>Instructions</h3>
           {recipe.steps.length === 1 ? (
-            <Markdown source={recipe.steps[0]!} />
+            <div itemprop="recipeInstructions">
+              <Markdown source={recipe.steps[0]!} />
+            </div>
           ) : (
             <ol>
               {recipe.steps.map((step) => (
-                <li>
+                <li itemprop="recipeInstructions">
                   <Markdown source={step} />
                 </li>
               ))}
@@ -95,7 +120,7 @@ if (slug && username) {
           <h3>Categories</h3>
           <ul>
             {recipe.categories.map((category) => (
-              <li>
+              <li itemprop="recipeCategory">
                 <a
                   href={`/search?category=${encodeURIComponent(category.name)}`}
                 >
