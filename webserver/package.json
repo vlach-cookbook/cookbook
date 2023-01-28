@@ -9,7 +9,7 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
-    "start": "node ./dist/server/entry.mjs",
+    "start": "node ./server.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
@@ -17,20 +17,22 @@
   "engines": {
     "node": "18"
   },
-  "packageManager": "pnpm@7.21.0",
+  "packageManager": "pnpm@7.26.1",
   "dependencies": {
     "@astrojs/node": "^4.0.0",
     "@astrojs/solid-js": "^1.2.3",
     "@prisma/client": "^4.8.1",
     "astro": "^1.9.2",
+    "debug": "^4.3.4",
     "dset": "^3.1.2",
+    "express": "^4.18.2",
     "google-auth-library": "^8.7.0",
     "markdown-it": "^13.0.1",
     "prisma": "^4.8.1",
     "solid-js": "^1.6.9"
   },
   "devDependencies": {
-    "@playwright/test": "^1.29.2",
+    "@playwright/test": "1.29.2",
     "@types/markdown-it": "^12.2.3",
     "@types/node": "^18.11.18",
     "dotenv-cli": "^6.0.0"

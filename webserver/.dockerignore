@@ -1,8 +1,11 @@
 .dockerignore
 .env*
 .gitignore
+.terraform*
 Dockerfile
 e2e
 fly.toml
+main.tf
 node_modules/
 playwright*
+terraform*
