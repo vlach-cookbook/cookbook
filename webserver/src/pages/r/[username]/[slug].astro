@@ -58,11 +58,6 @@ if (slug && username) {
           <a href={`/r/${recipe.author.username}`} itemprop="author">
             {recipe.author.name}
           </a>
-          {recipe.authorId === activeUser?.id ? (
-            <a href="/account" title="Edit your name">
-              ✏️
-            </a>
-          ) : null}
         </p>
         {recipe.servings ? (
           <p itemprop="recipeYield">{recipe.servings} Servings</p>

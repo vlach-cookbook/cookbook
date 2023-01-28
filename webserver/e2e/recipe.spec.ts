@@ -75,19 +75,3 @@ test("Shows author's name", async ({ page, testUser, testRecipe, testLogin }) =>
   await expect(page).toHaveURL(/.*\/r\/recipeauthor$/);
   await expect(page).toHaveTitle("User Name's Recipes");
 });
-
-test("Shows name edit link when author is logged in", async ({ page, testLogin, testRecipe }) => {
-  const { username } = testLogin;
-  await testRecipe.create({
-    author: { connect: { username } },
-    name: "Test Recipe",
-    slug: "test-recipe",
-    ingredients: { create: [{ name: "sugar" },] },
-    steps: ["Bake"],
-  })
-  await page.goto(`/r/${username}/test-recipe`);
-
-  await expect.soft(page.getByRole("link", { name: "✏️" })).toHaveAttribute("title", "Edit your name");
-  await page.getByRole("link", { name: "✏️" }).click();
-  await expect(page).toHaveURL(/.*\/account$/);
-});
