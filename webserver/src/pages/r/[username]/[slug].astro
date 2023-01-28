@@ -153,15 +153,19 @@ if (slug && username) {
         </section>
 
         <nav id="options" class="noprint">
-          <a href={`/edit/${username}/${slug}`} class="action">
-            Edit
-          </a>
           <a href="javascript:window.print()" class="action">
             Print
           </a>
-          <a href="" class="action">
-            Delete
-          </a>
+          {activeUser?.id === recipe.authorId ? (
+            <>
+              <a href={`/edit/${username}/${slug}`} class="action">
+                Edit
+              </a>
+              <a href="" class="action">
+                Delete
+              </a>
+            </>
+          ) : null}
         </nav>
       </main>
     ) : (
