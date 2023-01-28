@@ -9,6 +9,17 @@ const maxIdleSeconds = process.env.MAX_IDLE_SECONDS ? Number.parseInt(process.en
 
 let idleTimeout = null;
 let activeRequests = 0;
+
+function scheduleIdleShutdown() {
+  if (activeRequests === 0 && !isNaN(maxIdleSeconds)) {
+    debug('Waiting for %d seconds after %s before shutting down.', maxIdleSeconds, new Date());
+    idleTimeout = setTimeout(() => {
+      console.log(`Server idle for ${maxIdleSeconds} seconds; shutting down.`);
+      server.close();
+    }, maxIdleSeconds * 1000);
+  }
+}
+
 function idleTimeoutMiddleware(req, res, next) {
   if (idleTimeout) {
     clearTimeout(idleTimeout);
@@ -19,13 +30,7 @@ function idleTimeoutMiddleware(req, res, next) {
   res.once('finish', () => {
     activeRequests--;
     debug('Finished %s.', req.url);
-    if (activeRequests === 0 && !isNaN(maxIdleSeconds)) {
-      debug('Waiting for %d seconds after %s before shutting down.', maxIdleSeconds, new Date());
-      idleTimeout = setTimeout(() => {
-        console.log(`Server idle for ${maxIdleSeconds} seconds; shutting down.`);
-        server.close();
-      }, maxIdleSeconds * 1000);
-    }
+    scheduleIdleShutdown();
   });
 
   next();
@@ -38,4 +43,5 @@ app.use(ssrHandler);
 
 const server = app.listen(port, host, () => {
   console.log(`Server listening at http://${host}:${port}`);
+  scheduleIdleShutdown();
 });
