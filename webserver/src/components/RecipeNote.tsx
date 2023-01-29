@@ -1,10 +1,11 @@
+import "@lib/relative-time-interface";
 import type { RecipeNote as Note, User } from "@prisma/client";
 import { Component, createSignal, Match, Switch } from "solid-js";
 import { createStore } from "solid-js/store";
 import { GrowingTextarea } from "./GrowingTextarea";
 import { Markdown } from "./Markdown";
 
-const dateFormatter = new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" });
+const dateFormatter = new Intl.DateTimeFormat("en-US", { dateStyle: "medium" });
 
 export const RecipeNote: Component<{
   activeUserWroteNote?: boolean
@@ -41,7 +42,7 @@ export const RecipeNote: Component<{
       <input type="hidden" name="noteId" value={props.note.id} />
       <div style={{ display: "flex", "flex-flow": "row wrap", "justify-content": "space-between" }}>
         <span itemprop="author"><a href={`/r/${props.note.author.username}`}>{props.note.author.name}</a></span>
-        <span><time datetime={props.note.createdAt.toISOString()}>{dateFormatter.format(props.note.createdAt)}</time></span>
+        <span><relative-time datetime={props.note.createdAt.toISOString()} precision="minute">{dateFormatter.format(props.note.createdAt)}</relative-time></span>
         <Switch>
           <Match when={props.activeUserWroteNote}>
             <Switch>

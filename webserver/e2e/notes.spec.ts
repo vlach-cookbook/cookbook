@@ -14,11 +14,11 @@ test("Renders a recipe's notes", async ({ page, testUser, testRecipe }) => {
       create: [
         {
           author: { connect: { id: user.id } },
-          createdAt: new Date("2023-01-14T09:30:52"),
+          createdAt: new Date("2023-01-14T09:30:52Z"),
           content: "* First\n* Second",
         }, {
           author: { connect: { id: note_user.id } },
-          createdAt: new Date("2023-01-13T17:43:12"),
+          createdAt: new Date("2023-01-13T17:43:12Z"),
           content: "First note!",
         }
       ]
@@ -35,14 +35,16 @@ test("Renders a recipe's notes", async ({ page, testUser, testRecipe }) => {
   await expect.soft(getSectionByHeading(page, 'Notes')
     .getByRole('listitem').filter({ hasText: "Left a Note" }).getByRole('link')).toHaveText("Left a Note");
   await expect.soft(getSectionByHeading(page, 'Notes')
-    .getByRole('listitem').filter({ hasText: "Left a Note" }).getByRole('time')).toHaveText("Jan 13, 2023, 5:43 PM");
+    .getByRole('listitem').filter({ hasText: "Left a Note" })
+    .locator('relative-time')).toHaveAttribute('datetime', "2023-01-13T17:43:12.000Z");
   await expect.soft(getSectionByHeading(page, 'Notes')
     .getByRole('listitem').filter({ hasText: "Left a Note" }).getByRole('paragraph')).toHaveText("First note!")
 
   await expect.soft(getSectionByHeading(page, 'Notes')
     .getByRole('listitem').filter({ hasText: "User Name" }).getByRole('link')).toHaveText("User Name");
   await expect.soft(getSectionByHeading(page, 'Notes')
-    .getByRole('listitem').filter({ hasText: "User Name" }).getByRole('time')).toHaveText("Jan 14, 2023, 9:30 AM");
+    .getByRole('listitem').filter({ hasText: "User Name" })
+    .locator('relative-time')).toHaveAttribute('datetime', "2023-01-14T09:30:52.000Z");
   await expect.soft(getSectionByHeading(page, 'Notes')
     .getByRole('listitem').filter({ hasText: "User Name" }).getByRole('listitem')).toHaveText([
       "First",
@@ -163,7 +165,7 @@ test("Can add a note", async ({ page, testLogin, testUser, testRecipe }) => {
   expect(noteElemId).toContain(String(note?.id));
 
   await expect.soft(page.locator(noteElemId)).toContainText("This is a new note.");
-  const noteTimeString = await getSectionByHeading(page, 'Notes').getByRole('time').getAttribute("datetime");
+  const noteTimeString = await getSectionByHeading(page, 'Notes').locator('relative-time').getAttribute("datetime");
   expect(noteTimeString).toBeTruthy();
   const noteTime = new Date(noteTimeString!);
   expect.soft(noteTime.getTime()).toBeGreaterThanOrEqual(clickTime);

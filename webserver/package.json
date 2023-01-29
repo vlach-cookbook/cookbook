@@ -21,6 +21,7 @@
   "dependencies": {
     "@astrojs/node": "^5.0.1",
     "@astrojs/solid-js": "^2.0.0",
+    "@github/relative-time-element": "^4.1.5",
     "@prisma/client": "^4.9.0",
     "astro": "^2.0.2",
     "debug": "^4.3.4",

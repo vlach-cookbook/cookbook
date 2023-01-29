@@ -48,6 +48,8 @@ if (slug && username) {
 }
 ---
 
+<script>import "@github/relative-time-element";</script>
+
 <Layout title={recipe?.name ?? "No such recipe"} user={activeUser}>
   {
     recipe ? (
