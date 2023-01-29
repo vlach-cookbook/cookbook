@@ -48,7 +48,9 @@ if (slug && username) {
 }
 ---
 
-<script>import "@github/relative-time-element";</script>
+<script>
+  import "@github/relative-time-element";
+</script>
 
 <Layout title={recipe?.name ?? "No such recipe"} user={activeUser}>
   {
@@ -113,7 +115,7 @@ if (slug && username) {
           )}
         </section>
 
-        <section>
+        <section class="noprint">
           <h3>Categories</h3>
           <ul>
             {recipe.categories.map((category) => (
@@ -128,7 +130,7 @@ if (slug && username) {
           </ul>
         </section>
 
-        <section id="notes">
+        <section id="notes" class:list={{ noprint: recipe.notes.length === 0 }}>
           <h3>Notes</h3>
           <ol style={{ "padding-left": "0px" }}>
             {recipe.notes.map((note) =>

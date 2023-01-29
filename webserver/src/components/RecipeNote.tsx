@@ -51,7 +51,7 @@ export const RecipeNote: Component<{
             </Switch>
             {editing() ?
               <button type="submit">Save</button>
-              : <button type="button" title="Edit" onClick={editButtonClicked}>✏️</button>
+              : <button type="button" title="Edit" onClick={editButtonClicked} class="noprint">✏️</button>
             }
           </Match>
           <Match when={props.activeUserWroteRecipe}>
@@ -94,7 +94,7 @@ export const AddRecipeNote: Component<{
   }
 
   return <>{editing()
-    ? <form method="post" action={`/save_note`}>
+    ? <form method="post" action={`/save_note`} class="noprint">
       <input type="hidden" name="recipeId" value={props.recipeId} />
       <label title="Make this note visible to everyone, instead of just yourself.">
         <input type="checkbox" name="public" checked /> Public
@@ -104,7 +104,7 @@ export const AddRecipeNote: Component<{
       <Markdown source={content()} />
       <button type="submit">Save</button>
     </form>
-    : <button type="button" onClick={startEditing} >
+    : <button type="button" onClick={startEditing} class="noprint">
       Add note
     </button>
   }</>;
