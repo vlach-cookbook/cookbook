@@ -68,7 +68,7 @@ test('Empty user needs to pick a unique username', async ({ page, testUser, test
   // Check that the server also rejects duplicate usernames.
   await usernameField.evaluate(el => (el as HTMLInputElement).setCustomValidity(""));
   await page.getByRole("button", { name: "Save" }).click();
-  await expect.soft(page.locator("p.error")).toHaveText("Another user is already using that username.");
+  await expect.soft(page.locator("p.error")).toHaveText('Another user is already using the username "existinguser".');
   await expect.soft(usernameField, "An error shouldn't lose the user's partial input.").toHaveValue("existinguser");
 
   await usernameField.fill("testusername");

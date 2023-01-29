@@ -138,7 +138,7 @@ if (Astro.request.method === "POST") {
               invalidName: "You need to have a non-empty display name.",
               invalidUsername:
                 "Your username needs to be made of letters, numbers, and hyphens.",
-              duplicateUsername: "Another user is already using that username.",
+              duplicateUsername: `Another user is already using the username "${accountEditResult.username}".`,
             }[accountEditResult.result]
           }
         </p>
