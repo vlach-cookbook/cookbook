@@ -1,0 +1,6 @@
+{
+    "recommendations": [
+        "prisma.prisma",
+        "astro-build.astro-vscode"
+    ]
+}

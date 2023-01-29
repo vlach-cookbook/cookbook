@@ -1,0 +1,32 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/javascript-node-postgres
+{
+  "name": "Cookbook",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  // See https://containers.dev/features.
+  "features": {},
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "prisma.prisma",
+        "astro-build.astro-vscode"
+      ]
+    }
+  },
+  "remoteEnv": {
+    "DATABASE_URL": "postgresql://prisma:prisma@localhost:5432/cookbook?statement_cache_size=0"
+  },
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  // This can be used to network with other containers or with the host.
+  "forwardPorts": [
+    3000,
+    5432
+  ],
+  // See https://containers.dev/implementors/json_reference/#lifecycle-scripts.
+  // This makes sure the current packages are always available.
+  "updateContentCommand": "cd webserver && pnpm install",
+  // 'postCreateCommand' will run in the background while the user's connecting to the container.
+  "postCreateCommand": "cd webserver && pnpm playwright install"
+}
