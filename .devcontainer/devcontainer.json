@@ -6,12 +6,19 @@
   "service": "app",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   // See https://containers.dev/features.
-  "features": {},
+  "features": {
+    "ghcr.io/devcontainers/features/terraform:1": {}
+  },
   "customizations": {
     "vscode": {
       "extensions": [
+        "astro-build.astro-vscode",
+        "ms-azuretools.vscode-docker",
         "prisma.prisma",
-        "astro-build.astro-vscode"
+        "hashicorp.terraform",
+        "EditorConfig.EditorConfig",
+        "GitHub.vscode-pull-request-github",
+        "eamodio.gitlens"
       ]
     }
   },
@@ -26,7 +33,7 @@
   ],
   // See https://containers.dev/implementors/json_reference/#lifecycle-scripts.
   // This makes sure the current packages are always available.
-  "updateContentCommand": "cd webserver && pnpm install",
+  "updateContentCommand": "cd webserver && pnpm install && pnpm prisma db push",
   // 'postCreateCommand' will run in the background while the user's connecting to the container.
   "postCreateCommand": "cd webserver && pnpm playwright install"
 }

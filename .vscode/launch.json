@@ -1,0 +1,11 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Development webserver",
+      "type": "node-terminal",
+      "command": "cd webserver && pnpm dev",
+      "request": "launch",
+    }
+  ]
+}

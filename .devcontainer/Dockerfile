@@ -1,10 +1,13 @@
-FROM mcr.microsoft.com/devcontainers/javascript-node:0-18
+FROM mcr.microsoft.com/devcontainers/typescript-node:0-18
+
+ENV PNPM_HOME=/home/node/.local/share/pnpm
+ENV PATH=/home/node/depot_tools:${PNPM_HOME}:${PATH}
 
 RUN su node -c "npm install -g pnpm@7"
 
-ENV PNPM_HOME=/usr/local/share/npm-global/bin
+RUN su node -c "pnpm install -g prisma playwright"
 
-RUN su node -c "pnpm install -g typescript prisma playwright"
+RUN su node -c "git clone --filter=tree:0 https://chromium.googlesource.com/chromium/tools/depot_tools.git /home/node/depot_tools && gclient"
 
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \

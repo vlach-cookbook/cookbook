@@ -1,6 +1,10 @@
 {
-    "recommendations": [
-        "prisma.prisma",
-        "astro-build.astro-vscode"
-    ]
+  "recommendations": [
+    "astro-build.astro-vscode",
+    "EditorConfig.EditorConfig",
+    "hashicorp.terraform",
+    "ms-azuretools.vscode-docker",
+    "ms-vscode-remote.remote-containers",
+    "prisma.prisma",
+  ]
 }
