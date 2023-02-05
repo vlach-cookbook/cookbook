@@ -1,6 +1,7 @@
 ---
 import { CLIENT_ID } from "@lib/google-auth";
 import type { User } from "@prisma/client";
+import "@style/main.css";
 
 export interface Props {
   title: string;
@@ -32,7 +33,6 @@ if (login_uri.hostname !== "localhost") {
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
     <link rel="stylesheet" href="/css/normalize.min.css" />
-    <link rel="stylesheet" href="/css/main.css" />
     <meta name="generator" content={Astro.generator} />
     <script src="https://accounts.google.com/gsi/client" async defer></script>
   </head>
