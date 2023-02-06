@@ -38,14 +38,7 @@ if (login_uri.hostname !== "localhost") {
   </head>
   <body>
     <div id="wrapper">
-      <header class="noprint">
-        <a href="/"><h1>Cookbook</h1></a>
-      </header>
-      <nav id="nav_1" class="noprint">
-        <input type="search" class="nav_style search" placeholder="Search" />
-      </nav>
-
-      <nav id="nav_2" class="noprint">
+      <nav class="header">
         {
           user ? (
             <>
@@ -85,6 +78,12 @@ if (login_uri.hostname !== "localhost") {
             </>
           )
         }
+      </nav>
+      <header class="noprint">
+        <a href="/"><h1>Cookbook</h1></a>
+      </header>
+      <nav id="nav_1" class="noprint">
+        <input type="search" class="search" placeholder="Search" />
       </nav>
 
       <main id="main_container">

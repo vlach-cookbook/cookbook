@@ -17,46 +17,52 @@ body {
   max-width: 900px;
   margin: auto;
 }
+
 header {
-  background-image: url(/img/header.jpg);
+  background-image: url(/img/header3.jpg);
   background-size: 460px auto;
   background-position: top;
   height: 100px;
   padding-top: 10px;
 }
+
 #wrapper {
   background-color: white;
-  display:flex;
-  flex-direction:column;
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
 }
+
 #main_container {
-  order:2;
+  order: 2;
   border: 2px solid;
   border-radius: 7px;
-  border-color:#FF6F0D;
+  border-color: #FF6F0D;
   margin: 10px;
   padding: 10px;
 }
+
 main {
-  display:flex;
-  flex-direction:column;
+  display: flex;
+  flex-direction: column;
 }
+
 nav {
   display: flex;
   flex-direction: column;
-  align-items:stretch;
+  align-items: stretch;
   background-color: white;
   padding: 10px;
 }
+
 .nav_style {
-  background-color: #ebf2e8;
-  color: black;
+  background-color: #2d3f5b;
+  color: white;
   height: 20px;
   border: 2px solid;
   border-radius: 7px;
-  border-color:#32751c;
-  text-align:center;
+  border-color: #e1a83f;
+  text-align: center;
   text-decoration: none;
   padding: 5px 0px 3px 0px;
   margin-top: 5px;
@@ -65,16 +71,18 @@ nav {
   font-weight: bold;
   vertical-align: middle;
 }
+
 .nav_style:hover {
-  border-color: #7ABC61;
+  border-color: #d48e0a;
 }
+
+nav.header {
+  background-color: #222c3c;
+}
+
 #nav_1 {
-  order:1;
-  padding:5px 10px 5px 10px;
-}
-#nav_2 {
-  order: 3;
-  padding:5px 10px 5px 10px;
+  order: 1;
+  padding: 5px 10px 5px 10px;
 }
 
 /* ====================
@@ -82,65 +90,84 @@ nav {
    ==================== */
 a {
   color: black;
-  font-weight:bold;
+  font-weight: bold;
   text-decoration: none;
 }
+
 h1 {
   color: white;
-  background-color: #FF6F0D;
+  background-color: #222c3c;
   border-right: 2px solid;
   border-bottom: 2px solid;
-  border-color: rgba(0,0,0,0.4);
+  border-color: rgba(0, 0, 0, 0.4);
   width: 170px;
   padding-left: 5px;
   margin: 0px;
 }
+
 h2 {
   margin: 5px 0px 10px 0px;
   text-transform: capitalize;
   text-decoration: underline;
   text-align: center;
 }
+
 h3 {
   margin: 0px 0px 10px 0px;
 }
+
 h4 {
-  font-size:175%;
+  font-size: 175%;
   color: #388220;
   text-transform: uppercase;
   margin: 0px;
   text-align: center;
 }
+
 p {
   margin: 1ex 0px;
 }
+
 .recent_user {
   font-style: italic;
-  padding-bottom:5px;
-  margin-bottom:5px;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
   border-bottom: 1px solid;
   border-color: #939598;
 }
+
 .search {
-  width:auto;
-  color: #939598;
+  width: auto;
   text-align: left;
-  text-transform: none;
-  background-image:url(/img/search.svg);
+  background-image: url(/img/search.svg);
   background-repeat: no-repeat;
   background-position: 7px;
   background-size: 18px;
-  padding-left: 30px;
+  color: black;
+  height: 20px;
+  border: 2px solid;
+  border-radius: 7px;
+  border-color: #e1a83f;
+  padding: 5px 0px 3px 30px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  font-weight: bold;
+  vertical-align: middle;
+
 }
+
 button {
   background-color: #fff0e6;
   border-color: #FF6F0D;
   border-radius: 7px;
   margin-top: 2px;
 }
-button:hover{
+
+button:hover {
   border-color: #ffa86d;
 }
+
 /* ====================
     PARTIALS
    ==================== */
@@ -152,7 +179,7 @@ button:hover{
   border: 2px solid;
   border-radius: 7px;
   border-color: #FF6F0D;
-  text-align:center;
+  text-align: center;
   text-decoration: none;
   padding: 5px 0px 3px 0px;
   margin-top: 5px;
@@ -161,6 +188,7 @@ button:hover{
   font-weight: bold;
   vertical-align: middle;
 }
+
 a.action:hover {
   border-color: #ffa86d;
 }
@@ -172,10 +200,12 @@ a.action:hover {
   padding: 10px;
   text-align: center;
 }
+
 #welcome a {
   color: #939598;
   text-decoration: underline;
 }
+
 #welcome a:hover {
   color: #388220;
 }
@@ -185,6 +215,7 @@ a.action:hover {
 .login {
   padding-top: 10px
 }
+
 .login a {
   color: #939598;
   text-decoration: underline;
@@ -196,10 +227,10 @@ a.action:hover {
 /* READING A RECIPE and LOGIN */
 
 #options {
-  display:flex;
-  flex-direction:column;
-  flex-basis:auto;
-  order:2;
+  display: flex;
+  flex-direction: column;
+  flex-basis: auto;
+  order: 2;
   padding: 0px;
   margin-top: 10px;
 }
@@ -207,43 +238,54 @@ a.action:hover {
 /* EDITING A RECIPE */
 
 #content_edit {
-  display:flex;
-  flex-direction:column;
+  display: flex;
+  flex-direction: column;
 }
+
 .recipe ul {
   margin: 5px 0px 10px 0px;
   padding-left: 20px;
 }
+
 .title {
   margin-bottom: 10px;
 }
+
 .ingredient {
-  display:flex;
-  flex-direction:row;
+  display: flex;
+  flex-direction: row;
 }
+
 .ingredient input :active {
   border: #ebf2e8;
 }
+
 .ingredient_short {
-  flex:1 1 0;
-  margin:2px;
+  flex: 1 1 0;
+  margin: 2px;
 }
+
 .ingredient_long {
-  flex:2 1 0;
-  margin:2px;
+  flex: 2 1 0;
+  margin: 2px;
 }
-#content_edit button{
+
+#content_edit button {
   width: 25px;
 }
+
 #minus {
   margin: 2px 0px 2px 5px;
 }
+
 #plus {
-  align-self:flex-end;
+  align-self: flex-end;
 }
+
 #content_edit #save {
   margin-top: 10px;
 }
+
 .dragging {
   opacity: 40%;
 }
@@ -261,7 +303,8 @@ ul.details {
   list-style-type: none;
   padding-inline-start: 0;
 }
-details > summary::marker {
+
+details>summary::marker {
   color: #ff6f0d
 }
 
@@ -270,79 +313,35 @@ details > summary::marker {
     INTERMEDIATE
    ==================== */
 
-@media only screen and (min-width: 455px) and (max-width: 679px) {
+@media only screen and (min-width: 455px) {
 
   header {
     background-size: 100% auto;
     height: 140px;
   }
+
   nav {
     flex-direction: row;
   }
+
   nav a {
     flex: 1 1 0;
     margin: 0px 5px 0px 5px;
   }
+
   #options {
     flex-direction: row;
-    order:1;
+    order: 1;
     margin: 10px -5px 0px -5px;
   }
+
   #nav_1 {
-    flex-direction:column;
+    flex-direction: column;
   }
+
   #nav_2 {
-    margin-left:-5px;
+    margin-left: -5px;
     margin-right: -5px;
-  }
-}
-
-/* ====================
-    WIDE
-   ==================== */
-
-@media only screen and (min-width: 680px) {
-
-  body {
-    height:100vh;
-  }
-  header {
-    background-size: 100% auto;
-    height:140px;
-  }
-  #wrapper {
-    display: block;
-    overflow:auto;
-    box-sizing:border-box;
-  }
-  #main_container {
-    margin-top: 20px;
-  }
-  main {
-    align-items:stretch;
-  }
-  nav {
-    margin-top: 10px;
-    width: 30%;
-    float:right;
-  }
-  #nav_1 {
-  }
-  #nav_2 {
-    clear:right;
-    margin-top:0px;
-    margin-bottom:10px;
-  }
-  #options {
-    float:none;
-    flex-direction:row;
-    order:1;
-    width:auto;
-    margin: 10px -5px 0px -5px;
-  }
-  #options a {
-    flex:1 1 auto;
-    margin: 0px 5px 0px 5px;
   }
 }
 
@@ -352,14 +351,15 @@ details > summary::marker {
 @media only screen and (min-width: 900px) {
 
   body {
-    background-image: url(/img/background1.jpg);
+    background-image: url(/img/corian.jpg);
     background-size: 500px;
     /*background: linear-gradient(white, #388220);*/
     background-attachment: fixed;
   }
+
   #wrapper {
-    border: 10px solid #388220;
-    border-top:none;
+    border: 10px solid #e1a83f;
+    border-top: none;
     border-bottom: none;
   }
 }
@@ -370,11 +370,13 @@ details > summary::marker {
 @media print {
 
   .noprint {
-    display:none;
-    }
+    display: none;
+  }
+
   #options.noprint {
-    display:none;
-    }
+    display: none;
+  }
+
   #main_container {
     border: none;
   }
