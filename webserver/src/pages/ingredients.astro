@@ -1,25 +1,24 @@
 ---
+import { IngredientList } from "@components/IngredientList";
 import ListSelector from "@components/ListSelector.astro";
-import { RecipeList } from "@components/RecipeList";
 import Layout from "@layouts/Layout.astro";
 import { getLogin } from "@lib/login-cookie";
 import { prisma } from "@lib/prisma";
 
 const user = await getLogin(Astro.cookies);
 
-const recipes = await prisma.recipe.findMany({
+const ingredients = await prisma.recipeIngredient.findMany({
   select: {
     name: true,
-    slug: true,
-    author: { select: { username: true } },
   },
   orderBy: {
     name: "asc",
   },
+  distinct: ["name"],
 });
 ---
 
 <Layout title="Cookbook" user={user}>
-  <ListSelector current="recipes" />
-  <RecipeList recipes={recipes} initialQuery={Astro.url.search} client:load />
+  <ListSelector current="ingredients" />
+  <IngredientList ingredients={ingredients} initialQuery={Astro.url.search} client:load />
 </Layout>

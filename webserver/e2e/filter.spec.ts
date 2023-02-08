@@ -1,84 +1,116 @@
 import { expect } from '@playwright/test';
-import { test } from './fixtures.js';
-import { getSectionByHeading } from './util.js';
+import type { Recipe } from '@prisma/client';
+import { test as baseTest } from './fixtures.js';
 
-test('Filters', async ({ page, testUser, testCategory, testRecipe }) => {
-  const dessert = await testCategory.create("Dessert");
-  const supper = await testCategory.create("Supper");
-  const lunch = await testCategory.create("Lunch");
-  const user = await testUser.create({ username: 'testuser', name: "User Name" });
-  await Promise.all([testRecipe.create({
-    author: { connect: { id: user.id } },
-    name: "Test Recipe 1",
-    slug: "test-recipe",
-    ingredients: {
-      create: [
-        { name: "flour" },
-        { name: "sugar" },
-        { name: "eggs" },
-        { name: "butter" },
-      ]
-    },
-    categories: { connect: { id: dessert.id } },
-  }), testRecipe.create({
-    author: { connect: { id: user.id } },
-    name: "Recipe 2",
-    slug: "test-recipe-2",
-    ingredients: {
-      create: [
-        { name: "bread" },
-      ]
-    },
-    categories: { connect: { id: supper.id } },
-  }), testRecipe.create({
-    author: { connect: { id: user.id } },
-    name: "Sandwich",
-    slug: "sandwich",
-    ingredients: {
-      create: [
-        { name: "bread" },
-        { name: "pickles" },
-      ]
-    },
-    categories: { connect: { id: lunch.id } },
-  })]);
-  await page.goto('/');
+type Fixtures = {
+  someFilterableRecipes: { recipe1: Recipe, recipe2: Recipe, sandwich: Recipe };
+};
+const test = baseTest.extend<Fixtures>({
+  someFilterableRecipes: async ({ testCategory, testUser, testRecipe }, use) => {
+    const dessert = await testCategory.create("Dessert");
+    const supper = await testCategory.create("Supper");
+    const lunch = await testCategory.create("Lunch");
+    const user = await testUser.create({ username: 'testuser', name: "User Name" });
+    const [recipe1, recipe2, sandwich] = await Promise.all([testRecipe.create({
+      author: { connect: { id: user.id } },
+      name: "Test Recipe 1",
+      slug: "test-recipe",
+      ingredients: {
+        create: [
+          { name: "flour" },
+          { name: "sugar" },
+          { name: "eggs" },
+          { name: "butter" },
+        ]
+      },
+      categories: { connect: { id: dessert.id } },
+    }), testRecipe.create({
+      author: { connect: { id: user.id } },
+      name: "Recipe 2",
+      slug: "test-recipe-2",
+      ingredients: {
+        create: [
+          { name: "bread" },
+        ]
+      },
+      categories: { connect: { id: supper.id } },
+    }), testRecipe.create({
+      author: { connect: { id: user.id } },
+      name: "Sandwich",
+      slug: "sandwich",
+      ingredients: {
+        create: [
+          { name: "bread" },
+          { name: "pickles" },
+        ]
+      },
+      categories: { connect: { id: lunch.id } },
+    })]);
+    await use({recipe1, recipe2, sandwich});
+}
+});
+
+test('Recipe Filters', async ({ page, someFilterableRecipes }) => {
+  const { sandwich, recipe1 } = someFilterableRecipes;
+  await page.goto('/r');
 
   await expect(page.getByLabel(/Filter/)).toHaveValue("");
-  await expect.soft(page.getByRole("heading", { name: "Ingredients" })).not.toBeVisible();
-  await expect.soft(page.getByRole("heading", { name: "Categories" })).not.toBeVisible();
 
   await page.getByLabel(/Filter/).fill("s");
-  await expect(page).toHaveURL("/?filter=s");
+  await expect(page).toHaveURL("/r?filter=s");
 
   // Make sure Enter doesn't erase the form contents.
   await page.getByLabel(/Filter/).press("Enter");
   await expect(page.getByLabel(/Filter/)).toHaveValue("s");
 
-  await expect.soft(getSectionByHeading(page, 'Recipes').getByRole("listitem")).toHaveText([
-    "Sandwich",
-    "Test Recipe 1",
+  await expect.soft(page.locator('#recipes').getByRole("listitem")).toHaveText([
+    sandwich.name,
+    recipe1.name,
   ]);
-  await expect.soft(getSectionByHeading(page, 'Ingredients').getByRole("listitem").locator("summary")).toHaveText([
+});
+
+test('Ingredient Filters', async ({ page, someFilterableRecipes }) => {
+  const { recipe1 } = someFilterableRecipes;
+
+  await page.goto('/ingredients');
+
+  await expect(page.getByLabel(/Filter/)).toHaveValue("");
+
+  await page.getByLabel(/Filter/).fill("s");
+  await expect(page).toHaveURL("/ingredients?filter=s");
+
+  await expect.soft(page.locator('#ingredients').getByRole("listitem").locator("summary")).toHaveText([
     /^sugar$/i,
     /^eggs$/i,
     /^pickles$/i,
   ]);
-  await expect.soft(getSectionByHeading(page, 'Categories').getByRole("listitem").locator("summary")).toHaveText([
+
+  await page.locator('#ingredients').getByRole("listitem").filter({ hasText: "sugar" }).click();
+  await expect.soft(page.locator('#ingredients').getByRole("listitem")
+    .filter({ hasText: /sugar/i }).getByRole("listitem")).toHaveText([recipe1.name]);
+  await expect.soft(page.locator('#ingredients').getByRole("listitem")
+    .filter({ hasText: /eggs/i }).getByRole("listitem")).not.toBeVisible();
+});
+
+test('Category Filters', async ({ page, someFilterableRecipes }) => {
+  const { recipe2 } = someFilterableRecipes;
+
+  await page.goto('/categories');
+
+  await expect(page.getByLabel(/Filter/)).toHaveValue("");
+
+  await page.getByLabel(/Filter/).fill("s");
+  await expect(page).toHaveURL("/categories?filter=s");
+
+  await expect.soft(page.locator('#categories').getByRole("listitem").locator("summary")).toHaveText([
     /^Supper$/i,
     /^Dessert$/i,
   ]);
 
-  await getSectionByHeading(page, 'Ingredients').getByRole("listitem").filter({ hasText: "sugar" }).click();
-  await expect.soft(getSectionByHeading(page, 'Ingredients').getByRole("listitem")
-    .filter({ hasText: /sugar/i }).getByRole("listitem")).toHaveText(["Test Recipe 1"]);
-  await expect.soft(getSectionByHeading(page, 'Ingredients').getByRole("listitem")
-    .filter({ hasText: /eggs/i }).getByRole("listitem")).not.toBeVisible();
-
-  await getSectionByHeading(page, 'Categories').getByRole("listitem")
+  await page.locator('#categories').getByRole("listitem")
     .filter({ hasText: /Supper/i }).click();
-  await expect.soft(getSectionByHeading(page, 'Categories').getByRole("listitem")
-    .filter({ hasText: /Supper/i }).getByRole("listitem")).toHaveText(["Recipe 2"]);
+  await expect.soft(page.locator('#categories').getByRole("listitem")
+    .filter({ hasText: /Supper/i }).getByRole("listitem")).toHaveText([recipe2.name]);
 });
 
 test('Filter by user', async ({ page, testUser, testRecipe }) => {
@@ -154,43 +186,12 @@ test('Back and Forward navigate through filters', async ({ page, testUser, testR
 });
 
 test('Loading with a filter initializes single ingredients to open',
-  async ({ page, testUser, testCategory, testRecipe }) => {
-    const user = await testUser.create({ username: 'testuser', name: "User Name" });
-    await Promise.all([testRecipe.create({
-      author: { connect: { id: user.id } },
-      name: "Test Recipe 1",
-      slug: "test-recipe",
-      ingredients: {
-        create: [
-          { name: "flour" },
-          { name: "sugar" },
-          { name: "eggs" },
-          { name: "butter" },
-        ]
-      },
-    }), testRecipe.create({
-      author: { connect: { id: user.id } },
-      name: "Recipe 2",
-      slug: "test-recipe-2",
-      ingredients: {
-        create: [
-          { name: "bread" },
-        ]
-      },
-    }), testRecipe.create({
-      author: { connect: { id: user.id } },
-      name: "Sandwich",
-      slug: "sandwich",
-      ingredients: {
-        create: [
-          { name: "bread" },
-          { name: "pickles" },
-        ]
-      },
-    })]);
-    await page.goto('/?filter=butter');
+  async ({ page, someFilterableRecipes }) => {
+    const { recipe1 } = someFilterableRecipes;
 
-    await expect(getSectionByHeading(page, 'Ingredients')
+    await page.goto('/ingredients?filter=butter');
+
+    await expect(page.locator('#ingredients')
       .getByRole("listitem").filter({ hasText: /butter/i })
       .getByRole("listitem").filter({ hasText: "Test Recipe 1" })).toBeVisible();
   }
@@ -218,9 +219,9 @@ test('Loading with a filter initializes single categories to open',
       slug: "sandwich",
       categories: { connect: { id: lunch.id } },
     })]);
-    await page.goto('/?filter=supper');
+    await page.goto('/categories?filter=supper');
 
-    await expect(getSectionByHeading(page, 'Categories')
+    await expect(page.locator('#categories')
       .getByRole("listitem").filter({ hasText: /supper/i })
       .getByRole("listitem").filter({ hasText: "Recipe 2" })).toBeVisible();
 

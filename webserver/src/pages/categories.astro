@@ -1,18 +1,14 @@
 ---
+import { CategoryList } from "@components/CategoryList";
 import ListSelector from "@components/ListSelector.astro";
-import { RecipeList } from "@components/RecipeList";
 import Layout from "@layouts/Layout.astro";
 import { getLogin } from "@lib/login-cookie";
 import { prisma } from "@lib/prisma";
 
 const user = await getLogin(Astro.cookies);
 
-const recipes = await prisma.recipe.findMany({
-  select: {
-    name: true,
-    slug: true,
-    author: { select: { username: true } },
-  },
+const categories = await prisma.category.findMany({
+  where: { Recipes: { some: {} } },
   orderBy: {
     name: "asc",
   },
@@ -20,6 +16,6 @@ const recipes = await prisma.recipe.findMany({
 ---
 
 <Layout title="Cookbook" user={user}>
-  <ListSelector current="recipes" />
-  <RecipeList recipes={recipes} initialQuery={Astro.url.search} client:load />
+  <ListSelector current="categories" />
+  <CategoryList categories={categories} initialQuery={Astro.url.search} client:load />
 </Layout>
