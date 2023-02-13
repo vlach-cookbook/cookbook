@@ -1,0 +1,91 @@
+---
+import { OneRecipe } from "@components/OneRecipe";
+import { parseQuery,SearchForm } from "@components/SearchForm";
+import Layout from "@layouts/Layout.astro";
+import { getLogin } from "@lib/login-cookie";
+import { prisma } from "@lib/prisma";
+import type { Prisma } from "@prisma/client";
+
+const userP = getLogin(Astro.cookies);
+
+const parsedQuery = parseQuery(Astro.url.searchParams);
+
+const recipesP = prisma.recipe.findMany({
+  where: {
+    name: { contains: parsedQuery.title, mode: "insensitive" },
+    AND: [
+      {
+        AND: parsedQuery.categoryFilter.AND.map(
+          ({ OR }) =>
+            ({
+              categories: { some: { name: { in: OR } } },
+            } satisfies Prisma.RecipeWhereInput)
+        ),
+      },
+      {
+        AND: parsedQuery.ingredientFilter.AND.map(
+          ({ OR }) =>
+            ({
+              ingredients: { some: { name: { in: OR } } },
+            } satisfies Prisma.RecipeWhereInput)
+        ),
+      },
+    ],
+  },
+  select: {
+    name: true,
+    slug: true,
+    author: { select: { username: true } },
+  },
+  orderBy: {
+    name: "asc",
+  },
+});
+
+const allIngredientsP = prisma.recipeIngredient.findMany({
+  select: { name: true },
+  distinct: ["name"],
+  orderBy: { name: "asc" },
+});
+const allCategoriesP = prisma.category.findMany({
+  where: { Recipes: { some: {} } },
+  select: { name: true },
+  orderBy: { name: "asc" },
+});
+
+const [user, recipes, allIngredients, allCategories] = await Promise.all([
+  userP,
+  recipesP,
+  allIngredientsP,
+  allCategoriesP,
+]);
+---
+
+<Layout title="Search" user={user} omitSearchBox>
+  <SearchForm
+    user={user}
+    parsedQuery={parsedQuery}
+    allIngredients={allIngredients}
+    allCategories={allCategories}
+    client:load
+  />
+  <section id="recipes">
+    <ul>
+      {
+        recipes.map((recipe) => (
+          <li>
+            <OneRecipe recipe={recipe} />
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</Layout>
+
+<style is:global>
+  .andOrSelects {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+  }
+</style>

@@ -9,10 +9,12 @@ export interface Props {
   user: User | null;
   /// True if this page needs the user to log in, so Google sign-in should be more aggressive.
   needLogin?: boolean;
+  /// True for pages that include their own search box.
+  omitSearchBox?: boolean;
   children: any;
 }
 
-const { title, user, needLogin = false } = Astro.props;
+const { title, user, needLogin = false, omitSearchBox = false } = Astro.props;
 
 const login_uri = new URL(
   `/finish_login?from=${encodeURIComponent(Astro.url.href)}`,
@@ -82,9 +84,15 @@ if (login_uri.hostname !== "localhost") {
       <header class="noprint">
         <a href="/"><h1>Cookbook</h1></a>
       </header>
-      <nav id="nav_1" class="noprint">
-        <input type="search" class="search" placeholder="Search" />
-      </nav>
+      {
+        omitSearchBox ? null : (
+          <nav id="nav_1" class="noprint">
+            <form method="get" action="/search">
+              <input type="search" name="title" class="search" placeholder="SEARCH" />
+            </form>
+          </nav>
+        )
+      }
 
       <main id="main_container">
         <slot />

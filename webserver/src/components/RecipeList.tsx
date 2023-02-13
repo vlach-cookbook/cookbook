@@ -4,40 +4,6 @@ import { OneRecipe, RecipeTitleWithLinkFields } from './OneRecipe';
 import { QueryDrivenTextField } from './QueryDrivenTextField';
 
 
-async function fetchRecipesForIngredient(ingredient: string, username: string | undefined) {
-  const searchParams = new URLSearchParams();
-  searchParams.set("name", ingredient);
-  if (username) {
-    searchParams.set("user", username);
-  }
-  let response = await fetch(`/api/recipes-with-ingredient?${searchParams.toString()}`);
-  let recipes = await response.json() as {
-    name: string;
-    slug: string;
-    author: {
-      username: string;
-    };
-  }[];
-  return recipes;
-}
-
-async function fetchRecipesForCategory(categoryId: number, username: string | undefined) {
-  const searchParams = new URLSearchParams();
-  searchParams.set("id", `${categoryId}`);
-  if (username) {
-    searchParams.set("user", username);
-  }
-  let response = await fetch(`/api/recipes-in-category?${searchParams.toString()}`);
-  let recipes = await response.json() as {
-    name: string;
-    slug: string;
-    author: {
-      username: string;
-    };
-  }[];
-  return recipes;
-}
-
 export const RecipeList: Component<{
   recipes: RecipeTitleWithLinkFields[];
   username?: string;
