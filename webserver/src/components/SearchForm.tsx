@@ -1,6 +1,7 @@
 import type { Category, RecipeIngredient, User } from "@prisma/client";
 import { Component, For, Show } from "solid-js";
-import { createStore, produce, SetStoreFunction, unwrap } from "solid-js/store";
+import { createStore, produce, SetStoreFunction } from "solid-js/store";
+import { MultiSelect } from "./MultiSelect";
 
 export type ParsedRecipeSearch = {
   title: string | undefined;
@@ -58,8 +59,7 @@ export const SearchForm: Component<{
   const [categoryGroups, setCategoryGroups] = createStore(props.parsedQuery.categoryFilter.AND.concat([{ OR: [] }]));
   const [ingredientGroups, setIngredientGroups] = createStore(props.parsedQuery.ingredientFilter.AND.concat([{ OR: [] }]));
 
-  function onChange(event: Event & { currentTarget: HTMLSelectElement }) {
-    const name = event.currentTarget.name;
+  function onChange(selected: string[], name: string) {
     let setStore: SetStoreFunction<{ OR: string[]; }[]>;
     let index: number;
     if (name.startsWith("category")) {
@@ -72,10 +72,8 @@ export const SearchForm: Component<{
       return;
     }
 
-    const selected = Array.from(event.currentTarget.selectedOptions, (option) => option.value);
     setStore(produce(groups => {
       groups[index]!.OR = selected;
-      console.log(unwrap(groups));
       function isEmpty(index: number) {
         return (groups[index]?.OR.length ?? 0) === 0;
       }
@@ -87,7 +85,7 @@ export const SearchForm: Component<{
         newLength--;
       }
       groups.length = newLength;
-    }))
+    }));
   }
 
   return <form method="get">
@@ -98,13 +96,12 @@ export const SearchForm: Component<{
         {(categoryGroup, index) =>
           <>
             <Show when={index() > 0}><p>AND</p></Show>
-            <label><p>Any of these categories</p>
-              <select multiple name={`category${index()}`} onChange={onChange}>
-                <For each={props.allCategories}>{(category) =>
-                  <option selected={categoryGroup.OR.includes(category.name)}>{category.name}</option>}
-                </For>
-              </select>
-            </label>
+            <MultiSelect
+              label="Any of these categories"
+              name={`category${index()}`}
+              options={props.allCategories.map(category => category.name.replaceAll(' ', '_'))}
+              selected={categoryGroup.OR}
+              onChange={onChange} />
           </>
         }
       </For>
@@ -114,13 +111,12 @@ export const SearchForm: Component<{
         {(ingredientGroup, index) =>
           <>
             <Show when={index() > 0}><p>AND</p></Show>
-            <label><p>Any of these ingredients</p>
-              <select multiple name={`ingredient${index()}`} onChange={onChange}>
-                <For each={props.allIngredients}>{(ingredient) =>
-                  <option selected={ingredientGroup.OR.includes(ingredient.name)}>{ingredient.name}</option>}
-                </For>
-              </select>
-            </label>
+            <MultiSelect
+              label="Any of these ingredients"
+              name={`ingredient${index()}`}
+              options={props.allIngredients.map(ingredient => ingredient.name.replaceAll(' ', '_'))}
+              selected={ingredientGroup.OR}
+              onChange={onChange} />
           </>
         }
       </For>

@@ -18,7 +18,13 @@ const recipesP = prisma.recipe.findMany({
         AND: parsedQuery.categoryFilter.AND.map(
           ({ OR }) =>
             ({
-              categories: { some: { name: { in: OR } } },
+              categories: {
+                some: {
+                  name: {
+                    in: OR.map((category) => category.replaceAll("_", " ")),
+                  },
+                },
+              },
             } satisfies Prisma.RecipeWhereInput)
         ),
       },
@@ -26,7 +32,13 @@ const recipesP = prisma.recipe.findMany({
         AND: parsedQuery.ingredientFilter.AND.map(
           ({ OR }) =>
             ({
-              ingredients: { some: { name: { in: OR } } },
+              ingredients: {
+                some: {
+                  name: {
+                    in: OR.map((ingredient) => ingredient.replaceAll("_", " ")),
+                  },
+                },
+              },
             } satisfies Prisma.RecipeWhereInput)
         ),
       },
@@ -88,4 +100,8 @@ const [user, recipes, allIngredients, allCategories] = await Promise.all([
     flex-flow: row wrap;
     align-items: center;
   }
+  sl-select {
+    max-width: 15em;
+  }
+  sl-option:not(:defined) { display: none; }
 </style>
