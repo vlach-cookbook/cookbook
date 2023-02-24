@@ -121,7 +121,7 @@ if (slug && username) {
             {recipe.categories.map((category) => (
               <li itemprop="recipeCategory">
                 <a
-                  href={`/search?category=${encodeURIComponent(category.name)}`}
+                  href={`/search?category=${encodeURIComponent(category.name.replaceAll(' ', '_'))}`}
                 >
                   {category.name}
                 </a>

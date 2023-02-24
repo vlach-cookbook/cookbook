@@ -31,7 +31,7 @@ export function parseQuery(query: URLSearchParams): ParsedRecipeSearch {
       if (!categoryFilter.AND[index]) {
         categoryFilter.AND[index] = { OR: [] };
       }
-      categoryFilter.AND[index]!.OR.push(value);
+      categoryFilter.AND[index]!.OR.push(value.replaceAll(' ', '_'));
     }
     if (key.startsWith("ingredient")) {
       let index = parseInt(key.slice("ingredient".length));
@@ -39,7 +39,7 @@ export function parseQuery(query: URLSearchParams): ParsedRecipeSearch {
       if (ingredientFilter.AND[index] == null) {
         ingredientFilter.AND[index] = { OR: [] };
       }
-      ingredientFilter.AND[index]!.OR.push(value);
+      ingredientFilter.AND[index]!.OR.push(value.replaceAll(' ', '_'));
     }
   }
 
