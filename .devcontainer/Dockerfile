@@ -5,7 +5,7 @@ ENV PATH=/home/node/depot_tools:${PNPM_HOME}:${PATH}
 
 RUN su node -c "npm install -g pnpm@7"
 
-RUN su node -c "pnpm install -g prisma playwright"
+RUN su node -c "pnpm install -g prisma playwright && playwright install-deps"
 
 RUN su node -c "git clone --filter=blob:none https://chromium.googlesource.com/chromium/tools/depot_tools.git /home/node/depot_tools && git rebase-update --help>/dev/null"
 
