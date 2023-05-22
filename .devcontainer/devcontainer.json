@@ -10,7 +10,8 @@
     "ghcr.io/devcontainers/features/terraform:1": {},
     "ghcr.io/devcontainers/features/sshd:1": {
       "version": "latest"
-    }
+    },
+    "ghcr.io/devcontainers/features/desktop-lite:1": {}
   },
   "customizations": {
     "vscode": {
@@ -31,8 +32,12 @@
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   // This can be used to network with other containers or with the host.
   "forwardPorts": [
+    // Default `astro dev` port.
     3000,
-    5432
+    // Postgres port.
+    5432,
+    // NoVnc port for web browser access.
+    6080
   ],
   // See https://containers.dev/implementors/json_reference/#lifecycle-scripts.
   // This makes sure the current packages are always available.
