@@ -3,8 +3,8 @@ import Layout from "@layouts/Layout.astro";
 import { getLogin } from "@lib/login-cookie";
 import { prisma } from "@lib/prisma";
 import slugify from "@lib/slugify";
-import type { Recipe,User } from "@prisma/client";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
+import type { Recipe, User } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 
 const user = await getLogin(Astro.cookies);
 
@@ -128,7 +128,7 @@ async function importPostedRecipes(): Promise<ImportResult> {
         break;
       case "rejected":
         if (
-          recipeResult.reason instanceof PrismaClientKnownRequestError &&
+          recipeResult.reason instanceof Prisma.PrismaClientKnownRequestError &&
           recipeResult.reason.code === "P2002"
         ) {
           // The recipe was just already inserted.

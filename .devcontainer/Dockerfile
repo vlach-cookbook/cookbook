@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/devcontainers/typescript-node:0-18
 ENV PNPM_HOME=/home/node/.local/share/pnpm
 ENV PATH=/home/node/depot_tools:${PNPM_HOME}:${PATH}
 
-RUN su node -c "npm install -g pnpm@7"
+RUN su node -c "npm install -g pnpm@8"
 
 RUN su node -c "pnpm install -g prisma playwright && playwright install-deps"
 

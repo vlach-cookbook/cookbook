@@ -72,6 +72,7 @@ test('Empty user needs to pick a unique username', async ({ page, testUser, test
   await expect.soft(usernameField, "An error shouldn't lose the user's partial input.").toHaveValue("existinguser");
 
   await usernameField.fill("testusername");
+  await expect(usernameField, "Wait for fill.").toHaveValue("testusername");
   // Should submit this time.
   await page.getByRole("button", { name: "Save" }).click();
 
