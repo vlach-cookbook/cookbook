@@ -17,12 +17,13 @@
     "vscode": {
       "extensions": [
         "astro-build.astro-vscode",
-        "ms-azuretools.vscode-docker",
-        "prisma.prisma",
-        "hashicorp.terraform",
+        "eamodio.gitlens",
         "EditorConfig.EditorConfig",
+        "github.vscode-github-actions",
         "GitHub.vscode-pull-request-github",
-        "eamodio.gitlens"
+        "hashicorp.terraform",
+        "ms-azuretools.vscode-docker",
+        "prisma.prisma"
       ]
     }
   },
