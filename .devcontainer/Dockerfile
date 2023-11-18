@@ -10,7 +10,13 @@ RUN su node -c "pnpm install -g prisma playwright && playwright install-deps"
 
 RUN su node -c "git clone --filter=blob:none https://chromium.googlesource.com/chromium/tools/depot_tools.git /home/node/depot_tools && git rebase-update --help>/dev/null"
 
-RUN su node -c 'F=$(mktemp); curl -fsSL https://fly.io/install.sh -o $F && sh $F; rm $F'
+RUN su node -c "curl -fsSL https://fly.io/install.sh | sh"
+
+COPY --chmod=755 <<EOF /usr/local/bin/git-s
+#!/bin/sh
+git map-branches -v
+git status
+EOF
 
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
