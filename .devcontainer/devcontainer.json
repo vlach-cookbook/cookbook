@@ -23,7 +23,8 @@
         "GitHub.vscode-pull-request-github",
         "hashicorp.terraform",
         "ms-azuretools.vscode-docker",
-        "prisma.prisma"
+        "prisma.prisma",
+        "tamasfe.even-better-toml"
       ]
     }
   },
