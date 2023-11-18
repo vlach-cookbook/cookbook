@@ -1,46 +1,30 @@
-# fly.toml file generated for vlach-cookbook on 2022-10-08T14:51:25-07:00
-
 # Use `-a vlach-cookbook` to deploy the production app.
-# The staging app is actually configured using the following commands:
-#
-# fly ips allocate-v4 --shared
-# fly ips allocate-v6
-# fly machine run . --cpus 1 --size shared-cpu-1x --memory 256 --region sea \
-#   --env HOST=:: --env PORT=8080 --env MAX_IDLE_SECONDS=600 --port 443:8080/tcp:tls:http
-#
-# And then see .github/workflows/staging.yml for how its image is updated.
+# TBD how to override min_machines_running to 1 in production.
 app = "vlach-cookbook-staging"
+primary_region = "sea"
 kill_signal = "SIGINT"
 kill_timeout = 5
 
 [env]
   PORT = "8080"
 
-[experimental]
-  allowed_public_ports = []
-  auto_rollback = true
-
-[[services]]
-  http_checks = []
+[http_service]
   internal_port = 8080
-  protocol = "tcp"
-  script_checks = []
-  [services.concurrency]
-    hard_limit = 25
-    soft_limit = 20
-    type = "connections"
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  [http_service.concurrency]
+    type = "requests"
+    soft_limit = 200
+    hard_limit = 250
+  [[http_service.checks]]
+    grace_period = "10s"
+    interval = "30s"
+    timeout = "5s"
+    method = "GET"
+    path = "/"
 
-  [[services.ports]]
-    force_https = true
-    handlers = ["http"]
-    port = 80
-
-  [[services.ports]]
-    handlers = ["tls", "http"]
-    port = 443
-
-  [[services.tcp_checks]]
-    grace_period = "1s"
-    interval = "15s"
-    restart_limit = 0
-    timeout = "2s"
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "256mb"
