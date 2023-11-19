@@ -8,6 +8,9 @@ kill_timeout = 5
 [env]
   PORT = "8080"
 
+[deploy]
+  release_command = "sh -c 'DATABASE_URL=$ADMIN_DATABASE_URL pnpm prisma migrate deploy'"
+
 [http_service]
   internal_port = 8080
   force_https = true
