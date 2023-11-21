@@ -98,13 +98,14 @@ resource "postgresql_database" "cookbook_staging" {
 
 // Grant privileges to the webserver. The server needs to read and update tables and "use"
 // sequences, both for existing tables and new ones.
+// We also allow "SELECT" on sequences so we can pg_dump the database as the webserver.
 locals {
   privileges = [{
     object_type = "table"
     privileges  = ["SELECT", "INSERT", "UPDATE", "DELETE"]
     }, {
     object_type = "sequence"
-    privileges  = ["USAGE"]
+    privileges  = ["USAGE", "SELECT"]
   }]
 
   environments = ["staging", "prod"]
