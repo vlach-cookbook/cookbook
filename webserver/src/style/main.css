@@ -234,6 +234,10 @@ a.action:hover {
   margin-top: 10px;
 }
 
+.frac {
+  font-variant-numeric: diagonal-fractions;
+}
+
 /* EDITING A RECIPE */
 
 #content_edit {

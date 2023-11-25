@@ -26,14 +26,14 @@ if (process.env.GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN) {
 }
 const login_uri = new URL(
   `/finish_login?from=${encodeURIComponent(request_url.href)}`,
-  request_url
+  request_url,
 );
 if (login_uri.hostname !== "localhost") {
   login_uri.protocol = "https";
 }
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -113,3 +113,46 @@ if (login_uri.hostname !== "localhost") {
     </div>
   </body>
 </html>
+
+<style is:global>
+  @font-face {
+    font-family: "Lato";
+    src: url("/fonts/Lato-Bold.woff2") format("woff2");
+    font-style: normal;
+    font-weight: 700;
+    font-display: block;
+    text-rendering: optimizeLegibility;
+  }
+
+  @font-face {
+    font-family: "Lato";
+    src: url("/fonts/Lato-BoldItalic.woff2") format("woff2");
+    font-style: italic;
+    font-weight: 700;
+    font-display: block;
+    text-rendering: optimizeLegibility;
+  }
+
+  @font-face {
+    font-family: "Lato";
+    src: url("/fonts/Lato-Italic.woff2") format("woff2");
+    font-style: italic;
+    font-weight: 400;
+    font-display: block;
+    text-rendering: optimizeLegibility;
+  }
+
+  @font-face {
+    font-family: "Lato";
+    src: url("/fonts/Lato-Regular.woff2") format("woff2");
+    font-style: normal;
+    font-weight: 400;
+    font-display: block;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    font-family: Lato, sans-serif;
+    font-variant-numeric: oldstyle-nums;
+  }
+</style>
