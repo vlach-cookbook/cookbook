@@ -10,7 +10,7 @@ const recipeUrlFields = {
     authorId: true,
     author: { select: { username: true } }
   }
-} as const satisfies Prisma.RecipeArgs;
+} as const satisfies Prisma.RecipeDefaultArgs;
 
 export const POST: APIRoute = async ({ request, redirect, cookies }) => {
   function redirectToNote(note: RecipeNote & {

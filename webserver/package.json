@@ -24,7 +24,7 @@
     "@astrojs/node": "^6.0.4",
     "@astrojs/solid-js": "^3.0.2",
     "@github/relative-time-element": "^4.3.0",
-    "@prisma/client": "^4.15.0",
+    "@prisma/client": "^5.6.0",
     "@shoelace-style/shoelace": "^2.4.0",
     "astro": "^3.6.0",
     "debug": "^4.3.4",
@@ -32,7 +32,7 @@
     "express": "^4.18.2",
     "google-auth-library": "^8.8.0",
     "markdown-it": "^13.0.1",
-    "prisma": "^4.15.0",
+    "prisma": "^5.6.0",
     "solid-js": "^1.8.6",
     "typescript": "^5.3.2"
   },
