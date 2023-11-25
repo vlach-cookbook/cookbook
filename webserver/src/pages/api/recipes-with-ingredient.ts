@@ -2,7 +2,7 @@ import { prisma } from "@lib/prisma";
 import type { Prisma } from "@prisma/client";
 import type { APIRoute } from "astro";
 
-export const get: APIRoute = async ({ url }) => {
+export const GET: APIRoute = async ({ url }) => {
   const params = url.searchParams;
   const names = new Set<string>();
   for (const nameList of params.getAll('name')) {

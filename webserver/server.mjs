@@ -4,7 +4,7 @@ import { handler as ssrHandler } from './dist/server/entry.mjs';
 const debug = debugModule('cookbook');
 
 const host = process.env.HOST ? process.env.HOST : 'localhost';
-const port = process.env.PORT ? Number.parseInt(process.env.PORT) : 3000;
+const port = process.env.PORT ? Number.parseInt(process.env.PORT) : 4321;
 const maxIdleSeconds = process.env.MAX_IDLE_SECONDS ? Number.parseInt(process.env.MAX_IDLE_SECONDS) : NaN;
 
 let idleTimeout = null;

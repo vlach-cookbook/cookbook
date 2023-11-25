@@ -12,7 +12,7 @@ const recipeUrlFields = {
   }
 } as const satisfies Prisma.RecipeArgs;
 
-export const post: APIRoute = async ({ request, redirect, cookies }) => {
+export const POST: APIRoute = async ({ request, redirect, cookies }) => {
   function redirectToNote(note: RecipeNote & {
     recipe: Pick<Recipe, "slug" | "authorId"> & { author: Pick<User, "username"> }
   }) {

@@ -1,6 +1,6 @@
 import { prisma } from "@lib/prisma";
 import type { User } from "@prisma/client";
-import type { AstroCookies } from "astro/dist/core/cookies";
+import type { AstroCookies } from "astro";
 import crypto from 'node:crypto';
 import util from 'node:util';
 
@@ -33,7 +33,7 @@ export async function setLogin(cookies: AstroCookies, user: User | null): Promis
 }
 
 export async function getLogin(cookies: AstroCookies): Promise<User | null> {
-  const sessionId = cookies.get(LOGIN_COOKIE_NAME).value;
+  const sessionId = cookies.get(LOGIN_COOKIE_NAME)?.value;
   if (!sessionId) return null;
   const session = await prisma.session.findUnique({
     where: { id: sessionId },

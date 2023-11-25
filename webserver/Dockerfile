@@ -17,6 +17,6 @@ COPY . .
 RUN pnpm run build
 
 # Setting HOST is really important so the server listens to external connections.
-EXPOSE 3000
-ENV HOST=0.0.0.0 PORT=3000
+EXPOSE 4321
+ENV HOST=0.0.0.0 PORT=4321
 CMD ["pnpm", "run", "start"]

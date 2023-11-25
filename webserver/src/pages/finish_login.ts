@@ -5,8 +5,8 @@ import { prisma } from "@lib/prisma";
 import { Prisma } from "@prisma/client";
 import type { APIRoute } from "astro";
 
-export const post: APIRoute = async ({ request, cookies, redirect }) => {
-  const csrf_token_cookie = cookies.get('g_csrf_token').value
+export const POST: APIRoute = async ({ request, cookies, redirect }) => {
+  const csrf_token_cookie = cookies.get('g_csrf_token')?.value
   if (!csrf_token_cookie) {
     return new Response(null, { status: 400, statusText: 'No CSRF token in Cookie.' });
   }

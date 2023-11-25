@@ -21,7 +21,7 @@ if (process.env.GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN) {
   // Github Codespaces seem to rewrite requests to target localhost,
   // but the client's browser needs to be sent to non-localhost URLs.
   // Somehow no port appears in Astro.url.port, so this hardcodes the port.
-  request_url.hostname = `${process.env.CODESPACE_NAME}-3000.${process.env.GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}`;
+  request_url.hostname = `${process.env.CODESPACE_NAME}-4321.${process.env.GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}`;
   request_url.port = "";
 }
 const login_uri = new URL(

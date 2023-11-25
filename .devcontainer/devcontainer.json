@@ -35,7 +35,7 @@
   // This can be used to network with other containers or with the host.
   "forwardPorts": [
     // Default `astro dev` port.
-    3000,
+    4321,
     // Postgres port.
     5432,
     // NoVnc port for web browser access.
