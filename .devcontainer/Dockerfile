@@ -4,7 +4,7 @@ ENV PNPM_HOME=/home/node/.local/share/pnpm
 ENV FLYCTL_INSTALL="/home/node/.fly"
 ENV PATH=/home/node/depot_tools:${PNPM_HOME}:${FLYCTL_INSTALL}/bin:${PATH}
 
-RUN su node -c "npm install -g pnpm@8"
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
 RUN su node -c "pnpm install -g prisma playwright && playwright install-deps"
 
