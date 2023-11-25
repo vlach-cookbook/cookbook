@@ -45,12 +45,12 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
             // If their account doesn't have a name attached, use their email instead.
             name: userInfo.name || userInfo.email,
             // Guess at their desired username:
-            username: userInfo.email.split('@')[0],
+            username: userInfo.email.split('@')[0]!,
           },
         },
       },
       include: { User: true },
-    };
+    } satisfies Prisma.GoogleUserCreateArgs;
     try {
       googleUser = await prisma.googleUser.create(creationObject);
     } catch (e) {
@@ -59,7 +59,18 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
         // https://www.prisma.io/docs/reference/api-reference/error-reference#p2002.
         //
         // Assume it's the username field that's not unique.
-        delete creationObject.data.User.create.username;
+        const originalUsername = creationObject.data.User.create.username;
+        const existingUsernames = new Set((await prisma.user.findMany({
+          where: {
+            username: { startsWith: originalUsername }
+          },
+          select: { username: true }
+        })).map(user => user.username));
+        let counter = 1;
+        while (existingUsernames.has(originalUsername + counter)) {
+          counter++;
+        }
+        creationObject.data.User.create.username = originalUsername + counter;
         googleUser = await prisma.googleUser.create(creationObject);
 
       } else {
