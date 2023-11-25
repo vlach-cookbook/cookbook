@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/devcontainers/typescript-node:0-18
+FROM mcr.microsoft.com/devcontainers/typescript-node:20
 
 ENV PNPM_HOME=/home/node/.local/share/pnpm
 ENV FLYCTL_INSTALL="/home/node/.fly"
