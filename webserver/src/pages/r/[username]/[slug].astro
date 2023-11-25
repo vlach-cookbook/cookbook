@@ -1,15 +1,15 @@
 ---
 import Markdown from "@components/Markdown.astro";
-import { AddRecipeNote,RecipeNote } from "@components/RecipeNote";
+import { AddRecipeNote, RecipeNote } from "@components/RecipeNote";
 import Layout from "@layouts/Layout.astro";
 import { getLogin } from "@lib/login-cookie";
 import { prisma } from "@lib/prisma";
 import type {
-Category,
-Recipe,
-RecipeIngredient,
-RecipeNote as DBRecipeNote,
-User
+  Category,
+  Recipe,
+  RecipeIngredient,
+  RecipeNote as DBRecipeNote,
+  User,
 } from "@prisma/client";
 
 const activeUser = await getLogin(Astro.cookies);
@@ -81,7 +81,9 @@ if (slug && username) {
                     itemscope
                     itemtype="https://schema.org/QuantitativeValue"
                   >
-                    <span itemprop="value" class="frac">{ingredient.amount}</span>
+                    <span itemprop="value" class="frac">
+                      {ingredient.amount}
+                    </span>
                     {ingredient.unit ? (
                       <span itemprop="unitText">{ingredient.unit}</span>
                     ) : null}
@@ -121,7 +123,9 @@ if (slug && username) {
             {recipe.categories.map((category) => (
               <li itemprop="recipeCategory">
                 <a
-                  href={`/search?category=${encodeURIComponent(category.name.replaceAll(' ', '_'))}`}
+                  href={`/search?category=${encodeURIComponent(
+                    category.name.replaceAll(" ", "_"),
+                  )}`}
                 >
                   {category.name}
                 </a>
@@ -144,7 +148,7 @@ if (slug && username) {
                 />
               ) : (
                 <RecipeNote note={note} />
-              )
+              ),
             )}
           </ol>
           {activeUser ? (
@@ -177,3 +181,9 @@ if (slug && username) {
     )
   }
 </Layout>
+
+<style is:global>
+  [itemprop="recipeInstructions"] {
+    font-variant-numeric: oldstyle-nums;
+  }
+</style>
