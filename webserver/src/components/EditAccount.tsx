@@ -1,6 +1,6 @@
 import { usernamePattern } from '@lib/valid-username';
 import type { GoogleUser, User } from '@prisma/client';
-import { Component, createSignal } from 'solid-js';
+import { type Component, createSignal } from 'solid-js';
 
 export const EditAccount: Component<{
   hasRecipes: boolean,

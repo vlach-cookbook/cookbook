@@ -1,6 +1,6 @@
-import type SlSelect from "@shoelace-style/shoelace/dist/components/select/select";
+import type SlSelect from "@shoelace-style/shoelace/dist/components/select/select.js";
 import '@shoelace-style/shoelace/dist/themes/light.css';
-import { Component, For } from "solid-js";
+import { type Component, For } from "solid-js";
 import { isServer } from "solid-js/web";
 
 if (!isServer) {

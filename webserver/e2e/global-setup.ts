@@ -4,7 +4,7 @@ import { promisify } from 'node:util';
 
 const execFileP = promisify(execFile);
 
-async function globalSetup(config: FullConfig) {
+async function globalSetup(_config: FullConfig) {
   if (process.env.CI) {
     // The CI has already reset the database by the time we get here.
     return;

@@ -1,5 +1,5 @@
 import { prisma } from '@lib/prisma';
-import { BrowserContext, test as base } from '@playwright/test';
+import { type BrowserContext, test as base } from '@playwright/test';
 import type { Category, Recipe, RecipeIngredient, Session, User } from '@prisma/client';
 import { Prisma } from '@prisma/client';
 

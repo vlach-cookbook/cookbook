@@ -73,3 +73,23 @@ jobs:
         run: pnpm prisma generate
       - name: Check types in .astro files
         run: pnpm astro check
+  tsc:
+    name: Check Typescript types
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 7
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: "pnpm"
+          cache-dependency-path: "webserver/pnpm-lock.yaml"
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Generate Prisma client
+        run: pnpm prisma generate
+      - name: Check typescript types
+        run: pnpm tsc

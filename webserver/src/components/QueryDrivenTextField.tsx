@@ -1,4 +1,4 @@
-import { FlowComponent, onCleanup, onMount } from "solid-js";
+import { type FlowComponent, onCleanup, onMount } from "solid-js";
 
 export const QueryDrivenTextField: FlowComponent<{
   queryParam: string,

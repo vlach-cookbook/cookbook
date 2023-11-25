@@ -1,7 +1,7 @@
 import { escapeRegExp, filterListWithInitialMatchesFirst } from '@lib/util';
 import type { Category } from '@prisma/client';
-import { Accessor, Component, createMemo, createResource, createSignal, For, Resource, Setter, Suspense } from 'solid-js';
-import { OneRecipe, RecipeTitleWithLinkFields } from './OneRecipe';
+import { type Accessor, type Component, createMemo, createResource, createSignal, For, type Resource, type Setter, Suspense } from 'solid-js';
+import { OneRecipe, type RecipeTitleWithLinkFields } from './OneRecipe';
 import { QueryDrivenTextField } from './QueryDrivenTextField';
 
 async function fetchRecipesForCategory(categoryId: number, username: string | undefined) {

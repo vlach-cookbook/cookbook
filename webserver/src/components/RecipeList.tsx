@@ -1,6 +1,6 @@
 import { escapeRegExp, filterListWithInitialMatchesFirst } from '@lib/util';
-import { Component, createMemo, createSignal, For } from 'solid-js';
-import { OneRecipe, RecipeTitleWithLinkFields } from './OneRecipe';
+import { type Component, createMemo, createSignal, For } from 'solid-js';
+import { OneRecipe, type RecipeTitleWithLinkFields } from './OneRecipe';
 import { QueryDrivenTextField } from './QueryDrivenTextField';
 
 

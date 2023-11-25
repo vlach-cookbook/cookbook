@@ -1,6 +1,6 @@
 import "@lib/relative-time-interface";
 import type { RecipeNote as Note, User } from "@prisma/client";
-import { Component, createSignal, Match, Switch } from "solid-js";
+import { type Component, createSignal, Match, Switch } from "solid-js";
 import { createStore } from "solid-js/store";
 import { GrowingTextarea } from "./GrowingTextarea";
 import { Markdown } from "./Markdown";

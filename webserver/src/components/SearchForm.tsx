@@ -1,6 +1,6 @@
 import type { Category, RecipeIngredient, User } from "@prisma/client";
-import { Component, For, Show } from "solid-js";
-import { createStore, produce, SetStoreFunction } from "solid-js/store";
+import { type Component, For, Show } from "solid-js";
+import { createStore, produce, type SetStoreFunction } from "solid-js/store";
 import { MultiSelect } from "./MultiSelect";
 
 export type ParsedRecipeSearch = {

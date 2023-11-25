@@ -1,6 +1,6 @@
 import slugify from '@lib/slugify';
 import type { Category, Recipe, RecipeIngredient as DBRecipeIngredient, User } from '@prisma/client';
-import { batch, Component, createSignal, createUniqueId, For } from 'solid-js';
+import { batch, type Component, createSignal, createUniqueId, For } from 'solid-js';
 import { createStore, produce, unwrap } from "solid-js/store";
 
 import { GrowingTextarea } from './GrowingTextarea';

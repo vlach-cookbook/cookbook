@@ -193,7 +193,7 @@ test('Loading with a filter initializes single ingredients to open',
 
     await expect(page.locator('#ingredients')
       .getByRole("listitem").filter({ hasText: /butter/i })
-      .getByRole("listitem").filter({ hasText: "Test Recipe 1" })).toBeVisible();
+      .getByRole("listitem").filter({ hasText: recipe1.name })).toBeVisible();
   }
 );
 
