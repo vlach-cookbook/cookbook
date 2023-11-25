@@ -3,8 +3,8 @@
   "description": "An online cookbook",
   "type": "module",
   "version": "0.0.1",
-  "homepage": "https://github.com/clvlach/cookbook",
-  "repository": "https://github.com/clvlach/cookbook",
+  "homepage": "https://github.com/vlach-cookbook/cookbook",
+  "repository": "https://github.com/vlach-cookbook/cookbook",
   "license": "Apache 2",
   "private": true,
   "scripts": {
