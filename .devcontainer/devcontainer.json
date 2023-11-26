@@ -24,6 +24,7 @@
         "hashicorp.terraform",
         "ms-azuretools.vscode-docker",
         "prisma.prisma",
+        "stkb.rewrap",
         "tamasfe.even-better-toml"
       ]
     }
