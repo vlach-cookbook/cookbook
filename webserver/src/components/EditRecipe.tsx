@@ -5,7 +5,7 @@ import { createStore, produce, unwrap } from "solid-js/store";
 
 import { GrowingTextarea } from './GrowingTextarea';
 
-type RecipeIngredient = Omit<DBRecipeIngredient, 'id' | 'recipeId' | 'order'> & { id?: number | undefined };
+type RecipeIngredient = Omit<DBRecipeIngredient, 'recipeId' | 'order'>;
 
 type RecipeWithIngredients = (Recipe & {
   ingredients: RecipeIngredient[];
@@ -83,7 +83,7 @@ const IngredientsEditor: Component<{
       }
     } else if (event.key === "Enter" && !event.shiftKey) {
       setIngredients(produce(ingredients => {
-        ingredients.splice(index + 1, 0, { id: undefined, amount: null, unit: null, name: '', preparation: null });
+        ingredients.splice(index + 1, 0, { amount: null, unit: null, name: '', preparation: null });
       }));
       // Focus the first field of the new line, after its nodes are created.
       queueMicrotask(() => {
@@ -192,9 +192,6 @@ const IngredientsEditor: Component<{
             onDrop={onDrop}
             onKeyDown={onIngredientKeyDown}
           >
-            {ingredient.id ?
-              <input type="hidden" name={`ingredient.${index()}.id`} value={ingredient.id} />
-              : null}
             <input type="text"
               name={`ingredient.${index()}.amount`} value={ingredient.amount || ""}
               onInput={event => setIngredients(i => i === unwrap(ingredient), "amount", event.currentTarget.value)}

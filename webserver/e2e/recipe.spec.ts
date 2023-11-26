@@ -11,10 +11,10 @@ test('Renders a recipe', async ({ page, testUser, testRecipe }) => {
     servings: 3,
     ingredients: {
       create: [
-        { amount: "1", unit: "cup", name: "flour", preparation: "sifted" },
-        { name: "sugar" },
-        { amount: "3", name: "eggs" },
-        { name: "butter", preparation: "melted" },
+        { order: 0, amount: "1", unit: "cup", name: "flour", preparation: "sifted" },
+        { order: 1, name: "sugar" },
+        { order: 2, amount: "3", name: "eggs" },
+        { order: 3, name: "butter", preparation: "melted" },
       ]
     },
     steps: ["1. Mix.\n2. Bake.\n3. Eat.\n\nNew Paragraph"],
@@ -43,7 +43,7 @@ test('Multiple steps are rendered as a list', async ({ page, testUser, testRecip
     author: { connect: { id: user.id } },
     name: "Test Recipe",
     slug: "test-recipe",
-    ingredients: { create: { name: "sugar" } },
+    ingredients: { create: { order: 0, name: "sugar" } },
     steps: ["Mix.", "Bake."],
   });
   await page.goto('/r/testuser/test-recipe');
@@ -65,7 +65,7 @@ test("Shows author's name", async ({ page, testUser, testRecipe, testLogin }) =>
     author: { connect: { id: author.id } },
     name: "Test Recipe",
     slug: "test-recipe",
-    ingredients: { create: [{ name: "sugar" },] },
+    ingredients: { create: [{ order: 0, name: "sugar" },] },
     steps: ["Bake"],
   })
   await page.goto('/r/recipeauthor/test-recipe');

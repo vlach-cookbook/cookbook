@@ -17,10 +17,10 @@ const test = baseTest.extend<Fixtures>({
       slug: "test-recipe",
       ingredients: {
         create: [
-          { name: "flour" },
-          { name: "sugar" },
-          { name: "eggs" },
-          { name: "butter" },
+          { order: 0, name: "flour" },
+          { order: 1, name: "sugar" },
+          { order: 2, name: "eggs" },
+          { order: 3, name: "butter" },
         ]
       },
       categories: { connect: { id: dessert.id } },
@@ -30,7 +30,7 @@ const test = baseTest.extend<Fixtures>({
       slug: "test-recipe-2",
       ingredients: {
         create: [
-          { name: "bread" },
+          { order: 0, name: "bread" },
         ]
       },
       categories: { connect: { id: supper.id } },
@@ -40,14 +40,14 @@ const test = baseTest.extend<Fixtures>({
       slug: "sandwich",
       ingredients: {
         create: [
-          { name: "bread" },
-          { name: "pickles" },
+          { order: 0, name: "bread" },
+          { order: 1, name: "pickles" },
         ]
       },
       categories: { connect: { id: lunch.id } },
     })]);
-    await use({recipe1, recipe2, sandwich});
-}
+    await use({ recipe1, recipe2, sandwich });
+  }
 });
 
 test('Recipe Filters', async ({ page, someFilterableRecipes }) => {

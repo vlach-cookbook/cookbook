@@ -32,10 +32,8 @@ model Recipe {
 
 /// An ingredient line in a recipe, like "1 cup sugar".
 model RecipeIngredient {
-  id Int @id @default(autoincrement())
-
   /// Gives the ingredients an order in the recipe.
-  order       Int?
+  order       Int
   amount      String?
   /// A missing unit means the ingredient comes in items, like "3 eggs".
   unit        String?
@@ -46,7 +44,7 @@ model RecipeIngredient {
   recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
   recipeId Int
 
-  @@unique([recipeId, order])
+  @@id([recipeId, order])
 }
 
 // Anyone can add a note to any recipe. These notes hold both free-form comments and information on

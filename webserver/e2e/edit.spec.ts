@@ -169,6 +169,68 @@ test.describe("Logged in", () => {
     await expect.soft(page.locator('input[name="ingredient.2.name"]')).toHaveValue("pomme");
   });
 
+  test('Can insert ingredients', async ({ page }) => {
+    // Insert an ingredient between the first and second.
+    await page.locator('input[name="ingredient.0.name"]').press('Enter');
+    await page.locator('input[name="ingredient.1.name"]').fill("Spices");
+
+    await page.getByRole("button", { name: "Save" }).click();
+
+    const recipe = await prisma.recipe.findUniqueOrThrow({
+      where: { id: recipeId! },
+      include: {
+        ingredients: { orderBy: { order: "asc" } }
+      }
+    });
+    expect(recipe).toMatchObject({
+      name: "Test Recipe for Editing",
+      slug: "test-recipe-for-editing",
+      ingredients: [{
+        amount: "3-4",
+        name: "pomme",
+      }, {
+        name: "Spices",
+      }, {
+        amount: "1/2",
+        name: "sucre",
+        unit: "tasse",
+        preparation: null,
+      }],
+      steps: ["Step 1", "Step 2", "Last step."],
+    });
+  });
+
+  test('Can swap ingredients', async ({ page }) => {
+    // Drag them into the opposite order, using one forward drag and one backward drag.
+    const ingredients = page.getByRole("group")
+      .filter({ has: page.getByRole("heading", { name: "Ingredients" }) })
+      .getByRole("listitem");
+    await ingredients.nth(1).dragTo(ingredients.nth(0), { sourcePosition: { x: 0, y: 0 } });
+
+    await page.getByRole("button", { name: "Save" }).click();
+
+    const recipe = await prisma.recipe.findUniqueOrThrow({
+      where: { id: recipeId! },
+      include: {
+        ingredients: { orderBy: { order: "asc" } }
+      }
+    });
+    expect(recipe).toMatchObject({
+      name: "Test Recipe for Editing",
+      slug: "test-recipe-for-editing",
+      ingredients: [{
+        amount: "1/2",
+        name: "sucre",
+        unit: "tasse",
+        preparation: null,
+      }, {
+        amount: "3-4",
+        name: "pomme",
+      }],
+      steps: ["Step 1", "Step 2", "Last step."],
+    });
+  });
+
   test('Split instructions with shift+enter', async ({ page }) => {
     const step0 = page.locator('textarea[name="step.0"]');
     await step0.selectText();
@@ -231,6 +293,7 @@ test("Single-step recipe doesn't have a list, but adding a step creates the list
     slug: "test-recipe",
     ingredients: {
       create: [{
+        order: 0,
         name: "Pears",
       }]
     },

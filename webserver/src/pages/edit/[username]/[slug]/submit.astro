@@ -1,9 +1,9 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import {
-parseIntOrUndefined,
-type StructuredFormData,
-structureFormData
+  parseIntOrUndefined,
+  type StructuredFormData,
+  structureFormData,
 } from "@lib/forms";
 import { getLogin } from "@lib/login-cookie";
 import { prisma } from "@lib/prisma";
@@ -61,73 +61,42 @@ async function updateRecipe(): Promise<UpdateResult> {
   if (structuredData.step instanceof Array) {
     const inputSteps: Array<string | StructuredFormData> = structuredData.step;
     recipeData.steps = inputSteps.filter(
-      (step): step is string => typeof step === "string"
+      (step): step is string => typeof step === "string",
     );
   }
 
   /// Maybe-sparse array of ingredient info.
-  const newIngredients: Prisma.RecipeIngredientCreateWithoutRecipeInput[] = [];
-  const updatedIngredients = new Map<
-    number,
-    Prisma.RecipeIngredientUpdateInput
-  >();
+  const ingredients: Prisma.RecipeIngredientCreateWithoutRecipeInput[] = [];
   if (structuredData.ingredient instanceof Array) {
     let order = 0;
     for (const ingredient of structuredData.ingredient) {
       if (typeof ingredient !== "object" || ingredient instanceof Array)
         continue;
 
-      const ingredientId = parseIntOrUndefined(ingredient.id);
-      if (ingredientId === undefined) {
-        // New ingredient.
-        const name = ingredient.name;
-        if (typeof name !== "string") continue;
-        const newIngredient: Prisma.RecipeIngredientCreateWithoutRecipeInput = {
-          name,
-          order: order++,
-        };
-        if (typeof ingredient.amount === "string")
-          newIngredient.amount = ingredient.amount;
-        if (typeof ingredient.unit === "string")
-          newIngredient.unit = ingredient.unit;
-        newIngredients.push(newIngredient);
-      } else {
-        // Existing ingredient.
-        if (updatedIngredients.has(ingredientId)) continue;
-        if (typeof ingredient.name !== "string") continue;
-        const updatedIngredient: Prisma.RecipeIngredientUpdateInput = {
-          order: order++,
-        };
-        updatedIngredient.name = ingredient.name;
-        updatedIngredient.amount =
-          typeof ingredient.amount === "string" && ingredient.amount.length > 0
-            ? ingredient.amount
-            : null;
-        updatedIngredient.unit =
-          typeof ingredient.unit === "string" && ingredient.unit.length > 0
-            ? ingredient.unit
-            : null;
-        updatedIngredient.preparation =
-          typeof ingredient.preparation === "string" &&
-          ingredient.preparation.length > 0
-            ? ingredient.preparation
-            : null;
-        updatedIngredients.set(ingredientId, updatedIngredient);
-      }
+      const name = ingredient.name;
+      if (typeof name !== "string") continue;
+      const newIngredient: Prisma.RecipeIngredientCreateWithoutRecipeInput = {
+        name,
+        order: order++,
+      };
+      if (typeof ingredient.amount === "string" && ingredient.amount.length > 0)
+        newIngredient.amount = ingredient.amount;
+      if (typeof ingredient.unit === "string" && ingredient.unit.length > 0)
+        newIngredient.unit = ingredient.unit;
+      if (typeof ingredient.preparation === "string" && ingredient.preparation.length > 0)
+        newIngredient.preparation = ingredient.preparation;
+      ingredients.push(newIngredient);
     }
   }
 
   recipeData.ingredients = {
-    deleteMany: { id: { notIn: [...updatedIngredients.keys()] } },
-    // Run the create after the delete so that its new ID doesn't get immediately deleted.
-    // https://github.com/prisma/prisma/issues/16606
+    deleteMany: {},
+    // Note https://github.com/prisma/prisma/issues/16606, that the object
+    // order determines the order that the changes happen, but that this isn't
+    // documented.
     createMany: {
-      data: newIngredients,
+      data: ingredients,
     },
-    update: [...updatedIngredients.entries()].map(([id, update]) => ({
-      where: { id },
-      data: update,
-    })),
   };
 
   /// Maybe-sparse array of category names.
@@ -167,7 +136,7 @@ async function updateRecipe(): Promise<UpdateResult> {
       {
         // Strip out the deleteMany and update fields from RecipeUpdateInput.ingredients.
         ingredients: { createMany: recipeData.ingredients.createMany },
-      }
+      },
     );
     await prisma.recipe.create({
       data: recipeCreateData,
