@@ -73,18 +73,25 @@ async function updateRecipe(): Promise<UpdateResult> {
       if (typeof ingredient !== "object" || ingredient instanceof Array)
         continue;
 
-      const name = ingredient.name;
-      if (typeof name !== "string") continue;
+      if (typeof ingredient.name !== "string") continue;
+      const name = ingredient.name.trim();
+      if (name.length === 0) continue;
       const newIngredient: Prisma.RecipeIngredientCreateWithoutRecipeInput = {
         name,
         order: order++,
       };
-      if (typeof ingredient.amount === "string" && ingredient.amount.length > 0)
-        newIngredient.amount = ingredient.amount;
-      if (typeof ingredient.unit === "string" && ingredient.unit.length > 0)
-        newIngredient.unit = ingredient.unit;
-      if (typeof ingredient.preparation === "string" && ingredient.preparation.length > 0)
-        newIngredient.preparation = ingredient.preparation;
+      if (typeof ingredient.amount === "string") {
+        const amount = ingredient.amount.trim();
+        if (amount.length > 0) newIngredient.amount = amount;
+      }
+      if (typeof ingredient.unit === "string") {
+        const unit = ingredient.unit.trim();
+        if (unit.length > 0) newIngredient.unit = unit;
+      }
+      if (typeof ingredient.preparation === "string") {
+        const preparation = ingredient.preparation.trim();
+        if (preparation.length > 0) newIngredient.preparation = preparation;
+      }
       ingredients.push(newIngredient);
     }
   }
@@ -105,7 +112,8 @@ async function updateRecipe(): Promise<UpdateResult> {
       structuredData.category;
     const categories = inputCategories
       .filter((category): category is string => typeof category === "string")
-      .map((name) => ({ name }));
+      .map((name) => ({ name: name.trim() }))
+      .filter(({ name }) => name.length > 0);
     // Make sure all the categories exist, because the only way to disconnect removed categories is
     // to use `set:`, which can't create categories, and because connectOrCreate has a race
     // condition anyway

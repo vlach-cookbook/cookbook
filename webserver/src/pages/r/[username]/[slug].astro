@@ -117,22 +117,24 @@ if (slug && username) {
           )}
         </section>
 
-        <section class="noprint">
-          <h3>Categories</h3>
-          <ul>
-            {recipe.categories.map((category) => (
-              <li itemprop="recipeCategory">
-                <a
-                  href={`/search?category=${encodeURIComponent(
-                    category.name.replaceAll(" ", "_"),
-                  )}`}
-                >
-                  {category.name}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </section>
+        {recipe.categories.length > 0 ? (
+          <section class="noprint">
+            <h3>Categories</h3>
+            <ul>
+              {recipe.categories.map((category) => (
+                <li itemprop="recipeCategory">
+                  <a
+                    href={`/search?category=${encodeURIComponent(
+                      category.name.replaceAll(" ", "_"),
+                    )}`}
+                  >
+                    {category.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
 
         <section id="notes" class:list={{ noprint: recipe.notes.length === 0 }}>
           <h3>Notes</h3>
