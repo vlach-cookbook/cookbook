@@ -1,0 +1,42 @@
+---
+import Layout from "@layouts/Layout.astro";
+import { getLogin } from "@lib/login-cookie";
+
+const user = await getLogin(Astro.cookies);
+---
+
+<Layout title="About this cookbook" user={user}>
+  <p>
+    This cookbook is developed at <a
+      href="https://github.com/vlach-cookbook/cookbook"
+      >https://github.com/vlach-cookbook/cookbook</a
+    >. If you notice any problems, please <a
+      href="https://github.com/vlach-cookbook/cookbook/issues/new"
+      >file issues</a
+    > there.
+  </p>
+
+  <h2>Licenses</h2>
+
+  <p>
+    The <a href="https://www.latofonts.com/">Lato font</a> is used under the <a
+      href="https://scripts.sil.org/OFL">SIL Open Font License, Version 1.1</a
+    >.
+  </p>
+
+  <p>
+    The no-image placeholder <a
+      title="Ranjithsiji, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons"
+      href="https://commons.wikimedia.org/wiki/File:No-Image-Placeholder.svg"
+      ><img
+        width="64"
+        alt="No-Image-Placeholder"
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/64px-No-Image-Placeholder.svg.png"
+      /></a
+    >(<a href="https://commons.wikimedia.org/wiki/User:Ranjithsiji"
+      >Ranjithsiji</a
+    >, <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a
+    >, via Wikimedia Commons.) is used so Google recognizes the recipes as
+    recipes.
+  </p>
+</Layout>

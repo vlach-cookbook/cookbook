@@ -177,6 +177,8 @@ if (slug && username) {
             </>
           ) : null}
         </nav>
+        <!-- Satisfy Google's recipe parser, which insists on an image. -->
+        <link itemprop="image" href="https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg">
       </main>
     ) : (
       <p>No such recipe.</p>
