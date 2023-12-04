@@ -1,0 +1,28 @@
+---
+import type { RecipeSource } from "@prisma/client";
+interface Props {
+  source: RecipeSource;
+}
+
+const { source } = Astro.props;
+
+const heading = (() => {
+  switch (source.type) {
+    case "BY_PERSON":
+      return "by ";
+    case "BASED_ON_PERSON":
+      return "based on a recipe by ";
+    case "FROM_WEBPAGE":
+      return "from ";
+    case "BASED_ON_WEBPAGE":
+      return "based on ";
+  }
+})();
+
+const name = source.name ?? source.url;
+---
+
+<>
+  {heading}
+  {source.url ? <a href={source.url}>{name}</a> : name}
+</>

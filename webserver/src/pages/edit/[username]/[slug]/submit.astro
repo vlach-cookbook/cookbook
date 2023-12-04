@@ -7,7 +7,8 @@ import {
 } from "@lib/forms";
 import { getLogin } from "@lib/login-cookie";
 import { prisma } from "@lib/prisma";
-import type { Prisma } from "@prisma/client";
+import type { Prisma, SourceType } from "@prisma/client";
+import { z } from "zod";
 prisma;
 
 const { username, slug } = Astro.params;
@@ -57,6 +58,45 @@ async function updateRecipe(): Promise<UpdateResult> {
   // parseInt() actually takes any type, but TypeScript doesn't know that.
   const inputServings = parseInt(structuredData.servings as string);
   recipeData.servings = isNaN(inputServings) ? null : inputServings;
+
+  // Parse sources.
+  const Source = z
+    .object({
+      id: z.coerce.number().optional(),
+      type: z.enum([
+        "BY_PERSON",
+        "BASED_ON_PERSON",
+        "FROM_WEBPAGE",
+        "BASED_ON_WEBPAGE",
+      ] as const satisfies readonly SourceType[]),
+      name: z.string().min(1).nullable().catch(null),
+      url: z.string().url().nullable().catch(null),
+    })
+    .catch({ type: "BY_PERSON", name: null, url: null });
+  const parsedSources = Source.array()
+    .optional()
+    .safeParse(structuredData.source);
+  if (parsedSources.success) {
+    let sources = parsedSources.data;
+    if (sources === undefined) sources = [];
+    sources = sources.filter((source) => source.name || source.url);
+    recipeData.sources = {
+      deleteMany: {
+        id: {
+          notIn: sources
+            .map((source) => source.id)
+            .filter((id): id is number => typeof id === "number"),
+        },
+      },
+      update: sources
+        .filter((source) => source.id !== undefined)
+        .map((source) => ({
+          where: { id: source.id },
+          data: source,
+        })),
+      create: sources.filter((source) => source.id === undefined),
+    };
+  }
 
   if (structuredData.step instanceof Array) {
     const inputSteps: Array<string | StructuredFormData> = structuredData.step;

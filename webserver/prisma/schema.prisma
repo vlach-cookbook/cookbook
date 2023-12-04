@@ -21,6 +21,7 @@ model Recipe {
   name        String             @db.Citext
   slug        String             @db.Citext
   servings    Int?
+  sources     RecipeSource[]
   ingredients RecipeIngredient[]
   categories  Category[]
   steps       String[]
@@ -28,6 +29,31 @@ model Recipe {
 
   @@unique([authorId, name])
   @@unique([authorId, slug])
+}
+
+/// Where a recipe came from. Unless someone invented the recipe by themself,
+/// it's polite to attribute a source.
+model RecipeSource {
+  id       Int    @id @default(autoincrement())
+  Recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  recipeId Int
+
+  type SourceType
+  name String?
+  url  String?
+
+  @@index([recipeId, type])
+}
+
+enum SourceType {
+  /// Directly copied from someone else's recipe.
+  BY_PERSON
+  /// Directly copied from a recipe on a webpage.
+  FROM_WEBPAGE
+  /// Modified from someone else's recipe.
+  BASED_ON_PERSON
+  /// Modified from a recipe on a webpage.
+  BASED_ON_WEBPAGE
 }
 
 /// An ingredient line in a recipe, like "1 cup sugar".

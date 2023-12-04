@@ -1,6 +1,7 @@
 ---
 import Markdown from "@components/Markdown.astro";
 import { AddRecipeNote, RecipeNote } from "@components/RecipeNote";
+import RenderSource from "@components/RenderSource.astro";
 import Layout from "@layouts/Layout.astro";
 import { getLogin } from "@lib/login-cookie";
 import { prisma } from "@lib/prisma";
@@ -10,6 +11,7 @@ import type {
   RecipeIngredient,
   RecipeNote as DBRecipeNote,
   User,
+  RecipeSource,
 } from "@prisma/client";
 
 const activeUser = await getLogin(Astro.cookies);
@@ -19,6 +21,7 @@ const { username, slug } = Astro.params;
 let recipe:
   | (Recipe & {
       author: User;
+      sources: RecipeSource[];
       ingredients: RecipeIngredient[];
       categories: Category[];
       notes: (DBRecipeNote & {
@@ -31,6 +34,7 @@ if (slug && username) {
     where: { author: { username }, slug },
     include: {
       author: true,
+      sources: { orderBy: { type: "asc" } },
       ingredients: { orderBy: { order: "asc" } },
       categories: { orderBy: { name: "asc" } },
       notes: {
@@ -46,6 +50,8 @@ if (slug && username) {
     },
   });
 }
+
+RenderSource == RenderSource;
 ---
 
 <script>
@@ -55,13 +61,21 @@ if (slug && username) {
 <Layout title={recipe?.name ?? "No such recipe"} user={activeUser}>
   {
     recipe ? (
-      <main class="recipe" itemscope itemtype="https://schema.org/Recipe">
+      <div class="recipe" itemscope itemtype="https://schema.org/Recipe">
         <h2 itemprop="name">{recipe.name}</h2>
-        <p>
-          by
-          <a href={`/r/${recipe.author.username}`} itemprop="author">
-            {recipe.author.name}
-          </a>
+        <p class="sources">
+          <small>
+            {recipe.sources.map((source) => (
+              <>
+                <RenderSource {source} />
+                <br />
+              </>
+            ))}
+            {recipe.sources.length > 0 ? "curated by" : "by"}
+            <a href={`/r/${recipe.author.username}`} itemprop="author">
+              {recipe.author.name}
+            </a>
+          </small>
         </p>
         {recipe.servings ? (
           <p itemprop="recipeYield">{recipe.servings} Servings</p>
@@ -177,9 +191,12 @@ if (slug && username) {
             </>
           ) : null}
         </nav>
-        <!-- Satisfy Google's recipe parser, which insists on an image. -->
-        <link itemprop="image" href="https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg">
-      </main>
+        {/* Satisfy Google's recipe parser, which insists on an image. */}
+        <link
+          itemprop="image"
+          href="https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg"
+        />
+      </div>
     ) : (
       <p>No such recipe.</p>
     )
@@ -189,5 +206,11 @@ if (slug && username) {
 <style is:global>
   [itemprop="recipeInstructions"] {
     font-variant-numeric: oldstyle-nums;
+  }
+
+  .sources {
+    float: right;
+    width: fit-content;
+    text-align: right;
   }
 </style>

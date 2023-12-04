@@ -19,6 +19,7 @@ if (!slug || !username) {
 const recipe = await prisma.recipe.findFirst({
   where: { author: { username }, slug },
   include: {
+    sources: { orderBy: { type: "asc" } },
     ingredients: { orderBy: { order: "asc" } },
     categories: { orderBy: { name: "asc" } },
   },
@@ -33,7 +34,7 @@ if (!user) {
   target.searchParams.set("from", Astro.request.url);
   target.searchParams.set(
     "message",
-    `Please login to edit the ${recipe.name} recipe.`
+    `Please login to edit the ${recipe.name} recipe.`,
   );
   return Astro.redirect(target.href, 303);
 }
@@ -46,7 +47,7 @@ if (user.username !== username) {
       status: 403,
       statusText: "Can't edit someone else's recipe.",
       headers: { "content-type": "text/html" },
-    }
+    },
   );
 }
 ---

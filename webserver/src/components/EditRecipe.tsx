@@ -1,13 +1,15 @@
 import slugify from '@lib/slugify';
-import type { Category, Recipe, RecipeIngredient as DBRecipeIngredient, User } from '@prisma/client';
+import { type Category, type Recipe, type RecipeIngredient as DBRecipeIngredient, type User, type RecipeSource as DBRecipeSource, SourceType } from '@prisma/client';
 import { batch, type Component, createSignal, createUniqueId, For } from 'solid-js';
 import { createStore, produce, unwrap } from "solid-js/store";
 
 import { GrowingTextarea } from './GrowingTextarea';
 
+type RecipeSource = Omit<DBRecipeSource, 'id' | 'recipeId'> & { id?: number };
 type RecipeIngredient = Omit<DBRecipeIngredient, 'recipeId' | 'order'>;
 
 type RecipeWithIngredients = (Recipe & {
+  sources: RecipeSource[];
   ingredients: RecipeIngredient[];
   categories: Category[];
 });
@@ -461,6 +463,64 @@ const CategoriesEditor: Component<{ categories: Category[], categoriesDatalistId
   </fieldset>;
 }
 
+const SourceEditor: Component<{ sources: RecipeSource[], }> = (props) => {
+  const defaultSource = { type: "FROM_WEBPAGE", name: null, url: null } as const;
+  const [sources, setSources] = createStore<RecipeSource[]>(props.sources);
+
+  function typeIsPerson(type: SourceType) {
+    return type === "BY_PERSON" || type === "BASED_ON_PERSON";
+  }
+
+  function appendSource() {
+    setSources(sources.length, structuredClone(defaultSource));
+  }
+
+  function removeSource(source: RecipeSource) {
+    setSources(sources.filter(i => i !== source));
+  }
+
+  return <fieldset>
+    {sources.length === 0 ?
+      <button type="button" onClick={appendSource}>
+        Credit this recipe's authors.
+      </button>
+      :
+      <>
+        <legend><h3>Source</h3></legend>
+        <ul>
+          <For each={sources}>
+            {(source, index) => (
+              <li>
+                {source.id ?
+                  <input type="hidden" name={`source.${index()}.id`} value={source.id}></input>
+                  : null}
+                <select name={`source.${index()}.type`}
+                  onInput={event => setSources(s => s === unwrap(source), "type", event.currentTarget.value as SourceType)}>
+                  <option value={"BY_PERSON" satisfies SourceType} selected={source.type === "BY_PERSON"}>by</option>
+                  <option value={"FROM_WEBPAGE" satisfies SourceType} selected={source.type === "FROM_WEBPAGE"}>from</option>
+                  <option value={"BASED_ON_PERSON" satisfies SourceType} selected={source.type === "BASED_ON_PERSON"}>based on a recipe by</option>
+                  <option value={"BASED_ON_WEBPAGE" satisfies SourceType} selected={source.type === "BASED_ON_WEBPAGE"}>based on</option>
+                </select>
+                <input name={`source.${index()}.name`} value={source.name ?? ""}
+                  placeholder={typeIsPerson(source.type) ? "John Doe" : "Recipes R Us"}
+                  onInput={event => setSources(s => s === unwrap(source), "name", event.currentTarget.value)} />
+                <input name={`source.${index()}.url`} value={source.url ?? ""}
+                  placeholder={typeIsPerson(source.type) ? "https://john.doe.name/" : "https://recipes.com/apple/fritters.html"}
+                  onInput={event => setSources(s => s === unwrap(source), "url", event.currentTarget.value)} />
+                <button type="button" title="Remove this source"
+                  onClick={[removeSource, source]}
+                >🗑️</button>
+              </li>
+            )}
+          </For>
+        </ul>
+        <button type="button" onClick={appendSource}>
+          Add another source for this recipe.
+        </button>
+      </>}
+  </fieldset>;
+};
+
 export const EditRecipe: Component<{
   recipe?: RecipeWithIngredients,
   user: User,
@@ -513,6 +573,7 @@ export const EditRecipe: Component<{
       <InstructionsEditor steps={props.recipe?.steps || []} />
       <CategoriesEditor categories={props.recipe?.categories || []}
         categoriesDatalistId={props.categoriesDatalistId} />
+      <SourceEditor sources={props.recipe?.sources ?? []} />
       <nav id="options" class="noprint">
         <button type="submit">Save</button>
       </nav>
