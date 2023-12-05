@@ -89,7 +89,7 @@ const IngredientsEditor: Component<{
       }));
       // Focus the first field of the new line, after its nodes are created.
       queueMicrotask(() => {
-        focusIngredientField(index + 1, nameComponents[2]!);
+        focusIngredientField(index + 1, "amount");
       });
       event.preventDefault();
     }
