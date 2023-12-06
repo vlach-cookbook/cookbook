@@ -11,11 +11,13 @@ if (process.env.FLY_APP_NAME === 'vlach-cookbook-staging') {
   // Clear the whole database without actually deleting it. Otherwise, when we
   // add new tables that aren't in Prod yet, the *second* deployment to Staging
   // will fail because the above `pg_dump` won't know to remove those tables.
-  const restore = 'DROP SCHEMA IF EXISTS public CASCADE;\nCREATE SCHEMA public;\n' +
-    dump.replaceAll(/cookbook_prod/g, "cookbook_staging");
+  const restore = `DROP SCHEMA IF EXISTS public CASCADE;
+  CREATE SCHEMA public;
+  GRANT USAGE ON SCHEMA public TO cookbook_staging_webserver;
+  ${dump.replaceAll(/cookbook_prod/g, "cookbook_staging")}`;
 
   try {
-    console.log(execSync(`psql -d "${STAGING_DATABASE_URL}"`, { encoding: 'utf-8' }));
+    console.log(execSync(`psql -d "${STAGING_DATABASE_URL}"`, { input: restore, encoding: 'utf-8' }));
   } catch (e) {
     console.error(`Restoring failed with\n>>>>>\n${restore}\n<<<<<`);
     throw e;
