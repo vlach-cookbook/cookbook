@@ -6,10 +6,21 @@ if (process.env.FLY_APP_NAME === 'vlach-cookbook-staging') {
   const PROD_DATABASE_URL = process.env.PROD_WEBSERVER_DATABASE_URL
   const STAGING_DATABASE_URL = process.env.ADMIN_DATABASE_URL
 
-  console.log(execSync(`pg_dump --clean --if-exists -O -d "${PROD_DATABASE_URL}" | \
-    sed 's/cookbook_prod/cookbook_staging/g' | \
-    psql -d "${STAGING_DATABASE_URL}"`));
+  const dump = execSync(`pg_dump --clean --if-exists -O -d "${PROD_DATABASE_URL}"`, { encoding: 'utf-8' });
+
+  // Clear the whole database without actually deleting it. Otherwise, when we
+  // add new tables that aren't in Prod yet, the *second* deployment to Staging
+  // will fail because the above `pg_dump` won't know to remove those tables.
+  const restore = 'DROP SCHEMA IF EXISTS public CASCADE;\nCREATE SCHEMA public;\n' +
+    dump.replaceAll(/cookbook_prod/g, "cookbook_staging");
+
+  try {
+    console.log(execSync(`psql -d "${STAGING_DATABASE_URL}"`, { encoding: 'utf-8' }));
+  } catch (e) {
+    console.error(`Restoring failed with\n>>>>>\n${restore}\n<<<<<`);
+    throw e;
+  }
 }
 
 process.env.DATABASE_URL = process.env.ADMIN_DATABASE_URL;
-console.log(execSync('prisma migrate deploy'));
+console.log(execSync('prisma migrate deploy', { encoding: 'utf-8' }));
