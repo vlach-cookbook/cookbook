@@ -182,7 +182,8 @@ async function updateRecipe(): Promise<UpdateResult> {
     const recipeCreateData: Prisma.RecipeCreateInput = Object.assign(
       recipeData,
       {
-        // Strip out the deleteMany and update fields from RecipeUpdateInput.ingredients.
+        // Strip out the deleteMany and update fields.
+        sources: {create: recipeData.sources?.create},
         ingredients: { createMany: recipeData.ingredients.createMany },
       },
     );
