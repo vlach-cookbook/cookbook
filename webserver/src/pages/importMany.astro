@@ -1,5 +1,6 @@
 ---
 import Layout from "@layouts/Layout.astro";
+import type { JsonRecipe } from "@lib/json-recipe";
 import { getLogin } from "@lib/login-cookie";
 import { prisma } from "@lib/prisma";
 import slugify from "@lib/slugify";
@@ -13,22 +14,6 @@ if (!user) {
   target.searchParams.set("from", Astro.request.url);
   target.searchParams.set("message", "Please login to import recipes.");
   return Astro.redirect(target.href, 303);
-}
-
-interface JsonRecipe {
-  dateCreated?: string;
-  name: string;
-  recipeCategory?: string[];
-  recipeIngredient?: JsonRecipeIngredient[];
-  recipeInstructions: string[];
-  recipeYield?: string;
-  error?: string;
-}
-interface JsonRecipeIngredient {
-  name?: string;
-  quantity?: string;
-  unit?: string;
-  preparation?: string;
 }
 
 async function importCategories(recipes: JsonRecipe[]): Promise<void> {
@@ -55,9 +40,9 @@ function parseOptionalInt(value: string | undefined): number | null {
 async function createRecipe(recipe: JsonRecipe, user: User): Promise<Recipe> {
   return await prisma.recipe.create({
     data: {
-      name: recipe.name,
+      name: recipe.name!,
       author: { connect: { id: user.id } },
-      slug: slugify(recipe.name),
+      slug: slugify(recipe.name ?? ""),
       createdAt: recipe.dateCreated ? new Date(recipe.dateCreated) : undefined,
       servings: parseOptionalInt(recipe.recipeYield),
       ingredients: {
@@ -177,7 +162,7 @@ if (Astro.request.method === "POST") {
 
   {
     user ? (
-      <form method="POST" action="/import" enctype="multipart/form-data">
+      <form method="POST" action="/importMany" enctype="multipart/form-data">
         <label>
           Upload a file of JSON recipes:
           <input type="file" accept="application/json" name="recipes" />

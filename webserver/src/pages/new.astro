@@ -5,6 +5,7 @@ import AllUnitsDatalist from "@components/AllUnitsDatalist.astro";
 import { EditRecipe } from "@components/EditRecipe";
 import Layout from "@layouts/Layout.astro";
 import { getLogin } from "@lib/login-cookie";
+import { prisma } from "@lib/prisma";
 
 const user = await getLogin(Astro.cookies);
 
@@ -14,11 +15,29 @@ if (!user) {
   target.searchParams.set("message", "Please login to add a new recipe.");
   return Astro.redirect(target.href, 303);
 }
+
+const draftIds = Astro.url.searchParams
+  .getAll("draft")
+  .flatMap((d) => d.split(","))
+  .map(Number.parseInt)
+  .filter((d) => !isNaN(d));
+const drafts =
+  draftIds.length > 0
+    ? await prisma.draftRecipe.findMany({
+        where: {
+          User: { id: user.id },
+          id: { in: draftIds },
+        },
+      })
+    : [];
 ---
 
 <Layout title="New Recipe" user={user} needLogin>
   <EditRecipe
     user={user}
+    drafts={draftIds.flatMap(
+      (id) => drafts.find((draft) => draft.id === id) ?? [],
+    )}
     categoriesDatalistId="all-categories"
     unitsDatalistId="all-units"
     ingredientsDatalistId="all-ingredients"

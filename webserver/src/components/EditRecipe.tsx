@@ -1,9 +1,11 @@
 import slugify from '@lib/slugify';
-import { type Category, type Recipe, type RecipeIngredient as DBRecipeIngredient, type User, type RecipeSource as DBRecipeSource, SourceType } from '@prisma/client';
-import { batch, type Component, createSignal, createUniqueId, For } from 'solid-js';
+import { type Category, type Recipe, type RecipeIngredient as DBRecipeIngredient, type User, type RecipeSource as DBRecipeSource, SourceType, type DraftRecipe } from '@prisma/client';
+import { batch, type Component, createSignal, createUniqueId, For, createReaction, Match, Switch } from 'solid-js';
 import { createStore, produce, unwrap } from "solid-js/store";
 
 import { GrowingTextarea } from './GrowingTextarea';
+import { JsonRecipe } from '@lib/json-recipe';
+import { parseIntOrUndefined } from '@lib/forms';
 
 type RecipeSource = Omit<DBRecipeSource, 'id' | 'recipeId'> & { id?: number };
 type RecipeIngredient = Omit<DBRecipeIngredient, 'recipeId' | 'order'>;
@@ -11,7 +13,7 @@ type RecipeIngredient = Omit<DBRecipeIngredient, 'recipeId' | 'order'>;
 type RecipeWithIngredients = (Recipe & {
   sources: RecipeSource[];
   ingredients: RecipeIngredient[];
-  categories: Category[];
+  categories: Omit<Category, "id">[];
 });
 
 function ingredientToString(ingredient: RecipeIngredient): string {
@@ -29,7 +31,8 @@ function emptyIngredient(): RecipeIngredient {
 const IngredientsEditor: Component<{
   ingredients: RecipeIngredient[],
   unitsDatalistId: string,
-  ingredientsDatalistId: string
+  ingredientsDatalistId: string,
+  setDirty: () => void,
 }> = (props) => {
   const [ingredients, setIngredients] = createStore<RecipeIngredient[]>(props.ingredients.length === 0 ?
     [emptyIngredient()]
@@ -53,6 +56,8 @@ const IngredientsEditor: Component<{
 
     // Only deal with keystrokes on the ingredient inputs.
     if (!(event.target instanceof HTMLInputElement)) return;
+
+    props.setDirty();
 
     const inputElem = event.target;
     const nameComponents = inputElem.name.split('.');
@@ -235,7 +240,7 @@ const IngredientsEditor: Component<{
 type StepObj = {
   step: string;
 };
-const InstructionsEditor: Component<{ steps: string[] }> = (props) => {
+const InstructionsEditor: Component<{ steps: string[], setDirty: () => void }> = (props) => {
   const [steps, setSteps] = createStore(props.steps.length === 0
     ? [{ step: "" }]
     : props.steps.map(step => ({ step })));
@@ -280,6 +285,8 @@ const InstructionsEditor: Component<{ steps: string[] }> = (props) => {
   function onStepKeyDown(step: StepObj, event: KeyboardEvent & { currentTarget: HTMLTextAreaElement }) {
     // Don't interfere with composition sessions.
     if (event.isComposing) return;
+
+    props.setDirty();
 
     // TODO: Make this undoable.
     const textArea = event.currentTarget;
@@ -404,7 +411,7 @@ const InstructionsEditor: Component<{ steps: string[] }> = (props) => {
   </fieldset>;
 }
 
-const CategoriesEditor: Component<{ categories: Category[], categoriesDatalistId: string }> = (props) => {
+const CategoriesEditor: Component<{ categories: Omit<Category, "id">[], categoriesDatalistId: string, setDirty: () => void }> = (props) => {
   const [categories, setCategories] = createStore(
     props.categories.length === 0 ?
       [{ name: "" }]
@@ -414,6 +421,8 @@ const CategoriesEditor: Component<{ categories: Category[], categoriesDatalistId
   function onKeyDown(category: { name: string }, event: KeyboardEvent & { currentTarget: HTMLInputElement }) {
     // Don't interfere with composition sessions.
     if (event.isComposing) return;
+
+    props.setDirty();
 
     if (event.key === "Enter" || event.key === "," || event.key === ";") {
       const index = categories.findIndex(c => c === category);
@@ -435,6 +444,7 @@ const CategoriesEditor: Component<{ categories: Category[], categoriesDatalistId
   }
 
   function removeCategory(category: { name: string }) {
+    props.setDirty();
     if (categories.length === 1) {
       setCategories(0, "name", "");
     } else {
@@ -463,9 +473,12 @@ const CategoriesEditor: Component<{ categories: Category[], categoriesDatalistId
   </fieldset>;
 }
 
-const SourceEditor: Component<{ sources: RecipeSource[], }> = (props) => {
+const SourceEditor: Component<{ sources: RecipeSource[], setDirty: () => void }> = (props) => {
   const defaultSource = { type: "FROM_WEBPAGE", name: null, url: null } as const;
   const [sources, setSources] = createStore<RecipeSource[]>(props.sources);
+
+  const dirtyOn = createReaction(() => props.setDirty());
+  dirtyOn(() => unwrap(sources));
 
   function typeIsPerson(type: SourceType) {
     return type === "BY_PERSON" || type === "BASED_ON_PERSON";
@@ -524,15 +537,53 @@ const SourceEditor: Component<{ sources: RecipeSource[], }> = (props) => {
 export const EditRecipe: Component<{
   recipe?: RecipeWithIngredients,
   user: User,
+  drafts?: DraftRecipe[],
   categoriesDatalistId: string,
   unitsDatalistId: string,
   ingredientsDatalistId: string
 }> = (props) => {
-  const [slug, setSlug] = createSignal(props.recipe?.slug || "");
-  const [slugManuallyEdited, setSlugManuallyEdited] = createSignal(!!props.recipe?.id);
+  const drafts = (props.drafts ?? []).map(draft =>
+    ({ draftId: draft.id, recipe: JsonRecipe.safeParse(draft.data) }))
+    .flatMap(({ draftId, recipe }) => recipe.success ? Object.assign(recipe.data, { draftId }) : []);
+
+  const draft = drafts[0];
+  const recipe = draft === undefined ? props.recipe : {
+    id: undefined,
+    name: draft.name,
+    slug: slugify(draft.name ?? ""),
+    servings: parseIntOrUndefined(draft.recipeYield),
+    steps: draft.recipeInstructions,
+    sources: draft.sourceUrl ? [{ type: "FROM_WEBPAGE", name: null, url: draft.sourceUrl }] : [],
+    ingredients: draft.recipeIngredient.map(({ quantity, unit, name, preparation }) =>
+      ({ amount: quantity ?? null, unit: unit ?? null, name: name ?? "", preparation: preparation ?? null })),
+    categories: draft.recipeCategory.map(category => ({ name: category })),
+  } satisfies Partial<RecipeWithIngredients>;
+
+  const [pristine, setPristine] = createSignal(!recipe?.id && !draft);
+  const [slug, setSlug] = createSignal(recipe?.slug || "");
+  const [slugManuallyEdited, setSlugManuallyEdited] = createSignal(!!recipe?.id);
   let nameInput: HTMLInputElement | undefined;
 
+  function setDirty() {
+    setPristine(false);
+  }
+
+  // Reloads the page with the first draft set to the selected value. That'll
+  // lead to the edit form being filled in with its values as defaults.
+  //
+  // TODO: Make the edit components react to changes in their properties so we
+  // can do this without a reload.
+  function selectDraft(event: Event & { currentTarget: HTMLSelectElement }) {
+    const selectedDraftId = event.currentTarget.value;
+    if (selectedDraftId === "") {
+      return;
+    }
+    const otherDraftIds = drafts.map(draft => draft.draftId.toString()).filter(id => id !== selectedDraftId);
+    location.search = `draft=${[selectedDraftId].concat(otherDraftIds).join(",")}`;
+  }
+
   function onNameInput(event: Event & { currentTarget: HTMLInputElement }) {
+    setDirty();
     if (!slugManuallyEdited()) {
       setSlug(slugify(event.currentTarget.value));
     }
@@ -549,34 +600,54 @@ export const EditRecipe: Component<{
     })
   }
 
-  return <form method="post" action={`/edit/${props.user.username}/${slug()}/submit`}>
-    {props.recipe ? <input type="hidden" name="id" value={props.recipe.id} /> : null}
-    <div>
-      <p><label>Recipe name:
-        <input style={{ "font-size": "1.5em", "font-style": "bold", "margin-bottom": ".5em" }}
-          autocapitalize="words"
-          type="text" name="name" value={props.recipe?.name || ""}
-          ref={nameInput} onInput={onNameInput} /></label></p>
-      {props.recipe ? null : <p>
-        <label>Recipe URL: <code>/r/{props.user.username}/{slugManuallyEdited() ?
-          <input
-            type="text" name="slug" value={slug()} onInput={onSlugInput}
-          /> : slug()}</code></label>
-        {slugManuallyEdited() ?
-          <button type="button" title="Reset URL to default." onClick={resetSlug}>🔄</button>
-          : <button type="button" title="Edit URL." onClick={() => setSlugManuallyEdited(true)}>✏️</button>}
-      </p>}
-      <p><label><input type="number" name="servings" value={props.recipe?.servings || ""}></input> Servings</label></p>
-      <IngredientsEditor ingredients={props.recipe?.ingredients || []}
-        unitsDatalistId={props.unitsDatalistId}
-        ingredientsDatalistId={props.ingredientsDatalistId} />
-      <InstructionsEditor steps={props.recipe?.steps || []} />
-      <CategoriesEditor categories={props.recipe?.categories || []}
-        categoriesDatalistId={props.categoriesDatalistId} />
-      <SourceEditor sources={props.recipe?.sources ?? []} />
-      <nav id="options" class="noprint">
-        <button type="submit">Save</button>
-      </nav>
-    </div>
-  </form>;
+  return <>
+    <Switch>
+      <Match when={pristine() && drafts.length > 1}>
+        <select onchange={selectDraft}>
+          <For each={drafts}>
+            {(draft, index) => <option value={draft.draftId} selected={index() === 0}>{draft.name ?? "&lt;Untitled>"}</option>}
+          </For>
+        </select>
+      </Match>
+      <Match when={pristine()}>
+        <form method="post" action="/import">
+          <p><label>Import from: <input type="url" name="source" /></label> <button type="submit">Import</button></p>
+        </form>
+      </Match>
+    </Switch>
+    <form method="post" action={`/edit/${props.user.username}/${slug()}/submit`}>
+      {recipe ? <input type="hidden" name="id" value={recipe.id} /> : null}
+      {draft ? <input type="hidden" name="draftId" value={draft.draftId} /> : null}
+      <div>
+        <p><label>Recipe name:
+          <input style={{ "font-size": "1.5em", "font-style": "bold", "margin-bottom": ".5em" }}
+            autocapitalize="words"
+            type="text" name="name" value={recipe?.name || ""}
+            ref={nameInput} onInput={onNameInput} /></label></p>
+        {recipe ? null : <p>
+          <label>Recipe URL: <code>/r/{props.user.username}/{slugManuallyEdited() ?
+            <input
+              type="text" name="slug" value={slug()} onInput={onSlugInput}
+            /> : slug()}</code></label>
+          {slugManuallyEdited() ?
+            <button type="button" title="Reset URL to default." onClick={resetSlug}>🔄</button>
+            : <button type="button" title="Edit URL." onClick={() => setSlugManuallyEdited(true)}>✏️</button>}
+        </p>}
+        <p><label><input type="number" name="servings" value={recipe?.servings || ""}></input> Servings</label></p>
+        <IngredientsEditor ingredients={recipe?.ingredients || []}
+          unitsDatalistId={props.unitsDatalistId}
+          ingredientsDatalistId={props.ingredientsDatalistId}
+          setDirty={setDirty} />
+        <InstructionsEditor steps={recipe?.steps || []} setDirty={setDirty} />
+        <CategoriesEditor categories={recipe?.categories || []}
+          categoriesDatalistId={props.categoriesDatalistId}
+          setDirty={setDirty} />
+        <SourceEditor sources={recipe?.sources ?? []}
+          setDirty={setDirty} />
+        <nav id="options" class="noprint">
+          <button type="submit">Save</button>
+        </nav>
+      </div>
+    </form>
+  </>;
 }

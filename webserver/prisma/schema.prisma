@@ -113,11 +113,26 @@ model Category {
   Recipes Recipe[]
 }
 
+// Recipes that are partway through being imported but might not fully fit the
+// database's data model. These will be manageable through the /account page.
+model DraftRecipe {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  User      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String   @db.Uuid
+
+  // Expected to conform to @lib/json-recipe.ts/JsonRecipe.
+  data Json
+
+  @@index(userId)
+}
+
 model User {
-  id       String   @id @default(uuid()) @db.Uuid
-  name     String
-  username String   @unique @db.Citext
-  Recipes  Recipe[]
+  id           String        @id @default(uuid()) @db.Uuid
+  name         String
+  username     String        @unique @db.Citext
+  Recipes      Recipe[]
+  DraftRecipes DraftRecipe[]
 
   GoogleUser  GoogleUser[]
   sessions    Session[]

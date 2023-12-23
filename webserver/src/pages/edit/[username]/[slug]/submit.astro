@@ -9,7 +9,6 @@ import { getLogin } from "@lib/login-cookie";
 import { prisma } from "@lib/prisma";
 import type { Prisma, SourceType } from "@prisma/client";
 import { z } from "zod";
-prisma;
 
 const { username, slug } = Astro.params;
 
@@ -41,7 +40,8 @@ async function updateRecipe(): Promise<UpdateResult> {
 
   const structuredData = structureFormData(formData);
 
-  const recipeId: number | undefined = parseIntOrUndefined(structuredData.id);
+  const recipeId = parseIntOrUndefined(structuredData.id);
+  const draftId = parseIntOrUndefined(structuredData.draftId);
 
   if (typeof structuredData.name !== "string")
     return { success: false, error: "missing-field" };
@@ -183,13 +183,26 @@ async function updateRecipe(): Promise<UpdateResult> {
       recipeData,
       {
         // Strip out the deleteMany and update fields.
-        sources: {create: recipeData.sources?.create},
+        sources: { create: recipeData.sources?.create },
         ingredients: { createMany: recipeData.ingredients.createMany },
       },
     );
-    await prisma.recipe.create({
+    const createOperation = prisma.recipe.create({
       data: recipeCreateData,
     });
+    if (draftId === undefined) {
+      await createOperation;
+    } else {
+      await prisma.$transaction([
+        createOperation,
+        prisma.draftRecipe.delete({
+          where: {
+            id: draftId,
+            User: { id: user.id },
+          },
+        }),
+      ]);
+    }
   }
   return { success: true };
 }

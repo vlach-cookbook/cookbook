@@ -19,7 +19,7 @@ test.describe("Logged in", () => {
 
   test.beforeEach(async ({ page, testLogin }) => {
     const { userId, username } = testLogin;
-    await page.goto('/import');
+    await page.goto('/importMany');
 
     const recipeName = "Test Recipe for Editing";
 
