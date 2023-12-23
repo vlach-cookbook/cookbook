@@ -13,7 +13,7 @@ type RecipeIngredient = Omit<DBRecipeIngredient, 'recipeId' | 'order'>;
 type RecipeWithIngredients = (Recipe & {
   sources: RecipeSource[];
   ingredients: RecipeIngredient[];
-  categories: Omit<Category, "id">[];
+  categories: Pick<Category, "name">[];
 });
 
 function ingredientToString(ingredient: RecipeIngredient): string {
@@ -411,7 +411,7 @@ const InstructionsEditor: Component<{ steps: string[], setDirty: () => void }> =
   </fieldset>;
 }
 
-const CategoriesEditor: Component<{ categories: Omit<Category, "id">[], categoriesDatalistId: string, setDirty: () => void }> = (props) => {
+const CategoriesEditor: Component<{ categories: Pick<Category, "name">[], categoriesDatalistId: string, setDirty: () => void }> = (props) => {
   const [categories, setCategories] = createStore(
     props.categories.length === 0 ?
       [{ name: "" }]
