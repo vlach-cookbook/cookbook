@@ -6,17 +6,21 @@ import { prisma } from "@lib/prisma";
 import { usernameRegex } from "@lib/valid-username";
 import type { User } from "@prisma/client";
 import { Prisma } from "@prisma/client";
+import z from "zod";
 
 const user = await getLogin(Astro.cookies);
 
 if (!user) {
   const target = new URL("/login", Astro.url);
   target.searchParams.set("from", Astro.request.url);
-  target.searchParams.set("message", "Please login to the account you wish to edit.");
+  target.searchParams.set(
+    "message",
+    "Please login to the account you wish to edit.",
+  );
   return Astro.redirect(target.href, 303);
 }
 
-const [googleUsers, recipeCount, otherUsernames] = await Promise.all([
+const [googleUsers, recipeCount, otherUsernames, drafts] = await Promise.all([
   prisma.googleUser.findMany({
     where: { userId: user.id },
   }),
@@ -25,7 +29,20 @@ const [googleUsers, recipeCount, otherUsernames] = await Promise.all([
     where: { username: { not: user.username } },
     select: { username: true },
   }),
+  prisma.draftRecipe.findMany({
+    where: { User: { id: user.id } },
+    select: { id: true, data: true },
+  }),
 ]);
+
+const ParsedDraft = z.object({
+  name: z.string().optional(),
+  sourceUrl: z.string().url().optional().catch(undefined),
+});
+const parsedDrafts = drafts.map((draft) => ({
+  id: draft.id,
+  data: ParsedDraft.safeParse(draft.data),
+}));
 
 type AccountEditResultType = {
   result:
@@ -41,7 +58,7 @@ let accountEditResult: AccountEditResultType | undefined = undefined;
 
 async function saveAccount(
   formData: FormData,
-  user: User
+  user: User,
 ): Promise<AccountEditResultType> {
   if (formData.get("id") !== user.id) {
     return { result: "wrongId" };
@@ -136,5 +153,48 @@ if (Astro.request.method === "POST") {
       connectedAccounts={{ google: googleUsers }}
       client:idle
     />
+    {
+      drafts.length > 0 ? (
+        <>
+          <h2>Draft recipes</h2>
+          <ul>
+            {parsedDrafts.map((draft) => (
+              <li>
+                <a href={`${import.meta.env.BASE_URL}new?draft=${draft.id}`}>
+                  {draft.data.success
+                    ? draft.data.data.name ?? "<Untitled>"
+                    : "<Broken>"}
+                </a>
+                {draft.data.success && draft.data.data.sourceUrl ? (
+                  <>
+                    {" "}
+                    from{" "}
+                    <a href={draft.data.data.sourceUrl}>
+                      {draft.data.data.sourceUrl}
+                    </a>
+                  </>
+                ) : null}
+                <button
+                  type="submit"
+                  form="delete-draft"
+                  name="draftId"
+                  value={draft.id}
+                  title="Delete this draft"
+                >
+                  🗑️
+                </button>
+              </li>
+            ))}
+          </ul>
+          <form
+            method="POST"
+            action={`${import.meta.env.BASE_URL}delete`}
+            id="delete-draft"
+          >
+            <input type="hidden" name="from" value={Astro.request.url} />
+          </form>
+        </>
+      ) : null
+    }
   </main>
 </Layout>
