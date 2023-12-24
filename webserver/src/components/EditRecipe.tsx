@@ -619,7 +619,7 @@ export const EditRecipe: Component<{
       {recipe ? <input type="hidden" name="id" value={recipe.id} /> : null}
       {draft ? <input type="hidden" name="draftId" value={draft.draftId} /> : null}
       <div>
-        <p><label>Recipe name:
+        <p><label>{"Recipe name: "}
           <input style={{ "font-size": "1.5em", "font-style": "bold", "margin-bottom": ".5em" }}
             autocapitalize="words"
             type="text" name="name" value={recipe?.name || ""}
