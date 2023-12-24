@@ -32,7 +32,7 @@ const drafts =
     : [];
 ---
 
-<Layout title="New Recipe" user={user} needLogin>
+<Layout title="New Recipe" user={user} needLogin omitSearchBox>
   <EditRecipe
     user={user}
     drafts={draftIds.flatMap(

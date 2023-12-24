@@ -107,7 +107,7 @@ if (Astro.request.method === "POST") {
 }
 ---
 
-<Layout title="Edit your account" user={user} needLogin>
+<Layout title="Edit your account" user={user} needLogin omitSearchBox>
   <main class="account">
     {
       accountEditResult ? (

@@ -9,7 +9,7 @@ export interface Props {
   user: User | null;
   /// True if this page needs the user to log in, so Google sign-in should be more aggressive.
   needLogin?: boolean;
-  /// True for pages that include their own search box.
+  /// True for pages that don't need a search box.
   omitSearchBox?: boolean;
   children: any;
 }
