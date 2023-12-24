@@ -202,13 +202,13 @@ const IngredientsEditor: Component<{
             <input type="text"
               name={`ingredient.${index()}.amount`} value={ingredient.amount || ""}
               onInput={event => setIngredients(i => i === unwrap(ingredient), "amount", event.currentTarget.value)}
-              placeholder="Amount" style={{ width: "3em" }}
+              placeholder="Amount" style={{ width: "4em" }}
               onFocus={disableDraggable} onBlur={enableDraggable} />
             <input type="text"
               name={`ingredient.${index()}.unit`} value={ingredient.unit || ""}
               list={props.unitsDatalistId}
               onInput={event => setIngredients(i => i === unwrap(ingredient), "unit", event.currentTarget.value)}
-              placeholder="Unit" style={{ width: "3em" }}
+              placeholder="Unit" style={{ width: "4em" }}
               onFocus={disableDraggable} onBlur={enableDraggable} />
             <input type="text"
               name={`ingredient.${index()}.name`} value={ingredient.name}
