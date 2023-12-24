@@ -8,6 +8,13 @@ container (flexbox)
 
 */
 
+:root {
+  --yellow: oklch(76% 0.136 79);
+  --yellow-bg: oklch(95% 0.02 79);
+  --navy: oklch(29% 0.033 259);
+  --light-navy: oklch(36% 0.054 259);
+}
+
 /* ====================
     LAYOUT
    ==================== */
@@ -53,12 +60,12 @@ nav {
 }
 
 .nav_style {
-  background-color: #2d3f5b;
+  background-color: var(--light-navy);
   color: white;
   height: 20px;
   border: 2px solid;
   border-radius: 7px;
-  border-color: #e1a83f;
+  border-color: var(--yellow);
   text-align: center;
   text-decoration: none;
   padding: 5px 0px 3px 0px;
@@ -70,11 +77,11 @@ nav {
 }
 
 .nav_style:hover {
-  border-color: #d48e0a;
+  box-shadow: 1px 1px 2px var(--yellow);
 }
 
 nav.header {
-  background-color: #222c3c;
+  background-color: var(--navy);
 }
 
 #nav_1 {
@@ -93,7 +100,7 @@ a {
 
 h1 {
   color: white;
-  background-color: #222c3c;
+  background-color: var(--navy);
   border-right: 2px solid;
   border-bottom: 2px solid;
   border-color: rgba(0, 0, 0, 0.4);
@@ -113,24 +120,8 @@ h3 {
   margin: 0px 0px 10px 0px;
 }
 
-h4 {
-  font-size: 175%;
-  color: #388220;
-  text-transform: uppercase;
-  margin: 0px;
-  text-align: center;
-}
-
 p {
   margin: 1ex 0px;
-}
-
-.recent_user {
-  font-style: italic;
-  padding-bottom: 5px;
-  margin-bottom: 5px;
-  border-bottom: 1px solid;
-  border-color: #939598;
 }
 
 .search {
@@ -144,7 +135,7 @@ p {
   height: 20px;
   border: 2px solid;
   border-radius: 7px;
-  border-color: #e1a83f;
+  border-color: var(--yellow);
   padding: 5px 0px 3px 30px;
   margin-top: 5px;
   margin-bottom: 5px;
@@ -154,14 +145,14 @@ p {
 }
 
 button {
-  background-color: #fff0e6;
-  border-color: #FF6F0D;
+  background-color: var(--yellow-bg);
+  border-color: var(--yellow);
   border-radius: 7px;
   margin-top: 2px;
 }
 
 button:hover {
-  border-color: #ffa86d;
+  box-shadow: 1px 1px 2px var(--yellow);
 }
 
 /* ====================
@@ -169,12 +160,12 @@ button:hover {
    ==================== */
 
 .action {
-  background-color: #ffd3b6;
+  background-color: var(--yellow-bg);
   color: black;
   height: 20px;
   border: 2px solid;
   border-radius: 7px;
-  border-color: #FF6F0D;
+  border-color: var(--yellow);
   text-align: center;
   text-decoration: none;
   padding: 5px 0px 3px 0px;
@@ -186,24 +177,7 @@ button:hover {
 }
 
 a.action:hover {
-  border-color: #ffa86d;
-}
-
-/* HOME */
-
-#welcome {
-  margin: 10px;
-  padding: 10px;
-  text-align: center;
-}
-
-#welcome a {
-  color: #939598;
-  text-decoration: underline;
-}
-
-#welcome a:hover {
-  color: #388220;
+  box-shadow: 1px 1px 2px var(--yellow);
 }
 
 /* LOGIN */
@@ -211,14 +185,6 @@ a.action:hover {
 .login {
   padding-top: 10px
 }
-
-.login a {
-  color: #939598;
-  text-decoration: underline;
-  font-size: small;
-  padding-left: 10px;
-}
-
 
 /* READING A RECIPE and LOGIN */
 
@@ -305,7 +271,7 @@ ul.details {
 }
 
 details>summary::marker {
-  color: #ff6f0d
+  color: var(--yellow);
 }
 
 
