@@ -32,6 +32,7 @@ const [googleUsers, recipeCount, otherUsernames, drafts] = await Promise.all([
   prisma.draftRecipe.findMany({
     where: { User: { id: user.id } },
     select: { id: true, data: true },
+    orderBy: { createdAt: 'desc'},
   }),
 ]);
 
