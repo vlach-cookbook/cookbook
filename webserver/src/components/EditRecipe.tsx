@@ -212,6 +212,7 @@ const IngredientsEditor: Component<{
               onFocus={disableDraggable} onBlur={enableDraggable} />
             <input type="text"
               name={`ingredient.${index()}.name`} value={ingredient.name}
+              required
               list={props.ingredientsDatalistId}
               onInput={event => setIngredients(i => i === unwrap(ingredient), "name", event.currentTarget.value)}
               placeholder="Ingredient" style={{ width: "10em" }}
