@@ -73,7 +73,9 @@ type ImportResult =
   | {
       result: "some-recipes-malformed" | "success";
       importedRecipes: Recipe[];
+      numDuplicates: number;
       malformedRecipes: JsonRecipe[];
+      numMalformedCreatedAsDrafts: number;
     };
 
 async function importPostedRecipes(): Promise<ImportResult> {
@@ -100,11 +102,13 @@ async function importPostedRecipes(): Promise<ImportResult> {
   let importResult: ImportResult = {
     result: "success",
     importedRecipes: [],
+    numDuplicates: 0,
     malformedRecipes: [],
+    numMalformedCreatedAsDrafts: 0,
   };
   let i = -1;
   for (const recipeResult of await Promise.allSettled(
-    recipes.map((recipe) => createRecipe(recipe, user))
+    recipes.map((recipe) => createRecipe(recipe, user)),
   )) {
     i++;
     switch (recipeResult.status) {
@@ -117,6 +121,7 @@ async function importPostedRecipes(): Promise<ImportResult> {
           recipeResult.reason.code === "P2002"
         ) {
           // The recipe was just already inserted.
+          importResult.numDuplicates++;
           continue;
         }
         importResult.result = "some-recipes-malformed";
@@ -124,6 +129,16 @@ async function importPostedRecipes(): Promise<ImportResult> {
         importResult.malformedRecipes.push(recipes[i]!);
         break;
     }
+  }
+
+  if (importResult.result === "some-recipes-malformed") {
+    const draftCreateResult = await prisma.draftRecipe.createMany({
+      data: importResult.malformedRecipes.map((recipe) => ({
+        userId: user.id,
+        data: recipe,
+      })),
+    });
+    importResult.numMalformedCreatedAsDrafts = draftCreateResult.count;
   }
 
   return importResult;
@@ -135,27 +150,6 @@ if (Astro.request.method === "POST") {
   importResult = await importPostedRecipes();
 }
 ---
-
-<script>
-  window.addEventListener(
-    "DOMContentLoaded",
-    () => {
-      const invalidRecipesAnchor = document.getElementById("invalid-recipes");
-      if (invalidRecipesAnchor) {
-        if (!(invalidRecipesAnchor instanceof HTMLAnchorElement))
-          throw new Error("Invalid recipes anchor is not an anchor");
-        const invalidRecipesFile = new File(
-          [invalidRecipesAnchor.dataset.invalidRecipes!],
-          "invalid-recipes.json",
-          { type: "application/json" }
-        );
-        invalidRecipesAnchor.href = URL.createObjectURL(invalidRecipesFile);
-        delete invalidRecipesAnchor.dataset.invalidRecipes;
-      }
-    },
-    { once: true }
-  );
-</script>
 
 <Layout title="Import recipes" user={user} needLogin>
   <h1>Import recipes</h1>
@@ -188,21 +182,12 @@ if (Astro.request.method === "POST") {
       </>
     ) : importResult.result === "some-recipes-malformed" ? (
       <p>
-        {importResult.importedRecipes.length} recipes imported. Some of the
-        recipes you tried to import weren't valid. Look through the
-        <a
-          id="invalid-recipes"
-          data-invalid-recipes={JSON.stringify(
-            importResult.malformedRecipes,
-            undefined,
-            2
-          )}
-          download="invalid-recipes.json"
-        >
-          invalid recipes,
-        </a>
-        fix the errors in their
-        <code>error</code> fields, and then re-import them.
+        {importResult.importedRecipes.length} recipes imported.{" "}
+        {importResult.numDuplicates} were skipped because they have the same
+        titles as your other recipes. {importResult.numMalformedCreatedAsDrafts}{" "}
+        of the recipes you tried to import weren't valid and have been saved as
+        drafts in
+        <a href={`${import.meta.env.BASE_URL}account`}>your accounts page</a>.
       </p>
     ) : null
   }
