@@ -9,7 +9,7 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
-    "start": "node ./server.mjs",
+    "start": "node ./dist/server/entry.mjs",
     "migrate-db": "node ./migrate-db.mjs",
     "build": "astro build",
     "preview": "astro preview",
