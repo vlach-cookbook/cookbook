@@ -9,7 +9,7 @@
  */
 
 html {
-  line-height: 1.15; /* 1 */
+  /*line-height: 1.15; /* 1  (The default line height of 1.2 was fine.)*/
   -webkit-text-size-adjust: 100%; /* 2 */
 }
 
@@ -22,14 +22,6 @@ html {
 
 body {
   margin: 0;
-}
-
-/**
- * Render the `main` element consistently in IE.
- */
-
-main {
-  display: block;
 }
 
 /**
@@ -49,12 +41,12 @@ h1 {
  * 1. Add the correct box sizing in Firefox.
  * 2. Show the overflow in Edge and IE.
  */
-
+/* We don't use <hr>
 hr {
-  box-sizing: content-box; /* 1 */
-  height: 0; /* 1 */
-  overflow: visible; /* 2 */
-}
+  box-sizing: content-box; /* 1
+  height: 0; /* 1
+  overflow: visible; /* 2
+}*/
 
 /**
  * 1. Correct the inheritance and scaling of font size in all browsers.
@@ -68,14 +60,6 @@ pre {
 
 /* Text-level semantics
    ========================================================================== */
-
-/**
- * Remove the gray background on active links in IE 10.
- */
-
-a {
-  background-color: transparent;
-}
 
 /**
  * 1. Remove the bottom border in Chrome 57-
@@ -138,17 +122,6 @@ sup {
   top: -0.5em;
 }
 
-/* Embedded content
-   ========================================================================== */
-
-/**
- * Remove the border on images inside links in IE 10.
- */
-
-img {
-  border-style: none;
-}
-
 /* Forms
    ========================================================================== */
 
@@ -164,18 +137,8 @@ select,
 textarea {
   font-family: inherit; /* 1 */
   font-size: 100%; /* 1 */
-  line-height: 1.15; /* 1 */
+  /*line-height: 1.15; /* 1 (The default line height was fine.) */
   margin: 0; /* 2 */
-}
-
-/**
- * Show the overflow in IE.
- * 1. Show the overflow in Edge.
- */
-
-button,
-input { /* 1 */
-  overflow: visible;
 }
 
 /**
@@ -255,25 +218,6 @@ progress {
 }
 
 /**
- * Remove the default vertical scrollbar in IE 10+.
- */
-
-textarea {
-  overflow: auto;
-}
-
-/**
- * 1. Add the correct box sizing in IE 10.
- * 2. Remove the padding in IE 10.
- */
-
-[type="checkbox"],
-[type="radio"] {
-  box-sizing: border-box; /* 1 */
-  padding: 0; /* 2 */
-}
-
-/**
  * Correct the cursor style of increment and decrement buttons in Chrome.
  */
 
@@ -327,23 +271,4 @@ details {
 
 summary {
   display: list-item;
-}
-
-/* Misc
-   ========================================================================== */
-
-/**
- * Add the correct display in IE 10+.
- */
-
-template {
-  display: none;
-}
-
-/**
- * Add the correct display in IE 10.
- */
-
-[hidden] {
-  display: none;
 }
