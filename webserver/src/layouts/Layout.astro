@@ -1,7 +1,4 @@
 ---
-import bodyBg from "@img/corian.jpg";
-import headerBg from "@img/header.jpg";
-import searchIcon from "@img/search.svg";
 import { CLIENT_ID } from "@lib/google-auth";
 import type { User } from "@prisma/client";
 
@@ -52,7 +49,7 @@ if (login_uri.hostname !== "localhost") {
     <meta name="generator" content={Astro.generator} />
     <script src="https://accounts.google.com/gsi/client" async defer></script>
   </head>
-  <body style={{ "--bodyBg": `url(${bodyBg.src})` }}>
+  <body>
     <div id="wrapper">
       <nav class="header noprint">
         {
@@ -95,7 +92,7 @@ if (login_uri.hostname !== "localhost") {
           )
         }
       </nav>
-      <header class="noprint" style={{ "--headerBg": `url(${headerBg.src})` }}>
+      <header class="noprint">
         <a href="/"><h1>Cookbook</h1></a>
       </header>
       {
@@ -107,7 +104,6 @@ if (login_uri.hostname !== "localhost") {
                 name="title"
                 class="search"
                 placeholder="SEARCH"
-                style={{ "--searchIcon": `url(${searchIcon.src})` }}
               />
             </form>
           </nav>
