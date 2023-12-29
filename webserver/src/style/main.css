@@ -27,6 +27,10 @@ body {
 
 header {
   background-image: url(/src/img/header.webp);
+  background-image: image-set(url(/src/img/header-2x.avif) 2x type("image/avif"),
+      url(/src/img/header-1x.avif) 1x type("image/avif"),
+      url(/src/img/header.webp) type("image/webp"));
+
   background-size: 460px auto;
   background-position: top;
   height: 100px;
@@ -316,7 +320,10 @@ details>summary::marker {
 @media only screen and (min-width: 900px) {
 
   body {
-    background-image: url(/src/img/corian-q75.webp);
+    background-image: url(/src/img/corian.webp);
+    background-image: image-set(url(/src/img/corian-2x.avif) 2x type("image/avif"),
+        url(/src/img/corian-1x.avif) 1x type("image/avif"),
+        url(/src/img/corian.webp) type("image/webp"));
     background-size: 500px;
     /*background: linear-gradient(white, #388220);*/
     background-attachment: fixed;
