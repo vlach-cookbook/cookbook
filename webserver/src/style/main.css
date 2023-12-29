@@ -26,7 +26,7 @@ body {
 }
 
 header {
-  background-image: url(/src/img/header.jpg);
+  background-image: url(/src/img/header.webp);
   background-size: 460px auto;
   background-position: top;
   height: 100px;
@@ -316,7 +316,7 @@ details>summary::marker {
 @media only screen and (min-width: 900px) {
 
   body {
-    background-image: url(/src/img/corian.jpg);
+    background-image: url(/src/img/corian-q75.webp);
     background-size: 500px;
     /*background: linear-gradient(white, #388220);*/
     background-attachment: fixed;
