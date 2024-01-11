@@ -1,0 +1,13 @@
+name: Backup Database
+concurrency: backup
+on:
+  schedule:
+    - cron: "14 7,19 * * *"
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Start a backup
+      run: 'curl -X POST --header "Authorization: Bearer $START_BACKUP_PASSWORD" https://vlach-cookbook-backup.fly.dev/backup'
+      env:
+        START_BACKUP_PASSWORD: ${{ secrets.START_BACKUP_PASSWORD }}
