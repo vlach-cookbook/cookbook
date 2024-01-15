@@ -5,11 +5,11 @@ ENV FLYCTL_INSTALL="/home/node/.fly"
 ENV PATH=/home/node/depot_tools:${PNPM_HOME}:${FLYCTL_INSTALL}/bin:${PATH}
 
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install --no-install-recommends bash-completion
+    && apt-get -y install --no-install-recommends bash-completion postgresql-client-15
 
-RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN corepack enable
 
-RUN su node -c "pnpm install -g prisma playwright && playwright install-deps"
+RUN su node -c "pnpm install -g playwright && playwright install-deps"
 
 RUN su node -c "git clone --filter=blob:none https://chromium.googlesource.com/chromium/tools/depot_tools.git /home/node/depot_tools && git rebase-update --help>/dev/null"
 
@@ -20,10 +20,3 @@ COPY --chmod=755 <<EOF /usr/local/bin/git-s
 git map-branches -v
 git status
 EOF
-
-# [Optional] Uncomment if you want to install an additional version of node using nvm
-# ARG EXTRA_NODE_VERSION=10
-# RUN su node -c "source /usr/local/share/nvm/nvm.sh && nvm install ${EXTRA_NODE_VERSION}"
-
-# [Optional] Uncomment if you want to install more global node modules
-# RUN su node -c "npm install -g <your-package-list-here>"
