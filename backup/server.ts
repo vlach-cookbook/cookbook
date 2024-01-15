@@ -5,6 +5,7 @@ import { exec } from 'node:child_process';
 import process from 'node:process';
 import util from 'node:util';
 import zlib from 'node:zlib';
+import age from 'age-encryption';
 
 const execP = util.promisify(exec);
 
@@ -39,7 +40,7 @@ app.post('/backup', async (req, res) => {
 
   const backupTimestamp = new Date();
 
-  const { stdout: dump } = await execP(`pg_dump --clean --if-exists -O -d "${process.env.DATABASE_URL}"`, { encoding: 'utf-8' });
+  const { stdout: dump } = await execP(`pg_dump --clean --if-exists -O -d "${process.env.DATABASE_URL}"`, { encoding: 'buffer' });
 
   const compressed = await util.promisify(zlib.brotliCompress)(dump, {
     params: {
@@ -47,13 +48,13 @@ app.post('/backup', async (req, res) => {
     }
   });
 
-  const ageProcess = execP(`age -r ${process.env.BACKUP_AGE_RECIPIENT}`, { encoding: 'buffer' });
-  ageProcess.child.stdin!.end(compressed);
-  const { stdout: encrypted } = await ageProcess;
+  const encrypter = new (await age()).Encrypter;
+  encrypter.addRecipient(process.env.BACKUP_AGE_RECIPIENT!);
+  const encrypted = encrypter.encrypt(compressed);
 
   const bucket = 'vlach-cookbook-backup';
   const filename = `backup-${backupTimestamp.toISOString()}.br.age`;
-  await storage.bucket(bucket).file(filename).save(encrypted);
+  await storage.bucket(bucket).file(filename).save(Buffer.from(encrypted.buffer));
 
   res.type('text/plain').send(`Backed up ${encrypted.length} bytes to ${bucket}/${filename}.\n`);
 

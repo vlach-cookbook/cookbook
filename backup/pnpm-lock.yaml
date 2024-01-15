@@ -8,6 +8,9 @@ dependencies:
   '@google-cloud/storage':
     specifier: ^7.7.0
     version: 7.7.0
+  age-encryption:
+    specifier: ^0.1.5
+    version: 0.1.5
   express:
     specifier: ^4.18.2
     version: 4.18.2
@@ -196,6 +199,13 @@ packages:
       negotiator: 0.6.3
     dev: false
 
+  /age-encryption@0.1.5:
+    resolution: {integrity: sha512-dCYck6yQczeJHq+Jj+nc3ziBAxcod1DLlNkyLgwJyIOXh32NzzKm3kybXCZuDhecgWLGp1FDEUW2QxqGuHtjuw==}
+    dependencies:
+      bech32-buffer: 0.2.1
+      libsodium-wrappers-sumo: 0.7.13
+    dev: false
+
   /agent-base@6.0.2:
     resolution: {integrity: sha512-RZNwNclF7+MS/8bDg70amg32dyeZGZxiDuQmZxKLAlQjr3jGyLx+4Kkk58UO7D2QdgFIQCovuSuZESne6RG6XQ==}
     engines: {node: '>= 6.0.0'}
@@ -242,6 +252,11 @@ packages:
     engines: {node: '>= 0.8'}
     dependencies:
       safe-buffer: 5.1.2
+    dev: false
+
+  /bech32-buffer@0.2.1:
+    resolution: {integrity: sha512-fCG1TyZuCN48Sdw97p/IR39fvqpFlWDVpG7qnuU1Uc3+Xtc/0uqAp8U7bMW/bGuVF5CcNVIXwxQsWwUr6un6FQ==}
+    engines: {node: '>=8'}
     dev: false
 
   /bignumber.js@9.1.2:
@@ -673,6 +688,16 @@ packages:
     dependencies:
       jwa: 2.0.0
       safe-buffer: 5.2.1
+    dev: false
+
+  /libsodium-sumo@0.7.13:
+    resolution: {integrity: sha512-zTGdLu4b9zSNLfovImpBCbdAA4xkpkZbMnSQjP8HShyOutnGjRHmSOKlsylh1okao6QhLiz7nG98EGn+04cZjQ==}
+    dev: false
+
+  /libsodium-wrappers-sumo@0.7.13:
+    resolution: {integrity: sha512-lz4YdplzDRh6AhnLGF2Dj2IUj94xRN6Bh8T0HLNwzYGwPehQJX6c7iYVrFUPZ3QqxE0bqC+K0IIqqZJYWumwSQ==}
+    dependencies:
+      libsodium-sumo: 0.7.13
     dev: false
 
   /media-typer@0.3.0:

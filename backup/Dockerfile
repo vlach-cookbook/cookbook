@@ -9,7 +9,7 @@ WORKDIR /app
 ENV NODE_ENV="production"
 
 # Install pnpm
-RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN corepack enable
 
 # Throw-away build stage to reduce size of final image
 FROM base as build
@@ -31,7 +31,7 @@ RUN pnpm prune --prod
 # Final stage for app image
 FROM base
 
-RUN apk add --no-cache postgresql14-client age
+RUN apk add --no-cache postgresql14-client
 
 # Copy built application
 COPY --from=build /app /app
