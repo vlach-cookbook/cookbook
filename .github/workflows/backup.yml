@@ -8,6 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Start a backup
-      run: 'curl -X POST --header "Authorization: Bearer $START_BACKUP_PASSWORD" https://vlach-cookbook-backup.fly.dev/backup'
+      run: 'curl --fail-with-body -X POST --header "Authorization: Bearer $START_BACKUP_PASSWORD" https://vlach-cookbook-backup.fly.dev/backup'
       env:
         START_BACKUP_PASSWORD: ${{ secrets.START_BACKUP_PASSWORD }}
