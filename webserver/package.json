@@ -10,7 +10,6 @@
   "scripts": {
     "dev": "astro dev",
     "start": "node ./dist/server/entry.mjs",
-    "migrate-db": "node ./migrate-db.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",

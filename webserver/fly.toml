@@ -9,7 +9,7 @@ kill_timeout = 5
   PORT = "8080"
 
 [deploy]
-  release_command = "pnpm migrate-db"
+  release_command = "node ./fly-release-command.mjs"
 
 [http_service]
   internal_port = 8080
