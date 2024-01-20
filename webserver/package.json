@@ -16,6 +16,9 @@
     "astro": "astro",
     "test": "pnpm run build && playwright test"
   },
+  "prisma": {
+    "seed": "node prisma/seed.mjs"
+  },
   "engines": {
     "node": "20"
   },
