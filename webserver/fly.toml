@@ -9,7 +9,7 @@ kill_timeout = 5
   PORT = "8080"
 
 [deploy]
-  release_command = "node ./fly-release-command.mjs"
+  release_command = "pnpm fly-release-command"
 
 [http_service]
   internal_port = 8080
