@@ -9,6 +9,7 @@ updates:
     directory: "/webserver"
     schedule:
       interval: "weekly"
+    versioning-strategy: increase
     groups:
       astro:
         patterns: ["astro", "@astrojs/*"]
@@ -28,6 +29,7 @@ updates:
     directory: "/backup"
     schedule:
       interval: "weekly"
+    versioning-strategy: increase
     groups:
       minors:
         patterns: ["*"]
