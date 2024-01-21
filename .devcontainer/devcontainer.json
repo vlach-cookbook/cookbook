@@ -47,5 +47,10 @@
   // This makes sure the current packages are always available.
   "updateContentCommand": "cd webserver && pnpm install && pnpm prisma db push",
   // 'postCreateCommand' will run in the background while the user's connecting to the container.
-  "postCreateCommand": "cd webserver && pnpm playwright install"
+  "postCreateCommand": "cd webserver && pnpm playwright install",
+  // Update packages every time the container starts.
+  "postStartCommand": {
+    "backup": "cd backup && pnpm install",
+    "webserver": "cd webserver && pnpm install"
+  }
 }
