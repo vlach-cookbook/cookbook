@@ -16,6 +16,11 @@ updates:
       prisma:
         patterns: ["prisma", "@prisma/*"]
         update-types: [patch, minor, major]
+      playwright:
+        # This will usually fail, because the version in workflows and Dockerfiles
+        # has to match exactly.
+        patterns: ["*playwright*"]
+        update-types: [patch, minor, major]
       minors:
         patterns: ["*"]
         update-types: [patch, minor]
