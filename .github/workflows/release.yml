@@ -10,7 +10,7 @@ jobs:
       name: production
       url: "https://cookbook.vlach.us/"
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: superfly/flyctl-actions/setup-flyctl@master
     - name: Update the production deployment.
       run: flyctl deploy webserver -a vlach-cookbook --build-arg GOOGLE_SITE_VERIFICATION="$GOOGLE_SITE_VERIFICATION"
