@@ -1,0 +1,34 @@
+# To get started with Dependabot version updates, you'll need to specify which
+# package ecosystems to update and where the package manifests are located.
+# Please see the documentation for all configuration options:
+# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/webserver"
+    schedule:
+      interval: "weekly"
+    groups:
+      astro:
+        patterns: ["astro", "@astrojs/*"]
+        update-types: [patch, minor, major]
+      prisma:
+        patterns: ["prisma", "@prisma/*"]
+        update-types: [patch, minor, major]
+      minors:
+        patterns: ["*"]
+        update-types: [patch, minor]
+  - package-ecosystem: "npm"
+    directory: "/backup"
+    schedule:
+      interval: "weekly"
+    groups:
+      minors:
+        patterns: ["*"]
+        update-types: [patch, minor]
+      # Do other major updates one at a time.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
