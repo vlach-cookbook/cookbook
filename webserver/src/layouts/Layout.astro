@@ -6,6 +6,7 @@ import type { User } from "@prisma/client";
 import "@style/normalize.css";
 
 import "@style/main.css";
+import { ScreenLock } from "@components/ScreenLock";
 
 export interface Props {
   title: string;
@@ -15,10 +16,18 @@ export interface Props {
   needLogin?: boolean;
   /// True for pages that don't need a search box.
   omitSearchBox?: boolean;
+  /// True for recipes where users may want their screen to stay on.
+  showScreenLock?: boolean;
   children: any;
 }
 
-const { title, user, needLogin = false, omitSearchBox = false } = Astro.props;
+const {
+  title,
+  user,
+  needLogin = false,
+  omitSearchBox = false,
+  showScreenLock = false,
+} = Astro.props;
 
 const request_url = new URL(Astro.url);
 if (process.env.GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN) {
@@ -30,7 +39,7 @@ if (process.env.GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN) {
 }
 const login_uri = new URL(
   `/finish_login?from=${encodeURIComponent(request_url.href)}`,
-  request_url,
+  request_url
 );
 if (login_uri.hostname !== "localhost") {
   login_uri.protocol = "https";
@@ -96,18 +105,21 @@ if (login_uri.hostname !== "localhost") {
         <a href="/"><h1>Cookbook</h1></a>
       </header>
       {
-        omitSearchBox ? null : (
-          <nav id="nav_1" class="noprint">
+        !omitSearchBox || showScreenLock ? (
+          <div id="aboveMain" class="noprint">
             <form method="get" action="/search">
-              <input
-                type="search"
-                name="title"
-                class="search"
-                placeholder="SEARCH"
-              />
+              {omitSearchBox ? null : (
+                <input
+                  type="search"
+                  name="title"
+                  class="search"
+                  placeholder="SEARCH"
+                />
+              )}
             </form>
-          </nav>
-        )
+            {showScreenLock ? <ScreenLock client:visible /> : null}
+          </div>
+        ) : null
       }
 
       <main id="main_container">

@@ -27,9 +27,11 @@ body {
 
 header {
   background-image: url(/src/img/header.webp);
-  background-image: image-set(url(/src/img/header-2x.avif) 2x type("image/avif"),
-      url(/src/img/header-1x.avif) 1x type("image/avif"),
-      url(/src/img/header.webp) type("image/webp"));
+  background-image: image-set(
+    url(/src/img/header-2x.avif) 2x type("image/avif"),
+    url(/src/img/header-1x.avif) 1x type("image/avif"),
+    url(/src/img/header.webp) type("image/webp")
+  );
 
   background-size: 460px auto;
   background-position: top;
@@ -88,7 +90,7 @@ nav.header {
   background-color: var(--navy);
 }
 
-#nav_1 {
+#aboveMain {
   order: 1;
   padding: 5px 10px 5px 10px;
 }
@@ -144,7 +146,6 @@ p {
   margin-bottom: 5px;
   font-weight: bold;
   vertical-align: middle;
-
 }
 
 button {
@@ -186,7 +187,7 @@ a.action:hover {
 /* LOGIN */
 
 .login {
-  padding-top: 10px
+  padding-top: 10px;
 }
 
 /* READING A RECIPE and LOGIN */
@@ -263,7 +264,6 @@ a.action:hover {
   visibility: hidden;
 }
 
-
 /* ==========================================================================
    List of details
    ========================================================================== */
@@ -273,17 +273,15 @@ ul.details {
   padding-inline-start: 0;
 }
 
-details>summary::marker {
+details > summary::marker {
   color: var(--yellow);
 }
-
 
 /* ====================
     INTERMEDIATE
    ==================== */
 
 @media only screen and (min-width: 455px) {
-
   header {
     background-size: 100% auto;
     height: 140px;
@@ -304,8 +302,15 @@ details>summary::marker {
     margin: 10px -5px 0px -5px;
   }
 
-  #nav_1 {
-    flex-direction: column;
+  #aboveMain {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .error {
+    color: red;
   }
 
   #nav_2 {
@@ -318,12 +323,13 @@ details>summary::marker {
     WIDEST
    ==================== */
 @media only screen and (min-width: 900px) {
-
   body {
     background-image: url(/src/img/corian.webp);
-    background-image: image-set(url(/src/img/corian-2x.avif) 2x type("image/avif"),
-        url(/src/img/corian-1x.avif) 1x type("image/avif"),
-        url(/src/img/corian.webp) type("image/webp"));
+    background-image: image-set(
+      url(/src/img/corian-2x.avif) 2x type("image/avif"),
+      url(/src/img/corian-1x.avif) 1x type("image/avif"),
+      url(/src/img/corian.webp) type("image/webp")
+    );
     background-size: 500px;
     /*background: linear-gradient(white, #388220);*/
     background-attachment: fixed;
@@ -340,7 +346,6 @@ details>summary::marker {
     PRINT
    ==================== */
 @media print {
-
   .noprint {
     display: none;
   }

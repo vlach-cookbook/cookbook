@@ -58,7 +58,7 @@ RenderSource == RenderSource;
   import "@github/relative-time-element";
 </script>
 
-<Layout title={recipe?.name ?? "No such recipe"} user={activeUser}>
+<Layout title={recipe?.name ?? "No such recipe"} user={activeUser} showScreenLock>
   {
     recipe ? (
       <div class="recipe" itemscope itemtype="https://schema.org/Recipe">
