@@ -16,8 +16,15 @@ jobs:
     - uses: actions/checkout@v4
     - uses: superfly/flyctl-actions/setup-flyctl@master
     - name: Update the staging deployment.
-      run: flyctl deploy webserver --build-arg GOOGLE_SITE_VERIFICATION="$GOOGLE_SITE_VERIFICATION"
+      run: flyctl deploy webserver \
+          --build-arg GOOGLE_SITE_VERIFICATION="$GOOGLE_SITE_VERIFICATION" \
+          --build-arg SENTRY_DSN="$SENTRY_DSN" \
+          --build-secret SENTRY_AUTH_TOKEN="$SENTRY_AUTH_TOKEN" \
+          --build-arg SENTRY_RELEASE="$GITHUB_SHA" \
+          --build-arg SENTRY_ENVIRONMENT=staging
       env:
         FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
         GOOGLE_SITE_VERIFICATION: ${{ vars.GOOGLE_SITE_VERIFICATION }}
+        SENTRY_DSN: ${{ vars.SENTRY_DSN }}
+        SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
         NO_COLOR: 1

@@ -16,7 +16,12 @@ RUN apk add --no-cache postgresql14-client
 COPY . .
 ARG GOOGLE_SITE_VERIFICATION
 RUN if [ -n "${GOOGLE_SITE_VERIFICATION}" ]; then mkdir -p public; echo "google-site-verification: ${GOOGLE_SITE_VERIFICATION}" > public/${GOOGLE_SITE_VERIFICATION}; fi
-RUN pnpm run build
+ARG SENTRY_DSN
+ARG SENTRY_RELEASE
+ARG SENTRY_ENVIRONMENT
+RUN --mount=type=secret,id=SENTRY_AUTH_TOKEN \
+    SENTRY_AUTH_TOKEN=$(cat /run/secrets/SENTRY_AUTH_TOKEN) \
+    pnpm run build
 
 # Setting HOST is really important so the server listens to external connections.
 EXPOSE 4321
