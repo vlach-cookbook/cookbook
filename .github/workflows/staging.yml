@@ -34,6 +34,7 @@ jobs:
         flyctl deploy webserver \
           --build-arg GOOGLE_SITE_VERIFICATION="$GOOGLE_SITE_VERIFICATION" \
           --build-arg SENTRY_DSN="$SENTRY_DSN" \
+          --build-arg SENTRY_ORG="$SENTRY_ORG" \
           --build-secret SENTRY_AUTH_TOKEN="$SENTRY_AUTH_TOKEN" \
           --build-arg SENTRY_RELEASE="$GITHUB_SHA" \
           --build-arg SENTRY_ENVIRONMENT=staging
