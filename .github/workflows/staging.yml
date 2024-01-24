@@ -14,6 +14,19 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Upload commits to Sentry release
+      uses: getsentry/action-release@v1
+      env:
+        SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        SENTRY_ORG: jeffrey-yasskin
+        SENTRY_PROJECT: vlach-cookbook
+      with:
+        environment: staging
+        finalize: false
+        version: ${{ github.sha }}
+        set_commits: auto
     - uses: superfly/flyctl-actions/setup-flyctl@master
     - name: Update the staging deployment.
       run: |
