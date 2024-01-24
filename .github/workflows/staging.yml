@@ -12,9 +12,6 @@ jobs:
       name: staging
       url: "https://vlach-cookbook-staging.fly.dev/"
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    env:
-      SENTRY_ORG: jeffrey-yasskin
-      SENTRY_PROJECT: vlach-cookbook
     steps:
     - uses: actions/checkout@v4
       with:
@@ -23,6 +20,8 @@ jobs:
       uses: getsentry/action-release@v1
       env:
         SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        SENTRY_ORG: jeffrey-yasskin
+        SENTRY_PROJECT: vlach-cookbook
       with:
         environment: staging
         finalize: false
@@ -34,8 +33,6 @@ jobs:
         flyctl deploy webserver \
           --build-arg GOOGLE_SITE_VERIFICATION="$GOOGLE_SITE_VERIFICATION" \
           --build-arg SENTRY_DSN="$SENTRY_DSN" \
-          --build-arg SENTRY_ORG="$SENTRY_ORG" \
-          --build-arg SENTRY_PROJECT="$SENTRY_PROJECT" \
           --build-secret SENTRY_AUTH_TOKEN="$SENTRY_AUTH_TOKEN" \
           --build-arg SENTRY_RELEASE="$GITHUB_SHA" \
           --build-arg SENTRY_ENVIRONMENT=staging

@@ -14,6 +14,7 @@ export default defineConfig({
     release: process.env.SENTRY_RELEASE,
     environment: process.env.SENTRY_ENVIRONMENT ?? "development",
     sourceMapsUploadOptions: {
+      org: "jeffrey-yasskin",
       project: "vlach-cookbook",
       authToken: process.env.SENTRY_AUTH_TOKEN,
     },
