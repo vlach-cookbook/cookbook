@@ -1,7 +1,7 @@
 import { md } from "@lib/markdown";
-import { type Component, JSX, splitProps } from "solid-js";
+import { JSX, splitProps, type Component } from "solid-js";
 
 export const Markdown: Component<{ source: string } & JSX.HTMLAttributes<HTMLDivElement>> = (props) => {
   const [local, divProps] = splitProps(props, ["source"]);
-  return <div innerHTML={md.render(local.source)} {...divProps} />;
+  return <div innerHTML={String(md.processSync(local.source))} {...divProps} />;
 };

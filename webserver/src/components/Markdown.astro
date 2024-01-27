@@ -6,6 +6,7 @@ type Props = {
 };
 
 const { source } = Astro.props;
+const processed = await md.process(source);
 ---
 
-<Fragment set:html={md.render(source)} />
+<Fragment set:html={String(processed)} />
