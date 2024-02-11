@@ -3,10 +3,15 @@ import { md } from "@lib/markdown";
 
 type Props = {
   source: string;
+  ingredientNames?: string[];
 };
 
-const { source } = Astro.props;
-const processed = await md.process(source);
+const { source, ingredientNames } = Astro.props;
+const processed = md().data({ ingredientNames }).processSync(source);
 ---
+
+<script>
+  import "@components/recipe-ingredient";
+</script>
 
 <Fragment set:html={String(processed)} />

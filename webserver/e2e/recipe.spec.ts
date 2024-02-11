@@ -75,3 +75,26 @@ test("Shows author's name", async ({ page, testUser, testRecipe, testLogin }) =>
   await expect(page).toHaveURL(/.*\/r\/recipeauthor$/);
   await expect(page).toHaveTitle("User Name's Recipes");
 });
+
+test('Shows ingredient tooltips', async ({ page, testUser, testRecipe }) => {
+  const user = await testUser.create({ username: 'testuser', name: "User Name" });
+  await testRecipe.create({
+    author: { connect: { id: user.id } },
+    name: "Test Recipe",
+    slug: "test-recipe",
+    ingredients: {
+      create: [
+        { order: 0, amount: "1", unit: "cup", name: "flour", preparation: "sifted" },
+        { order: 2, amount: "3", name: "Funny ingredient'name" },
+      ]
+    },
+    steps: ["1. Add the flour.\n2. Add some Funny ingredient'name."],
+  })
+  await page.goto('/r/testuser/test-recipe');
+
+  await page.getByText("Add the flour").locator('span[tabindex]').hover();
+  await expect.soft(page.getByRole('tooltip')).toHaveText("1 cup flour, sifted");
+
+  await page.getByText("Add some Funny").locator('span[tabindex]').hover();
+  await expect.soft(page.getByRole('tooltip')).toHaveText("3 Funny ingredient'name");
+});

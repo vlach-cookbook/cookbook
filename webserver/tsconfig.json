@@ -10,6 +10,8 @@
       "@style/*": ["src/style/*"]
     },
     "exactOptionalPropertyTypes": false,
+    "experimentalDecorators": true,
+    "useDefineForClassFields": false,
     "jsx": "preserve",
     "jsxImportSource": "solid-js"
   }
