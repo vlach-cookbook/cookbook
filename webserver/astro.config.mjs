@@ -13,6 +13,8 @@ export default defineConfig({
     dsn: process.env.SENTRY_DSN,
     release: process.env.SENTRY_RELEASE,
     environment: process.env.SENTRY_ENVIRONMENT ?? "development",
+    replaysSessionSampleRate: 0,
+    replaysOnErrorSampleRate: 0,
     sourceMapsUploadOptions: {
       org: "jeffrey-yasskin",
       project: "vlach-cookbook",
