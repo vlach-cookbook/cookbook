@@ -29,8 +29,8 @@
     "@github/relative-time-element": "^4.3.1",
     "@google-cloud/storage": "^7.7.0",
     "@prisma/client": "^5.9.1",
-    "@sentry/astro": "^7.100.1",
-    "@shoelace-style/shoelace": "^2.13.1",
+    "@sentry/astro": "^7.101.1",
+    "@shoelace-style/shoelace": "^2.14.0",
     "age-encryption": "^0.1.5",
     "astro": "^4.3.6",
     "debug": "^4.3.4",
@@ -46,7 +46,7 @@
     "rehype-stringify": "^10.0.0",
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.0",
-    "solid-js": "^1.8.14",
+    "solid-js": "^1.8.15",
     "typescript": "^5.3.3",
     "unified": "^11.0.4",
     "zod": "^3.22.4"
@@ -56,7 +56,7 @@
     "@playwright/test": "1.41.2",
     "@types/mdast": "^4.0.3",
     "@types/n3": "^1.16.4",
-    "@types/node": "^20.11.17",
+    "@types/node": "^20.11.19",
     "dotenv-cli": "^7.3.0"
   }
 }
