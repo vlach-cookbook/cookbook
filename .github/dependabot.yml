@@ -9,6 +9,7 @@ updates:
     directory: "/webserver"
     schedule:
       interval: "weekly"
+      day: "friday"
     versioning-strategy: increase
     groups:
       astro:
@@ -29,6 +30,7 @@ updates:
     directory: "/backup"
     schedule:
       interval: "weekly"
+      day: "friday"
     versioning-strategy: increase
     groups:
       minors:
@@ -39,6 +41,7 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+      day: "friday"
     groups:
       actions-org:
         patterns: ["actions/*"]
