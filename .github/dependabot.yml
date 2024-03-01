@@ -21,7 +21,7 @@ updates:
       playwright:
         # This will usually fail, because the version in workflows and Dockerfiles
         # has to match exactly.
-        patterns: ["*playwright*"]
+        patterns: ["@playwright/*"]
         update-types: [patch, minor, major]
       minors:
         patterns: ["*"]
