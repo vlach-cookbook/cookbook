@@ -14,7 +14,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "test": "pnpm run build && playwright test"
+    "test": "vitest run && pnpm run build && playwright test"
   },
   "prisma": {
     "seed": "node prisma/seed.mjs"
@@ -57,6 +57,7 @@
     "@types/mdast": "^4.0.3",
     "@types/n3": "^1.16.4",
     "@types/node": "^20.11.28",
-    "dotenv-cli": "^7.4.1"
+    "dotenv-cli": "^7.4.1",
+    "vitest": "^1.4.0"
   }
 }

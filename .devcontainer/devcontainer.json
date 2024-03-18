@@ -26,7 +26,8 @@
         "ms-azuretools.vscode-docker",
         "prisma.prisma",
         "stkb.rewrap",
-        "tamasfe.even-better-toml"
+        "tamasfe.even-better-toml",
+        "vitest.explorer"
       ]
     }
   },
