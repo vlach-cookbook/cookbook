@@ -29,7 +29,7 @@
     "@github/relative-time-element": "^4.4.0",
     "@google-cloud/storage": "^7.9.0",
     "@prisma/client": "^5.12.1",
-    "@sentry/astro": "^7.109.0",
+    "@sentry/astro": "^7.110.0",
     "@shoelace-style/shoelace": "^2.15.0",
     "age-encryption": "^0.1.5",
     "astro": "^4.5.16",
@@ -47,7 +47,7 @@
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.0",
     "solid-js": "^1.8.16",
-    "typescript": "^5.4.4",
+    "typescript": "^5.4.5",
     "unified": "^11.0.4",
     "zod": "^3.22.4"
   },
@@ -56,8 +56,8 @@
     "@playwright/test": "1.43.0",
     "@types/mdast": "^4.0.3",
     "@types/n3": "^1.16.4",
-    "@types/node": "^20.12.4",
+    "@types/node": "^20.12.7",
     "dotenv-cli": "^7.4.1",
-    "vitest": "^1.4.0"
+    "vitest": "^1.5.0"
   }
 }
