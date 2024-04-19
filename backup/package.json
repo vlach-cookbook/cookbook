@@ -4,7 +4,7 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@google-cloud/storage": "^7.9.0",
+    "@google-cloud/storage": "^7.10.0",
     "age-encryption": "^0.1.5",
     "express": "^4.19.2",
     "morgan": "^1.10.0"
