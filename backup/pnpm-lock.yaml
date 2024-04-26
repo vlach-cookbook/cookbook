@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@google-cloud/storage':
-    specifier: ^7.10.0
-    version: 7.10.0
+    specifier: ^7.10.1
+    version: 7.10.1
   age-encryption:
     specifier: ^0.1.5
     version: 0.1.5
@@ -55,8 +55,8 @@ packages:
     engines: {node: '>=14'}
     dev: false
 
-  /@google-cloud/storage@7.10.0:
-    resolution: {integrity: sha512-aBNejLVzHpI7C8eJSMpBpfdq1lxvYuHqG+zy/xvs032RyPRxuu45DLMeXuAbgwyx1VBsxWGYifrPDx+O7hJrmw==}
+  /@google-cloud/storage@7.10.1:
+    resolution: {integrity: sha512-sZW14pfxEQZSIbBPs6doFYtcbK31Bs3E4jH5Ly3jJnBkYfkMPX8sXG3ZQXCJa88MKtUNPlgBdMN2OJUzmFe5/g==}
     engines: {node: '>=14'}
     dependencies:
       '@google-cloud/paginator': 5.0.0
@@ -68,7 +68,7 @@ packages:
       ent: 2.2.0
       fast-xml-parser: 4.3.6
       gaxios: 6.5.0
-      google-auth-library: 9.8.0
+      google-auth-library: 9.9.0
       mime: 3.0.0
       p-limit: 3.1.0
       retry-request: 7.0.2
@@ -560,8 +560,8 @@ packages:
       hasown: 2.0.2
     dev: false
 
-  /google-auth-library@9.8.0:
-    resolution: {integrity: sha512-TJJXFzMlVGRlIH27gYZ6XXyPf5Y3OItsKFfefsDAafNNywYRTkei83nEO29IrYj8GtdHWU78YnW+YZdaZaXIJA==}
+  /google-auth-library@9.9.0:
+    resolution: {integrity: sha512-9l+zO07h1tDJdIHN74SpnWIlNR+OuOemXlWJlLP9pXy6vFtizgpEzMuwJa4lqY9UAdiAv5DVd5ql0Am916I+aA==}
     engines: {node: '>=14'}
     dependencies:
       base64-js: 1.5.1
