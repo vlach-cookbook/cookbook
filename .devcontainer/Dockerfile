@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/devcontainers/typescript-node:20
+FROM mcr.microsoft.com/devcontainers/javascript-node:20
 
 ENV PNPM_HOME=/home/node/.local/share/pnpm
 ENV FLYCTL_INSTALL="/home/node/.fly"
@@ -7,7 +7,7 @@ ENV PATH=/home/node/depot_tools:${PNPM_HOME}:${FLYCTL_INSTALL}/bin:${PATH}
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends bash-completion postgresql-client-15
 
-RUN corepack enable
+RUN su node -c "npm remove -g pnpm" && corepack enable
 
 RUN su node -c "pnpm install -g playwright && playwright install-deps"
 
