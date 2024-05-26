@@ -1,5 +1,5 @@
 import slugify from '@lib/slugify';
-import { type Category, type RecipeIngredient as DBRecipeIngredient, type RecipeSource as DBRecipeSource, type DraftRecipe, type Recipe, type SourceType, type User } from '@prisma/client';
+import type { Category, RecipeIngredient as DBRecipeIngredient, RecipeSource as DBRecipeSource, DraftRecipe, Recipe, SourceType, User } from '@prisma/client';
 import { For, Match, Switch, batch, createReaction, createSignal, createUniqueId, type Component } from 'solid-js';
 import { createStore, produce, unwrap } from "solid-js/store";
 
