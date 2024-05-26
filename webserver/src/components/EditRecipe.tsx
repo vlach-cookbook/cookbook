@@ -1,11 +1,11 @@
 import slugify from '@lib/slugify';
-import { type Category, type Recipe, type RecipeIngredient as DBRecipeIngredient, type User, type RecipeSource as DBRecipeSource, SourceType, type DraftRecipe } from '@prisma/client';
-import { batch, type Component, createSignal, createUniqueId, For, createReaction, Match, Switch } from 'solid-js';
+import { type Category, type RecipeIngredient as DBRecipeIngredient, type RecipeSource as DBRecipeSource, type DraftRecipe, type Recipe, type SourceType, type User } from '@prisma/client';
+import { For, Match, Switch, batch, createReaction, createSignal, createUniqueId, type Component } from 'solid-js';
 import { createStore, produce, unwrap } from "solid-js/store";
 
-import { GrowingTextarea } from './GrowingTextarea';
-import { JsonRecipe } from '@lib/json-recipe';
 import { parseIntOrUndefined } from '@lib/forms';
+import { JsonRecipe } from '@lib/json-recipe';
+import { GrowingTextarea } from './GrowingTextarea';
 
 type RecipeSource = Omit<DBRecipeSource, 'id' | 'recipeId'> & { id?: number };
 type RecipeIngredient = Omit<DBRecipeIngredient, 'recipeId' | 'order'>;
