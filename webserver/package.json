@@ -29,7 +29,7 @@
     "@github/relative-time-element": "^4.4.0",
     "@google-cloud/storage": "^7.11.1",
     "@prisma/client": "^5.14.0",
-    "@sentry/astro": "^7.112.2",
+    "@sentry/astro": "^8.8.0",
     "@shoelace-style/shoelace": "^2.15.1",
     "age-encryption": "^0.1.5",
     "astro": "^4.9.2",
