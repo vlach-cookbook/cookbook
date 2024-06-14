@@ -13,7 +13,7 @@ updates:
     versioning-strategy: increase
     groups:
       astro:
-        patterns: ["astro", "@astrojs/*", "vitest"]
+        patterns: ["astro", "@astrojs/*", "vite", "vitest"]
         update-types: [patch, minor, major]
       prisma:
         patterns: ["prisma", "@prisma/*"]
