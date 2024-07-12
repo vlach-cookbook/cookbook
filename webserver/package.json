@@ -27,7 +27,7 @@
     "@astrojs/node": "^8.3.2",
     "@astrojs/solid-js": "^4.4.0",
     "@github/relative-time-element": "^4.4.2",
-    "@google-cloud/storage": "^7.11.2",
+    "@google-cloud/storage": "^7.11.3",
     "@prisma/client": "^5.16.1",
     "@sentry/astro": "^7.112.2",
     "@shoelace-style/shoelace": "^2.15.1",
