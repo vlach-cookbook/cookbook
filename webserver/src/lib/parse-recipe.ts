@@ -1,11 +1,8 @@
-import { Store, Quad } from "n3";
-import { Prefix, Subject, allOfType, isLiteral, nodeValue, nodeValueOrUndefined, nodeValues, rewriteSchema } from "./rdf";
+import { Quad, Store } from "n3";
+import { rdfDereferencer } from "rdf-dereference";
 import { parseIntOrUndefined } from "./forms";
-import rdfDereferencerWrapper from "rdf-dereference";
 import type { JsonRecipe, JsonRecipeIngredient } from "./json-recipe";
-
-// Workaround for https://github.com/rubensworks/rdf-dereference.js/issues/44.
-const rdfDereferencer: typeof rdfDereferencerWrapper = (rdfDereferencerWrapper as any).default;
+import { Prefix, Subject, allOfType, isLiteral, nodeValue, nodeValueOrUndefined, nodeValues, rewriteSchema } from "./rdf";
 
 export async function parseRecipesFromUrl(url: string): Promise<JsonRecipe[]> {
   const rdf = await extractRdfFromHtml(url);
