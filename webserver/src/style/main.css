@@ -164,6 +164,20 @@ button:hover {
   box-shadow: 1px 1px 2px var(--yellow);
 }
 
+input {
+  field-sizing: content;
+  max-width: 100%;
+  &:not([type=checkbox i], &[type=radio i]) {
+    min-width: 12em;
+  }
+}
+
+textarea {
+  display: block;
+  field-sizing: content;
+  width: 100%;
+}
+
 /* ====================
     PARTIALS
    ==================== */
@@ -224,41 +238,6 @@ a.action:hover {
 
 .title {
   margin-bottom: 10px;
-}
-
-.ingredient {
-  display: flex;
-  flex-direction: row;
-}
-
-.ingredient input :active {
-  border: #ebf2e8;
-}
-
-.ingredient_short {
-  flex: 1 1 0;
-  margin: 2px;
-}
-
-.ingredient_long {
-  flex: 2 1 0;
-  margin: 2px;
-}
-
-#content_edit button {
-  width: 25px;
-}
-
-#minus {
-  margin: 2px 0px 2px 5px;
-}
-
-#plus {
-  align-self: flex-end;
-}
-
-#content_edit #save {
-  margin-top: 10px;
 }
 
 .dragging {

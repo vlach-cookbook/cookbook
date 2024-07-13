@@ -2,7 +2,6 @@ import "@lib/relative-time-interface";
 import type { RecipeNote as Note, User } from "@prisma/client";
 import { type Component, createSignal, Match, Switch } from "solid-js";
 import { createStore } from "solid-js/store";
-import { GrowingTextarea } from "./GrowingTextarea";
 import { Markdown } from "./Markdown";
 
 const dateFormatter = new Intl.DateTimeFormat("en-US", { dateStyle: "medium" });
@@ -64,7 +63,7 @@ export const RecipeNote: Component<{
         <><label title="Make this note visible to everyone, instead of just yourself.">
           <input type="checkbox" name="public" checked={note.public} /> Public
         </label>
-          <GrowingTextarea ref={contentTextarea} name="content" onInput={onContentInput}>{note.content}</GrowingTextarea>
+          <textarea ref={contentTextarea} name="content" onInput={onContentInput}>{note.content}</textarea>
           <p>Preview:</p>
           <Markdown source={note.content} itemprop="text" />
         </>
@@ -99,7 +98,7 @@ export const AddRecipeNote: Component<{
       <label title="Make this note visible to everyone, instead of just yourself.">
         <input type="checkbox" name="public" checked /> Public
       </label>
-      <GrowingTextarea ref={contentTextarea} name="content" onInput={onContentInput}>{content()}</GrowingTextarea>
+      <textarea ref={contentTextarea} name="content" onInput={onContentInput}>{content()}</textarea>
       <p>Preview:</p>
       <Markdown source={content()} />
       <button type="submit">Save</button>

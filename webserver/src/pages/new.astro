@@ -6,6 +6,7 @@ import { EditRecipe } from "@components/EditRecipe";
 import Layout from "@layouts/Layout.astro";
 import { getLogin } from "@lib/login-cookie";
 import { prisma } from "@lib/prisma";
+import "@style/edit.css";
 
 const user = await getLogin(Astro.cookies);
 

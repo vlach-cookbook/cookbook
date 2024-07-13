@@ -1,0 +1,20 @@
+/* Styles for editing recipes. */
+
+/* Including the 'li' to increase the specificity. */
+li input {
+  &[name="servings"] {
+    min-width: 2em;
+  }
+  &[name$=".amount"] {
+    min-width: 4em;
+  }
+  &[name$=".unit"] {
+    min-width: 4em;
+  }
+  &[name$=".ingredient"] {
+    min-width: 10em;
+  }
+  &[name$=".preparation"] {
+    min-width: 10em;
+  }
+}
