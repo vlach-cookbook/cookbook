@@ -5,7 +5,6 @@ import { createStore, produce, unwrap } from "solid-js/store";
 
 import { parseIntOrUndefined } from '@lib/forms';
 import { JsonRecipe } from '@lib/json-recipe';
-import { GrowingTextarea } from './GrowingTextarea';
 
 type RecipeSource = Omit<DBRecipeSource, 'id' | 'recipeId'> & { id?: number };
 type RecipeIngredient = Omit<DBRecipeIngredient, 'recipeId' | 'order'>;
@@ -202,25 +201,25 @@ const IngredientsEditor: Component<{
             <input type="text"
               name={`ingredient.${index()}.amount`} value={ingredient.amount || ""}
               onInput={event => setIngredients(i => i === unwrap(ingredient), "amount", event.currentTarget.value)}
-              placeholder="Amount" style={{ width: "4em" }}
+              placeholder="Amount"
               onFocus={disableDraggable} onBlur={enableDraggable} />
             <input type="text"
               name={`ingredient.${index()}.unit`} value={ingredient.unit || ""}
               list={props.unitsDatalistId}
               onInput={event => setIngredients(i => i === unwrap(ingredient), "unit", event.currentTarget.value)}
-              placeholder="Unit" style={{ width: "4em" }}
+              placeholder="Unit"
               onFocus={disableDraggable} onBlur={enableDraggable} />
             <input type="text"
               name={`ingredient.${index()}.name`} value={ingredient.name}
               required
               list={props.ingredientsDatalistId}
               onInput={event => setIngredients(i => i === unwrap(ingredient), "name", event.currentTarget.value)}
-              placeholder="Ingredient" style={{ width: "10em" }}
+              placeholder="Ingredient"
               onFocus={disableDraggable} onBlur={enableDraggable} />
             <input type="text"
               name={`ingredient.${index()}.preparation`} value={ingredient.preparation || ""}
               onInput={event => setIngredients(i => i === unwrap(ingredient), "preparation", event.currentTarget.value)}
-              placeholder="Preparation" style={{ width: "10em" }}
+              placeholder="Preparation"
               onFocus={disableDraggable} onBlur={enableDraggable} />
             <button type="button" title="Remove this ingredient"
               onClick={[removeIngredient, ingredient]}
@@ -387,9 +386,9 @@ const InstructionsEditor: Component<{ steps: string[], setDirty: () => void }> =
   return <fieldset ref={fields}>
     <legend><h3>Instructions</h3></legend>
     {steps.length === 1 ?
-      <GrowingTextarea name={`step.0`}
+      <textarea name={`step.0`}
         onInput={e => setSteps(0, "step", e.currentTarget.value)}
-        onKeyDown={[onStepKeyDown, steps[0]]}>{steps[0]!.step}</GrowingTextarea>
+        onKeyDown={[onStepKeyDown, steps[0]]}>{steps[0]!.step}</textarea>
       :
       <ol>
         <For each={steps}>
@@ -401,9 +400,9 @@ const InstructionsEditor: Component<{ steps: string[], setDirty: () => void }> =
               onDragOver={onDragOver}
               onDrop={onDrop}
             >
-              <GrowingTextarea name={`step.${index()}`} draggable={false}
+              <textarea name={`step.${index()}`} draggable={false}
                 onInput={e => setSteps(s => s === unwrap(step), "step", e.currentTarget.value)}
-                onKeyDown={[onStepKeyDown, step]}>{step.step}</GrowingTextarea>
+                onKeyDown={[onStepKeyDown, step]}>{step.step}</textarea>
             </li>
           }
         </For>
