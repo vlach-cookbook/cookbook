@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       # This version has to exactly match the version in //webserver/pnpm-lock.yaml.
-      image: mcr.microsoft.com/playwright:v1.45.1-jammy
+      image: mcr.microsoft.com/playwright:v1.47.0-jammy
     services:
       # See https://docs.github.com/en/actions/using-containerized-services/creating-postgresql-service-containers.
       db:
