@@ -52,7 +52,8 @@ const config: PlaywrightTestConfig = {
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: (process.env.CI || process.env.SKIP_BUILD ? '' : 'pnpm build && ') + 'PORT=4321 pnpm start',
+    command: (process.env.ENVIRONMENT === 'dev' ? 'PORT=4321 pnpm dev' :
+       (process.env.CI || process.env.SKIP_BUILD ? '' : 'pnpm build && ') + 'PORT=4321 pnpm start'),
     url: "http://localhost:4321/",
     reuseExistingServer: !process.env.CI
   },
