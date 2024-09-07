@@ -7,6 +7,9 @@ defaults:
     working-directory: webserver
 jobs:
   playwright:
+    strategy:
+      matrix:
+        environment: [dev, prod]
     timeout-minutes: 60
     runs-on: ubuntu-latest
     container:
@@ -48,6 +51,7 @@ jobs:
         run: pnpm exec playwright test
         env:
           DEBUG: "pw:webserver"
+          ENVIRONMENT: ${{ matrix.environment }}
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
