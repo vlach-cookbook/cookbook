@@ -1,5 +1,16 @@
 import { escapeRegExp, filterListWithInitialMatchesFirst } from '@lib/util';
-import { type Accessor, type Component, createMemo, createResource, createSignal, For, type Resource, type Setter, Suspense } from 'solid-js';
+import {
+  type Accessor,
+  type Component,
+  createMemo,
+  createResource,
+  createSignal,
+  For,
+  onMount,
+  type Resource,
+  type Setter,
+  Suspense,
+} from "solid-js";
 import { OneRecipe, type RecipeTitleWithLinkFields } from './OneRecipe';
 import { QueryDrivenTextField } from './QueryDrivenTextField';
 
@@ -53,10 +64,14 @@ export const IngredientList: Component<{
   function onToggleIngredient(ingredient: string) {
     recipesByIngredient().get(ingredient)?.setNeedRecipes(true);
   }
-  const initialIngredients = filteredIngredients();
-  if (initialIngredients.length === 1) {
-    recipesByIngredient().get(initialIngredients[0]!.name)?.setNeedRecipes(true);
-  }
+  onMount(() => {
+    const initialIngredients = filteredIngredients();
+    if (initialIngredients.length === 1) {
+      recipesByIngredient()
+        .get(initialIngredients[0]!.name)
+        ?.setNeedRecipes(true);
+    }
+  });
 
   return <>
     <section id="ingredients">

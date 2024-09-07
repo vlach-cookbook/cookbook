@@ -1,6 +1,17 @@
 import { escapeRegExp, filterListWithInitialMatchesFirst } from '@lib/util';
 import type { Category } from '@prisma/client';
-import { type Accessor, type Component, createMemo, createResource, createSignal, For, type Resource, type Setter, Suspense } from 'solid-js';
+import {
+  type Accessor,
+  type Component,
+  createMemo,
+  createResource,
+  createSignal,
+  For,
+  onMount,
+  type Resource,
+  type Setter,
+  Suspense,
+} from "solid-js";
 import { OneRecipe, type RecipeTitleWithLinkFields } from './OneRecipe';
 import { QueryDrivenTextField } from './QueryDrivenTextField';
 
@@ -57,10 +68,12 @@ export const CategoryList: Component<{
   }
 
   // Ensure default-open categories load their recipes.
-  const initialCategories = filteredCategories();
-  if (initialCategories.length === 1) {
-    recipesByCategory().get(initialCategories[0]!.id)?.setNeedRecipes(true);
-  }
+  onMount(() => {
+    const initialCategories = filteredCategories();
+    if (initialCategories.length === 1) {
+      recipesByCategory().get(initialCategories[0]!.id)?.setNeedRecipes(true);
+    }
+  });
 
   return <>
     <QueryDrivenTextField queryParam='filter' value={filter()} onInput={setFilter}>Filter</QueryDrivenTextField>
