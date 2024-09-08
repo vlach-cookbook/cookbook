@@ -8,8 +8,8 @@
   "license": "Apache 2",
   "private": true,
   "scripts": {
-    "dev": "astro dev",
-    "start": "node ./dist/server/entry.mjs",
+    "dev": "astro dev --host ${HOST:-127.0.0.1}",
+    "start": "HOST=${HOST:-127.0.0.1} node ./dist/server/entry.mjs",
     "fly-release-command": "node ./fly-release-command.mjs",
     "build": "astro build",
     "preview": "astro preview",
