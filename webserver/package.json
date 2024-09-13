@@ -54,7 +54,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.3",
-    "@playwright/test": "1.47.0",
+    "@playwright/test": "1.47.1",
     "@types/mdast": "^4.0.4",
     "@types/n3": "^1.21.0",
     "@types/node": "^20.14.10",
