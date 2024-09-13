@@ -57,7 +57,7 @@
     "@playwright/test": "1.47.1",
     "@types/mdast": "^4.0.4",
     "@types/n3": "^1.21.0",
-    "@types/node": "^20.14.10",
+    "@types/node": "^22.5.4",
     "dotenv-cli": "^7.4.2",
     "vitest": "^2.0.5"
   }
