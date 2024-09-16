@@ -1,0 +1,36 @@
+---
+import { HistoryList } from "@components/HistoryList";
+import ListSelector from "@components/ListSelector.astro";
+import { Temporal } from "@js-temporal/polyfill";
+import Layout from "@layouts/Layout.astro";
+import { getLogin } from "@lib/login-cookie";
+import { prisma } from "@lib/prisma";
+
+const user = await getLogin(Astro.cookies);
+
+if (!user) {
+  return Astro.redirect("/", 303);
+}
+
+const months = await prisma.cookingHistory.findMany({
+  where: { cook: { id: user.id } },
+  select: {
+    cookedAtYear: true,
+    cookedAtMonth: true,
+  },
+  distinct: ["cookedAtYear", "cookedAtMonth"],
+  orderBy: [{ cookedAtYear: "desc" }, { cookedAtMonth: "desc" }],
+});
+---
+
+<Layout title="Cookbook" user={user}>
+  <ListSelector current="history" hasUser={!!user} />
+  <HistoryList
+    months={months.map(
+      (month) =>
+        new Temporal.PlainYearMonth(month.cookedAtYear, month.cookedAtMonth).toString()
+    )}
+    initialQuery={Astro.url.search}
+    client:load
+  />
+</Layout>

@@ -19,6 +19,10 @@ const ingredients = await prisma.recipeIngredient.findMany({
 ---
 
 <Layout title="Cookbook" user={user}>
-  <ListSelector current="ingredients" />
-  <IngredientList ingredients={ingredients} initialQuery={Astro.url.search} client:load />
+  <ListSelector current="ingredients" hasUser={!!user} />
+  <IngredientList
+    ingredients={ingredients}
+    initialQuery={Astro.url.search}
+    client:load
+  />
 </Layout>

@@ -1,9 +1,11 @@
 ---
 interface Props {
-  current: "recipes" | "ingredients" | "categories";
+  current: "recipes" | "ingredients" | "categories" | "history";
+  // True if a user is logged in.
+  hasUser: boolean;
 }
 
-const { current } = Astro.props;
+const { current, hasUser } = Astro.props;
 ---
 
 <style is:global>
@@ -15,7 +17,7 @@ const { current } = Astro.props;
     width: 100%;
     padding: 0;
     margin-top: 0;
-    margin-bottom:1em;
+    margin-bottom: 1em;
   }
   #kindOfListSelector > a {
     flex: 1;
@@ -37,4 +39,11 @@ const { current } = Astro.props;
   <a href={`/categories`} class:list={{ selected: current === "categories" }}
     >Categories</a
   >
+  {
+    hasUser ? (
+      <a href={`/history`} class:list={{ selected: current === "history" }}>
+        History
+      </a>
+    ) : null
+  }
 </nav>

@@ -28,6 +28,7 @@
     "@astrojs/solid-js": "^4.4.1",
     "@github/relative-time-element": "^4.4.3",
     "@google-cloud/storage": "^7.12.1",
+    "@js-temporal/polyfill": "^0.4.4",
     "@prisma/client": "^5.19.1",
     "@sentry/astro": "^8.30.0",
     "@shoelace-style/shoelace": "^2.16.0",
