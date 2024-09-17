@@ -20,6 +20,9 @@ importers:
       '@google-cloud/storage':
         specifier: ^7.12.1
         version: 7.12.1
+      '@js-temporal/polyfill':
+        specifier: ^0.4.4
+        version: 0.4.4
       '@prisma/client':
         specifier: ^5.19.1
         version: 5.19.1(prisma@5.19.1)
@@ -683,6 +686,10 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
+
+  '@js-temporal/polyfill@0.4.4':
+    resolution: {integrity: sha512-2X6bvghJ/JAoZO52lbgyAPFj8uCflhTo2g7nkFzEQdXd/D8rEeD4HtmTEpmtGCva260fcd66YNXBOYdnmHqSOg==}
+    engines: {node: '>=12'}
 
   '@lit-labs/ssr-dom-shim@1.2.1':
     resolution: {integrity: sha512-wx4aBmgeGvFmOKucFKY+8VFJSYZxs9poN3SDNQFF6lT6NrQUnHiPB2PWz2sc4ieEcAaYYzN+1uWahEeTq2aRIQ==}
@@ -2174,6 +2181,9 @@ packages:
   js-yaml@4.1.0:
     resolution: {integrity: sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==}
     hasBin: true
+
+  jsbi@4.3.0:
+    resolution: {integrity: sha512-SnZNcinB4RIcnEyZqFPdGPVgrg2AcnykiBy0sHVJQKHYeaLUvi3Exj+iaPpLnFVkDPZIV4U0yvgC9/R4uEAZ9g==}
 
   jsesc@2.5.2:
     resolution: {integrity: sha512-OYu7XEzjkCQ3C5Ps3QIZsQfNpqoJyZZA99wd9aWd05NCtC5pWOkShK2mkL6HXQR6/Cy2lbNdPlZBpuQHXE63gA==}
@@ -4242,6 +4252,11 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
+  '@js-temporal/polyfill@0.4.4':
+    dependencies:
+      jsbi: 4.3.0
+      tslib: 2.7.0
+
   '@lit-labs/ssr-dom-shim@1.2.1': {}
 
   '@lit/react@1.0.5(@types/react@18.3.5)':
@@ -6085,6 +6100,8 @@ snapshots:
     dependencies:
       argparse: 2.0.1
 
+  jsbi@4.3.0: {}
+
   jsesc@2.5.2: {}
 
   json-bigint@1.0.0:
@@ -7366,8 +7383,7 @@ snapshots:
     optionalDependencies:
       typescript: 5.6.2
 
-  tslib@2.7.0:
-    optional: true
+  tslib@2.7.0: {}
 
   type-fest@2.19.0: {}
 

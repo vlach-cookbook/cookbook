@@ -16,6 +16,10 @@ const categories = await prisma.category.findMany({
 ---
 
 <Layout title="Cookbook" user={user}>
-  <ListSelector current="categories" />
-  <CategoryList categories={categories} initialQuery={Astro.url.search} client:load />
+  <ListSelector current="categories" hasUser={!!user} />
+  <CategoryList
+    categories={categories}
+    initialQuery={Astro.url.search}
+    client:load
+  />
 </Layout>

@@ -2,18 +2,23 @@
 import Markdown from "@components/Markdown.astro";
 import { AddRecipeNote, RecipeNote } from "@components/RecipeNote";
 import RenderSource from "@components/RenderSource.astro";
+import { Temporal } from "@js-temporal/polyfill";
 import Layout from "@layouts/Layout.astro";
 import { getLogin } from "@lib/login-cookie";
 import { prisma } from "@lib/prisma";
 import slugify from "@lib/slugify";
+import { andList, numericAscending } from "@lib/util";
 import type {
   Category,
+  RecipeNote as DBRecipeNote,
+  CookingHistory as DbCookingHistory,
   Recipe,
   RecipeIngredient,
-  RecipeNote as DBRecipeNote,
-  User,
   RecipeSource,
+  User,
 } from "@prisma/client";
+import { captureException } from "@sentry/astro";
+import { actions } from "astro:actions";
 
 const activeUser = await getLogin(Astro.cookies);
 
@@ -25,6 +30,10 @@ let recipe:
       sources: RecipeSource[];
       ingredients: RecipeIngredient[];
       categories: Category[];
+      cookingHistory: Pick<
+        DbCookingHistory,
+        "id" | "cookedAtYear" | "cookedAtMonth" | "cookedAtDay"
+      >[];
       notes: (DBRecipeNote & {
         author: Pick<User, "name" | "username">;
       })[];
@@ -38,6 +47,20 @@ if (slug && username) {
       sources: { orderBy: { type: "asc" } },
       ingredients: { orderBy: { order: "asc" } },
       categories: { orderBy: { name: "asc" } },
+      cookingHistory: {
+        where: { cookId: activeUser?.id },
+        orderBy: [
+          { cookedAtYear: "desc" },
+          { cookedAtMonth: "desc" },
+          { cookedAtDay: "desc" },
+        ],
+        select: {
+          id: true,
+          cookedAtYear: true,
+          cookedAtMonth: true,
+          cookedAtDay: true,
+        },
+      },
       notes: {
         where: {
           content: { not: "" },
@@ -55,6 +78,43 @@ if (slug && username) {
 const ingredientNames = recipe?.ingredients.map(
   (ingredient) => ingredient.name
 );
+
+const cookingHistory: { ym: Temporal.PlainYearMonth; days: number[] }[] = [];
+if (recipe) {
+  for (const entry of recipe.cookingHistory) {
+    let ym: Temporal.PlainYearMonth;
+    try {
+      ym = new Temporal.PlainYearMonth(entry.cookedAtYear, entry.cookedAtMonth);
+    } catch {
+      // Ignore invalid dates.
+      continue;
+    }
+    // Aggregate a list of months the recipe was cooked, and if days are available, make a list of
+    // them.
+    let latest = cookingHistory[cookingHistory.length - 1];
+    if (latest === undefined || !latest.ym.equals(ym)) {
+      latest = { ym, days: [] };
+      cookingHistory.push(latest);
+    }
+    if (
+      entry.cookedAtDay &&
+      // Only valid days.
+      entry.cookedAtDay > 0 &&
+      entry.cookedAtDay <= ym.daysInMonth
+    ) {
+      latest.days.push(entry.cookedAtDay);
+    }
+  }
+}
+
+const cookingHistoryAddResult = Astro.getActionResult(
+  actions.cookingHistory.add
+);
+if (cookingHistoryAddResult?.error) {
+  // For now, we don't show errors in the UI, but we'll keep track of them via Sentry
+  // and respond if they seem to be happening.
+  captureException(cookingHistoryAddResult.error);
+}
 ---
 
 <script>
@@ -158,6 +218,54 @@ const ingredientNames = recipe?.ingredients.map(
           </section>
         ) : null}
 
+        {activeUser ? (
+          <section id="cooking-history" class="noprint">
+            <form
+              method="post"
+              id="add_cooking_history"
+              action={actions.cookingHistory.add}
+            >
+              <input type="hidden" name="author" value={username} />
+              <input type="hidden" name="slug" value={slug} />
+              <input
+                type="hidden"
+                name="date"
+                value={Temporal.Now.plainDateISO().toString()}
+              />
+              <hgroup>
+                <h3>Cooking History</h3>
+                <button
+                  title="Record that I'm cooking this recipe in my cooking history."
+                  type="submit"
+                >
+                  🍲
+                </button>
+              </hgroup>
+            </form>
+            {cookingHistory.length > 0 ? (
+              <ul>
+                {cookingHistory.map(({ ym, days }) => (
+                  <li>
+                    <time
+                      datetime={ym.toString()}
+                      title={`${ym.toLocaleString("en", {
+                        month: "short",
+                        calendar: ym.calendarId,
+                      })} ${andList.format(days.sort(numericAscending).map(String))}`}
+                    >
+                      {ym.toLocaleString("en", {
+                        month: "short",
+                        year: "numeric",
+                        calendar: ym.calendarId,
+                      })}
+                    </time>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </section>
+        ) : null}
+
         <section id="notes" class:list={{ noprint: recipe.notes.length === 0 }}>
           <h3>Notes</h3>
           <ol style={{ "padding-left": "0px" }}>
@@ -211,6 +319,22 @@ const ingredientNames = recipe?.ingredients.map(
   }
 </Layout>
 
+<script>
+  function twoDigits(num: number) {
+    return String(num).padStart(2, "0");
+  }
+  // Updates the cooking history button to use the local date and not UTC.
+  const cookingHistoryForm = document.forms.namedItem("add_cooking_history");
+  if (cookingHistoryForm) {
+    const dateField = cookingHistoryForm.elements.namedItem("date");
+    if (dateField instanceof HTMLInputElement) {
+      const now = new Date();
+      const today = `${now.getFullYear()}-${twoDigits(now.getMonth() + 1)}-${twoDigits(now.getDate())}`;
+      dateField.value = today;
+    }
+  }
+</script>
+
 <style is:global>
   [itemprop="recipeInstructions"] {
     font-variant-numeric: oldstyle-nums;
@@ -220,5 +344,12 @@ const ingredientNames = recipe?.ingredients.map(
     float: right;
     width: fit-content;
     text-align: right;
+  }
+
+  #cooking-history > hgroup {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    gap: 0.25em;
   }
 </style>

@@ -1,6 +1,6 @@
 import "@lib/relative-time-interface";
 import type { RecipeNote as Note, User } from "@prisma/client";
-import { type Component, createSignal, Match, Switch } from "solid-js";
+import { Match, Switch, createSignal, type Component } from "solid-js";
 import { createStore } from "solid-js/store";
 import { Markdown } from "./Markdown";
 
@@ -9,8 +9,7 @@ const dateFormatter = new Intl.DateTimeFormat("en-US", { dateStyle: "medium" });
 export const RecipeNote: Component<{
   activeUserWroteNote?: boolean
   activeUserWroteRecipe?: boolean;
-  note: Pick<Note, 'id' | 'createdAt' | 'recipeId' | 'authorId' | 'content' | 'public' | 'hidden'
-    | 'authorCookedRecipeAt' | 'totalTimeSeconds' | 'prepTimeSeconds' | 'cookTimeSeconds'> & {
+  note: Pick<Note, 'id' | 'createdAt' | 'recipeId' | 'authorId' | 'content' | 'public' | 'hidden'> & {
       author: { name: string; username: string; };
     }
 }> = (props) => {

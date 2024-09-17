@@ -20,6 +20,6 @@ const recipes = await prisma.recipe.findMany({
 ---
 
 <Layout title="Cookbook" user={user}>
-  <ListSelector current="recipes" />
+  <ListSelector current="recipes" hasUser={!!user} />
   <RecipeList recipes={recipes} initialQuery={Astro.url.search} client:load />
 </Layout>

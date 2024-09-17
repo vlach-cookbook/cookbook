@@ -1,6 +1,6 @@
 // Borrowed from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#escaping.
 export function escapeRegExp(re: string) {
-  return re.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+  return re.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
 }
 
 const sortCollator = new Intl.Collator();
@@ -8,13 +8,14 @@ const sortCollator = new Intl.Collator();
 /** Filters a list of items so that |filter| matches projection(item). Then sorts the list so
  * items that start with |filter| appear first, and everything's alphabetical by projection(item).
  *
- * @returns a new list
+ * @returns a new list of items (not their projections)
  */
 export function filterListWithInitialMatchesFirst<T>(
   list: Iterable<T>,
   filter: RegExp,
-  projection: (item: T) => string) {
-  const filtered = Array.from(list, item => {
+  projection: (item: T) => string
+): T[] {
+  const filtered = Array.from(list, (item) => {
     const proj = projection(item);
     return [proj.search(filter), proj, item] as const;
   }).filter(([index, _1, _2]) => index !== -1);
@@ -28,3 +29,13 @@ export function filterListWithInitialMatchesFirst<T>(
   });
   return filtered.map(([_1, _2, item]) => item);
 }
+
+/** A parameter to {@link Array.sort} that results in ascending numbers. */
+export function numericAscending(a: number, b: number): number {
+  return a - b;
+}
+
+export const andList = new Intl.ListFormat("en", {
+  type: "conjunction",
+  style: "long",
+});

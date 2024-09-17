@@ -13,19 +13,20 @@ datasource db {
 }
 
 model Recipe {
-  id          Int                @id @default(autoincrement())
-  createdAt   DateTime           @default(now()) @db.Timestamptz(3)
-  updatedAt   DateTime           @updatedAt @db.Timestamptz(3)
-  author      User               @relation(fields: [authorId], references: [id])
-  authorId    String             @db.Uuid
-  name        String             @db.Citext
-  slug        String             @db.Citext
-  servings    Int?
-  sources     RecipeSource[]
-  ingredients RecipeIngredient[]
-  categories  Category[]
-  steps       String[]
-  notes       RecipeNote[]
+  id             Int                @id @default(autoincrement())
+  createdAt      DateTime           @default(now()) @db.Timestamptz(3)
+  updatedAt      DateTime           @updatedAt @db.Timestamptz(3)
+  author         User               @relation(fields: [authorId], references: [id])
+  authorId       String             @db.Uuid
+  name           String             @db.Citext
+  slug           String             @db.Citext
+  servings       Int?
+  sources        RecipeSource[]
+  ingredients    RecipeIngredient[]
+  categories     Category[]
+  steps          String[]
+  notes          RecipeNote[]
+  cookingHistory CookingHistory[]
 
   @@unique([authorId, name])
   @@unique([authorId, slug])
@@ -95,15 +96,24 @@ model RecipeNote {
   public Boolean @default(true)
   // True if the recipe's author doesn't want the note to appear on their recipe.
   hidden Boolean @default(false)
+}
 
-  // This is the time the author clicked "I'm making this recipe."
-  authorCookedRecipeAt DateTime? @db.Timestamptz(0)
-  // These times are whole numbers of seconds, both because Prisma doesn't support an interval type,
-  // and because Postgres' interval type is 16 bytes, compared to the 4 bytes we're using for
-  // intervals here.
-  totalTimeSeconds     Int?
-  prepTimeSeconds      Int?
-  cookTimeSeconds      Int?
+model CookingHistory {
+  id       Int    @id @default(autoincrement())
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  recipeId Int
+  cook     User   @relation(fields: [cookId], references: [id], onDelete: Cascade)
+  cookId   String @db.Uuid
+
+  // The local time the recipe was cooked, because this is for a user's personal history and doesn't
+  // need to be consistent across users. Once https://github.com/prisma/prisma/issues/20615 is
+  // fixed, I can replace this with a PlainDate field.
+  cookedAtYear  Int  @db.SmallInt
+  cookedAtMonth Int  @db.SmallInt
+  cookedAtDay   Int? @db.SmallInt
+
+  @@unique([recipeId, cookId, cookedAtYear, cookedAtMonth, cookedAtDay])
+  @@index([cookId, cookedAtYear, cookedAtMonth])
 }
 
 model Category {
@@ -134,9 +144,10 @@ model User {
   Recipes      Recipe[]
   DraftRecipes DraftRecipe[]
 
-  GoogleUser  GoogleUser[]
-  sessions    Session[]
-  recipeNotes RecipeNote[]
+  GoogleUser     GoogleUser[]
+  sessions       Session[]
+  recipeNotes    RecipeNote[]
+  CookingHistory CookingHistory[]
 }
 
 model GoogleUser {
