@@ -17,6 +17,8 @@ import type {
   RecipeSource,
   User,
 } from "@prisma/client";
+import { captureException } from "@sentry/astro";
+import { actions } from "astro:actions";
 
 const activeUser = await getLogin(Astro.cookies);
 
@@ -103,6 +105,15 @@ if (recipe) {
       latest.days.push(entry.cookedAtDay);
     }
   }
+}
+
+const cookingHistoryAddResult = Astro.getActionResult(
+  actions.cookingHistory.add
+);
+if (cookingHistoryAddResult?.error) {
+  // For now, we don't show errors in the UI, but we'll keep track of them via Sentry
+  // and respond if they seem to be happening.
+  captureException(cookingHistoryAddResult.error);
 }
 ---
 
@@ -209,26 +220,27 @@ if (recipe) {
 
         {activeUser ? (
           <section id="cooking-history" class="noprint">
-            <hgroup>
-              <h3>Cooking History</h3>
-              <button
-                title="Record that I'm cooking this recipe in my cooking history."
-                type="submit"
-                form="edit_cooking_history"
-                name="put"
-                value="1"
-                data-action-base-path={`${slug}/cooking_history/${activeUser.username}/`}
-                formaction={`${slug}/cooking_history/${activeUser.username}/${Temporal.Now.plainDateISO("UTC")}`}
-              >
-                🍲
-              </button>
-            </hgroup>
-            <form method="post" id="edit_cooking_history">
+            <form
+              method="post"
+              id="add_cooking_history"
+              action={actions.cookingHistory.add}
+            >
+              <input type="hidden" name="author" value={username} />
+              <input type="hidden" name="slug" value={slug} />
               <input
                 type="hidden"
-                name="from"
-                value={`${Astro.url.href}#cooking-history`}
+                name="date"
+                value={Temporal.Now.plainDateISO().toString()}
               />
+              <hgroup>
+                <h3>Cooking History</h3>
+                <button
+                  title="Record that I'm cooking this recipe in my cooking history."
+                  type="submit"
+                >
+                  🍲
+                </button>
+              </hgroup>
             </form>
             {cookingHistory.length > 0 ? (
               <ul>
@@ -312,18 +324,13 @@ if (recipe) {
     return String(num).padStart(2, "0");
   }
   // Updates the cooking history button to use the local date and not UTC.
-  const cookingHistoryForm = document.forms.namedItem("edit_cooking_history");
+  const cookingHistoryForm = document.forms.namedItem("add_cooking_history");
   if (cookingHistoryForm) {
-    const putButton = cookingHistoryForm.elements.namedItem("put");
-    if (putButton instanceof HTMLButtonElement) {
-      const basePath = putButton.dataset.actionBasePath;
-      if (basePath) {
-        const now = new Date();
-        const path =
-          basePath +
-          `${now.getFullYear()}-${twoDigits(now.getMonth() + 1)}-${twoDigits(now.getDate())}`;
-        putButton.formAction = path;
-      }
+    const dateField = cookingHistoryForm.elements.namedItem("date");
+    if (dateField instanceof HTMLInputElement) {
+      const now = new Date();
+      const today = `${now.getFullYear()}-${twoDigits(now.getMonth() + 1)}-${twoDigits(now.getDate())}`;
+      dateField.value = today;
     }
   }
 </script>
