@@ -11,7 +11,7 @@ RUN --mount=type=cache,target=/root/.local/share/pnpm/store/v3 pnpm i --frozen-l
 COPY prisma ./prisma
 RUN pnpm prisma generate
 
-RUN apk add --no-cache postgresql14-client
+RUN apk add --no-cache postgresql16-client
 
 COPY . .
 ARG GOOGLE_SITE_VERIFICATION
