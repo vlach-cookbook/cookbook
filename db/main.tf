@@ -53,7 +53,7 @@ provider "postgresql" {
   password         = var.pg_password
   sslmode          = "disable"
   connect_timeout  = 15
-  expected_version = 14
+  expected_version = 16
 }
 
 resource "postgresql_role" "cookbook_prod_admin" {
