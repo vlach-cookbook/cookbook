@@ -11,7 +11,7 @@ services:
       DATABASE_URL: 'postgresql://prisma:prisma@db:5432/tests'
       PORT: 4321
   db:
-    image: postgres:14
+    image: postgres:16
     restart: always
     container_name: e2e-tests
     ports:
