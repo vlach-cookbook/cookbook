@@ -1,11 +1,11 @@
 import { Storage } from '@google-cloud/storage';
+import * as age from 'age-encryption';
 import express from 'express';
 import morgan from 'morgan';
 import { exec } from 'node:child_process';
 import process from 'node:process';
 import util from 'node:util';
 import zlib from 'node:zlib';
-import age from 'age-encryption';
 
 const execP = util.promisify(exec);
 
@@ -54,9 +54,9 @@ app.post('/backup', async (req, res) => {
     }
   });
 
-  const encrypter = new (await age()).Encrypter;
+  const encrypter = new age.Encrypter;
   encrypter.addRecipient(process.env.BACKUP_AGE_RECIPIENT!);
-  const encrypted = encrypter.encrypt(compressed);
+  const encrypted = await encrypter.encrypt(compressed);
 
   const bucket = 'vlach-cookbook-backup';
   const filename = `backup-${backupTimestamp.toISOString()}.br.age`;

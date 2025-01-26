@@ -1,5 +1,5 @@
 import { Storage } from '@google-cloud/storage';
-import age from "age-encryption";
+import * as age from "age-encryption";
 import { execSync } from 'node:child_process';
 import zlib from 'node:zlib';
 
@@ -33,10 +33,9 @@ export async function replaceDbWithBackup({DATABASE_URL, dbName, GOOGLE_CREDENTI
   }
   const [contents] = await recentBackups[recentBackups.length - 1].download();
 
-  const { Decrypter } = await age();
-  const d = new Decrypter();
+  const d = new age.Decrypter();
   d.addIdentity(AGE_IDENTITY);
-  const decrypted = d.decrypt(contents);
+  const decrypted = await d.decrypt(contents);
 
   const dump = zlib.brotliDecompressSync(decrypted).toString('utf-8');
 
