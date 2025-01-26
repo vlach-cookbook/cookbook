@@ -3,6 +3,7 @@ concurrency: backup
 on:
   schedule:
     - cron: "14 7,19 * * *"
+  workflow_dispatch:
 jobs:
   deploy:
     runs-on: ubuntu-latest
