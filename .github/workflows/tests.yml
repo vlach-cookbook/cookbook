@@ -19,7 +19,7 @@ jobs:
     services:
       # See https://docs.github.com/en/actions/using-containerized-services/creating-postgresql-service-containers.
       db:
-        image: postgres:14-alpine
+        image: postgres:16-alpine
         env:
           POSTGRES_USER: prisma
           POSTGRES_PASSWORD: prisma
