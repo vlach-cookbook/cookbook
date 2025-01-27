@@ -1,5 +1,5 @@
 import { execSync } from 'node:child_process';
-import { replaceDbWithBackup } from './replaceDbWithBackup.mjs';
+import { replaceStagingDbWithBackup } from './replaceDbWithBackup.mjs';
 
 // Turn on swap to avoid out-of-memory errors during `prisma migrate deploy`
 console.log(execSync('fallocate -l 256M /swapfile', {encoding: 'utf-8'}));
@@ -11,7 +11,7 @@ console.log(execSync('swapon /swapfile', {encoding: 'utf-8'}));
 if (process.env.FLY_APP_NAME === 'vlach-cookbook-staging') {
   // Copy the latest backup over the staging database before running the Prisma
   // migration, to make sure the migration will work when the app is released.
-  await replaceDbWithBackup({
+  await replaceStagingDbWithBackup({
     DATABASE_URL: process.env.ADMIN_DATABASE_URL,
     dbName: "cookbook_staging",
     GOOGLE_CREDENTIALS: process.env.MIGRATION_GOOGLE_SERVICE_ACCOUNT_CREDENTIALS,
