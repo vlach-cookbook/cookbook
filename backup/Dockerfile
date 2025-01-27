@@ -31,7 +31,7 @@ RUN pnpm prune --prod
 # Final stage for app image
 FROM base
 
-RUN apk add --no-cache postgresql14-client
+RUN apk add --no-cache postgresql16-client
 
 # Copy built application
 COPY --from=build /app /app
