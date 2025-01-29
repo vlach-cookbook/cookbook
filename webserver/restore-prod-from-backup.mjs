@@ -30,7 +30,7 @@ process.env.DATABASE_URL = process.env.ADMIN_DATABASE_URL;
 console.log(execSync("prisma migrate deploy", { encoding: "utf-8" }));
 console.log(
   execSync(
-    "node prisma/migrations/20240916002444_cooking_history/migrate-history-categories.mjs"
-  ),
-  { encoding: "utf-8" }
+    "node prisma/migrations/20240916002444_cooking_history/migrate-history-categories.mjs",
+    { encoding: "utf-8" }
+  )
 );
