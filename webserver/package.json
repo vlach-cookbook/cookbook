@@ -59,7 +59,7 @@
     "@types/mdast": "^4.0.4",
     "@types/n3": "^1.21.1",
     "@types/node": "^22.10.10",
-    "dotenv-cli": "^7.4.2",
+    "dotenv-cli": "^8.0.0",
     "vitest": "^2.1.1"
   }
 }
