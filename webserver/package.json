@@ -30,8 +30,8 @@
     "@google-cloud/storage": "^7.15.0",
     "@js-temporal/polyfill": "^0.4.4",
     "@prisma/client": "^5.19.1",
-    "@sentry/astro": "^8.51.0",
-    "@shoelace-style/shoelace": "^2.18.0",
+    "@sentry/astro": "^8.54.0",
+    "@shoelace-style/shoelace": "^2.20.0",
     "age-encryption": "^0.2.0",
     "astro": "^4.16.18",
     "debug": "^4.4.0",
@@ -58,7 +58,7 @@
     "@playwright/test": "1.50.0",
     "@types/mdast": "^4.0.4",
     "@types/n3": "^1.21.1",
-    "@types/node": "^22.10.10",
+    "@types/node": "^22.13.1",
     "dotenv-cli": "^7.4.2",
     "vitest": "^2.1.1"
   }
