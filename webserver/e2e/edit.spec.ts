@@ -157,8 +157,8 @@ test.describe("Logged in", () => {
     const ingredients = page.getByRole("group")
       .filter({ has: page.getByRole("heading", { name: "Ingredients" }) })
       .getByRole("listitem");
-    await ingredients.nth(0).dragTo(ingredients.nth(2), { sourcePosition: { x: 0, y: 0 } });
-    await ingredients.nth(1).hover({ position: { x:0, y:0 } });
+    await ingredients.nth(0).dragTo(ingredients.nth(2), { sourcePosition: { x: 1, y: 5 } });
+    await ingredients.nth(1).hover({ position: { x:1, y:10 } });
     await page.mouse.down();
     await ingredients.nth(0).hover();
     await ingredients.nth(0).hover();  // Give the drag some more time to land.
