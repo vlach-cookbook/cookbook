@@ -157,10 +157,12 @@ test.describe("Logged in", () => {
     const ingredients = page.getByRole("group")
       .filter({ has: page.getByRole("heading", { name: "Ingredients" }) })
       .getByRole("listitem");
-    await ingredients.nth(0).hover();  // Give it a bit more time to react to the drag.
     await ingredients.nth(0).dragTo(ingredients.nth(2), { sourcePosition: { x: 0, y: 0 } });
-    await ingredients.nth(1).hover();
-    await ingredients.nth(1).dragTo(ingredients.nth(0), { sourcePosition: { x: 0, y: 0 } });
+    await ingredients.nth(1).hover({ position: { x:0, y:0 } });
+    await page.mouse.down();
+    await ingredients.nth(0).hover();
+    await ingredients.nth(0).hover();  // Give the drag some more time to land.
+    await page.mouse.up();
     await expect.soft(ingredients.nth(0).getByPlaceholder("Ingredient")).toHaveValue("Spices");
     await expect.soft(ingredients.nth(1).getByPlaceholder("Ingredient")).toHaveValue("sucre");
     await expect.soft(ingredients.nth(2).getByPlaceholder("Ingredient")).toHaveValue("pomme");
