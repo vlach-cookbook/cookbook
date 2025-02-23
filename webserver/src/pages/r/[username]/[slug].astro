@@ -248,15 +248,15 @@ if (cookingHistoryAddResult?.error) {
                   <li>
                     <time
                       datetime={ym.toString()}
-                      title={`${ym.toLocaleString("en", {
-                        month: "short",
-                        calendar: ym.calendarId,
-                      })} ${andList.format(days.sort(numericAscending).map(String))}`}
+                      title={`${ym
+                        .toPlainDate({ day: 1 })
+                        .toLocaleString("en", {
+                          month: "short",
+                        })} ${andList.format(days.sort(numericAscending).map(String))}`}
                     >
-                      {ym.toLocaleString("en", {
+                      {ym.toPlainDate({ day: 1 }).toLocaleString("en", {
                         month: "short",
                         year: "numeric",
-                        calendar: ym.calendarId,
                       })}
                     </time>
                   </li>

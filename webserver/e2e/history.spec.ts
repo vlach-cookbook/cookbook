@@ -113,14 +113,13 @@ test("Save history", async ({
 
   await page.getByRole("button", { name: "🍲" }).click();
 
-  const ym = Temporal.Now.plainDateISO().toPlainYearMonth();
+  const today = Temporal.Now.plainDateISO();
   await expect(
     page.locator("#cooking-history").getByRole("listitem")
   ).toHaveText([
-    ym.toLocaleString("en", {
+    today.toLocaleString("en", {
       month: "short",
       year: "numeric",
-      calendar: ym.calendarId,
     }),
     "Apr 2023",
   ]);
