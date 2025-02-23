@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/devcontainers/javascript-node:20
+FROM mcr.microsoft.com/devcontainers/javascript-node:22
 
 ENV PNPM_HOME=/home/node/.local/share/pnpm
 ENV FLYCTL_INSTALL="/home/node/.fly"
