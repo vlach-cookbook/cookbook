@@ -17,8 +17,9 @@ import { OneRecipe, type RecipeTitleWithLinkFields } from "./OneRecipe";
 import { QueryDrivenTextField } from "./QueryDrivenTextField";
 
 function formatMonth(m: Temporal.PlainYearMonth) {
-  return m.toLocaleString(undefined, {
-    calendar: m.calendarId,
+  // Avoid using the PlainYearMonth's calendar, which is probably iso8601, because Node 22 formats
+  // it differently from the default Gregorian calendar.
+  return m.toPlainDate({ day: 1 }).toLocaleString(undefined, {
     year: "numeric",
     month: "short",
   });
