@@ -24,8 +24,8 @@
   },
   "packageManager": "pnpm@10.4.1+sha256.4b702887986995933d4300836b04d6d02a43bc72b52e4f7e93a4ca608b959197",
   "dependencies": {
-    "@astrojs/node": "^8.3.3",
-    "@astrojs/solid-js": "^4.4.1",
+    "@astrojs/node": "^9.1.2",
+    "@astrojs/solid-js": "^5.0.5",
     "@github/relative-time-element": "^4.4.5",
     "@google-cloud/storage": "^7.15.2",
     "@js-temporal/polyfill": "^0.4.4",
@@ -33,7 +33,7 @@
     "@sentry/astro": "^8.51.0",
     "@shoelace-style/shoelace": "^2.20.0",
     "age-encryption": "^0.2.1",
-    "astro": "^4.16.18",
+    "astro": "^5.4.1",
     "debug": "^4.4.0",
     "dset": "^3.1.4",
     "express": "^4.21.2",
@@ -50,7 +50,7 @@
     "solid-js": "^1.9.5",
     "typescript": "^5.7.3",
     "unified": "^11.0.5",
-    "vite": "^5.4.12",
+    "vite": "^6.2.0",
     "zod": "^3.24.2"
   },
   "devDependencies": {
@@ -60,6 +60,6 @@
     "@types/n3": "^1.21.1",
     "@types/node": "^22.13.5",
     "dotenv-cli": "^8.0.0",
-    "vitest": "^2.1.9"
+    "vitest": "^3.0.7"
   }
 }
