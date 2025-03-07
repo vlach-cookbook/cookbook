@@ -10,10 +10,10 @@ importers:
     dependencies:
       '@astrojs/node':
         specifier: ^8.3.3
-        version: 8.3.3(astro@4.16.18(@types/node@22.13.5)(rollup@4.32.0)(typescript@5.7.3))
+        version: 8.3.3(astro@4.16.18(@types/node@22.13.9)(rollup@4.32.0)(typescript@5.8.2))
       '@astrojs/solid-js':
         specifier: ^4.4.1
-        version: 4.4.1(solid-js@1.9.5)(vite@5.4.12(@types/node@22.13.5))
+        version: 4.4.1(solid-js@1.9.5)(vite@5.4.12(@types/node@22.13.9))
       '@github/relative-time-element':
         specifier: ^4.4.5
         version: 4.4.5
@@ -25,10 +25,10 @@ importers:
         version: 0.4.4
       '@prisma/client':
         specifier: ^6.4.1
-        version: 6.4.1(prisma@6.4.1(typescript@5.7.3))(typescript@5.7.3)
+        version: 6.4.1(prisma@6.4.1(typescript@5.8.2))(typescript@5.8.2)
       '@sentry/astro':
         specifier: ^8.51.0
-        version: 8.51.0(astro@4.16.18(@types/node@22.13.5)(rollup@4.32.0)(typescript@5.7.3))
+        version: 8.51.0(astro@4.16.18(@types/node@22.13.9)(rollup@4.32.0)(typescript@5.8.2))
       '@shoelace-style/shoelace':
         specifier: ^2.20.0
         version: 2.20.0(@floating-ui/utils@0.2.9)(@types/react@19.0.8)
@@ -37,7 +37,7 @@ importers:
         version: 0.2.1
       astro:
         specifier: ^4.16.18
-        version: 4.16.18(@types/node@22.13.5)(rollup@4.32.0)(typescript@5.7.3)
+        version: 4.16.18(@types/node@22.13.9)(rollup@4.32.0)(typescript@5.8.2)
       debug:
         specifier: ^4.4.0
         version: 4.4.0
@@ -57,11 +57,11 @@ importers:
         specifier: ^3.0.2
         version: 3.0.2
       n3:
-        specifier: ^1.23.1
-        version: 1.23.1
+        specifier: ^1.24.0
+        version: 1.24.0
       prisma:
         specifier: ^6.4.1
-        version: 6.4.1(typescript@5.7.3)
+        version: 6.4.1(typescript@5.8.2)
       rdf-dereference:
         specifier: ^3.0.0
         version: 3.0.0
@@ -81,24 +81,24 @@ importers:
         specifier: ^1.9.5
         version: 1.9.5
       typescript:
-        specifier: ^5.7.3
-        version: 5.7.3
+        specifier: ^5.8.2
+        version: 5.8.2
       unified:
         specifier: ^11.0.5
         version: 11.0.5
       vite:
         specifier: ^5.4.12
-        version: 5.4.12(@types/node@22.13.5)
+        version: 5.4.12(@types/node@22.13.9)
       zod:
         specifier: ^3.24.2
         version: 3.24.2
     devDependencies:
       '@astrojs/check':
         specifier: ^0.9.4
-        version: 0.9.4(typescript@5.7.3)
+        version: 0.9.4(typescript@5.8.2)
       '@playwright/test':
-        specifier: 1.50.1
-        version: 1.50.1
+        specifier: 1.51.0
+        version: 1.51.0
       '@types/mdast':
         specifier: ^4.0.4
         version: 4.0.4
@@ -106,14 +106,14 @@ importers:
         specifier: ^1.21.1
         version: 1.21.1
       '@types/node':
-        specifier: ^22.13.5
-        version: 22.13.5
+        specifier: ^22.13.9
+        version: 22.13.9
       dotenv-cli:
         specifier: ^8.0.0
         version: 8.0.0
       vitest:
         specifier: ^2.1.9
-        version: 2.1.9(@types/node@22.13.5)
+        version: 2.1.9(@types/node@22.13.9)
 
 packages:
 
@@ -1087,8 +1087,8 @@ packages:
   '@oslojs/encoding@1.1.0':
     resolution: {integrity: sha512-70wQhgYmndg4GCPxPPxPGevRKqTIJ2Nh4OkiMWmDAVYsTQ+Ta7Sq+rPevXyXGdzr30/qZBnyOalCszoMxlyldQ==}
 
-  '@playwright/test@1.50.1':
-    resolution: {integrity: sha512-Jii3aBg+CEDpgnuDxEp/h7BimHcUTDlpEtce89xEumlJ5ef2hqepZ+PWp1DDpYC/VO9fmWVI1IlEaoI5fK9FXQ==}
+  '@playwright/test@1.51.0':
+    resolution: {integrity: sha512-dJ0dMbZeHhI+wb77+ljx/FeC8VBP6j/rj9OAojO08JI80wTZy6vRk9KvHKiDCUh4iMpEiseMgqRBIeW+eKX6RA==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -1428,11 +1428,11 @@ packages:
   '@types/nlcst@2.0.3':
     resolution: {integrity: sha512-vSYNSDe6Ix3q+6Z7ri9lyWqgGhJTmzRjZRqyq15N0Z/1/UnVsno9G/N40NBijoYx2seFDIl0+B2mgAb9mezUCA==}
 
-  '@types/node@18.19.76':
-    resolution: {integrity: sha512-yvR7Q9LdPz2vGpmpJX5LolrgRdWvB67MJKDPSgIIzpFbaf9a1j/f5DnLp5VDyHGMR0QZHlTr1afsD87QCXFHKw==}
+  '@types/node@18.19.79':
+    resolution: {integrity: sha512-90K8Oayimbctc5zTPHPfZloc/lGVs7f3phUAAMcTgEPtg8kKquGZDERC8K4vkBYkQQh48msiYUslYtxTWvqcAg==}
 
-  '@types/node@22.13.5':
-    resolution: {integrity: sha512-+lTU0PxZXn0Dr1NBtC7Y8cR21AJr87dLLU953CWA6pMxxv/UDc7jYAY90upcrie1nRcD6XNG5HOYEDtgW5TxAg==}
+  '@types/node@22.13.9':
+    resolution: {integrity: sha512-acBjXdRJ3A6Pb3tqnw9HZmyR3Fiol3aGxRCK1x3d+6CDAMjl7I649wpSd+yNURCjbOUGu9tqtLKnTGxmK6CyGw==}
 
   '@types/pg-pool@2.0.6':
     resolution: {integrity: sha512-TaAUE5rq2VQYxab5Ts7WZhKNmuN78Q6PiFonTDdpbx8a1H0M1vhy3rhiMjl+e2iHmogyMw7jZF4FrE6eJUy5HQ==}
@@ -2777,8 +2777,8 @@ packages:
   muggle-string@0.4.1:
     resolution: {integrity: sha512-VNTrAak/KhO2i8dqqnqnAHOa3cYBwXEZe9h+D5h/1ZqFSTEFHdM65lR7RoIqq3tBBYavsOXV84NoHXZ0AkPyqQ==}
 
-  n3@1.23.1:
-    resolution: {integrity: sha512-3f0IYJo+6+lXypothmlwPzm3wJNffsxUwnfONeFv2QqWq7RjTvyCMtkRXDUXW6XrZoOzaQX8xTTSYNlGjXcGtw==}
+  n3@1.24.0:
+    resolution: {integrity: sha512-iE4V0aSa3gCaqb3E2HoxQhlmoe7Kqy1Uy56mO0eDo9u3kJKzjjPIIO5mHi1bGi+YCP0cYZDt95k58tSSO0GlgQ==}
     engines: {node: '>=12.0'}
 
   nanoid@3.3.8:
@@ -2935,13 +2935,13 @@ packages:
     resolution: {integrity: sha512-HRDzbaKjC+AOWVXxAU/x54COGeIv9eb+6CkDSQoNTt4XyWoIJvuPsXizxu/Fr23EiekbtZwmh1IcIG/l/a10GQ==}
     engines: {node: '>=8'}
 
-  playwright-core@1.50.1:
-    resolution: {integrity: sha512-ra9fsNWayuYumt+NiM069M6OkcRb1FZSK8bgi66AtpFoWkg2+y0bJSNmkFrWhMbEBbVKC/EruAHH3g0zmtwGmQ==}
+  playwright-core@1.51.0:
+    resolution: {integrity: sha512-x47yPE3Zwhlil7wlNU/iktF7t2r/URR3VLbH6EknJd/04Qc/PSJ0EY3CMXipmglLG+zyRxW6HNo2EGbKLHPWMg==}
     engines: {node: '>=18'}
     hasBin: true
 
-  playwright@1.50.1:
-    resolution: {integrity: sha512-G8rwsOQJ63XG6BbKj2w5rHeavFjy5zynBA9zsJMMtBoe/Uf757oG12NXz6e6OirF7RCrTVAKFXbLmn1RbL7Qaw==}
+  playwright@1.51.0:
+    resolution: {integrity: sha512-442pTfGM0xxfCYxuBa/Pu6B2OqxqqaYq39JS8QDMGThUvIOCd6s0ANDog3uwA0cHavVlnTQzGCN7Id2YekDSXA==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -3433,8 +3433,8 @@ packages:
   typescript-auto-import-cache@0.3.5:
     resolution: {integrity: sha512-fAIveQKsoYj55CozUiBoj4b/7WpN0i4o74wiGY5JVUEoD0XiqDk1tJqTEjgzL2/AizKQrXxyRosSebyDzBZKjw==}
 
-  typescript@5.7.3:
-    resolution: {integrity: sha512-84MVSjMEHP+FQRPy3pX9sTVV/INIex71s9TL2Gm5FG/WG1SqXeKyZ0k7/blY/4FdOzI12CBy1vGc4og/eus0fw==}
+  typescript@5.8.2:
+    resolution: {integrity: sha512-aJn6wq13/afZp/jT9QZmwEjDqqvSGp1VT5GVg+f/t6/oVyrgXM6BY1h9BRh/O5p3PlUPAe+WuiEZOmb/49RqoQ==}
     engines: {node: '>=14.17'}
     hasBin: true
 
@@ -3839,12 +3839,12 @@ snapshots:
       '@jridgewell/gen-mapping': 0.3.8
       '@jridgewell/trace-mapping': 0.3.25
 
-  '@astrojs/check@0.9.4(typescript@5.7.3)':
+  '@astrojs/check@0.9.4(typescript@5.8.2)':
     dependencies:
-      '@astrojs/language-server': 2.15.4(typescript@5.7.3)
+      '@astrojs/language-server': 2.15.4(typescript@5.8.2)
       chokidar: 4.0.3
       kleur: 4.1.5
-      typescript: 5.7.3
+      typescript: 5.8.2
       yargs: 17.7.2
     transitivePeerDependencies:
       - prettier
@@ -3854,12 +3854,12 @@ snapshots:
 
   '@astrojs/internal-helpers@0.4.1': {}
 
-  '@astrojs/language-server@2.15.4(typescript@5.7.3)':
+  '@astrojs/language-server@2.15.4(typescript@5.8.2)':
     dependencies:
       '@astrojs/compiler': 2.10.3
       '@astrojs/yaml2ts': 0.2.2
       '@jridgewell/sourcemap-codec': 1.5.0
-      '@volar/kit': 2.4.11(typescript@5.7.3)
+      '@volar/kit': 2.4.11(typescript@5.8.2)
       '@volar/language-core': 2.4.11
       '@volar/language-server': 2.4.11
       '@volar/language-service': 2.4.11
@@ -3900,9 +3900,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@astrojs/node@8.3.3(astro@4.16.18(@types/node@22.13.5)(rollup@4.32.0)(typescript@5.7.3))':
+  '@astrojs/node@8.3.3(astro@4.16.18(@types/node@22.13.9)(rollup@4.32.0)(typescript@5.8.2))':
     dependencies:
-      astro: 4.16.18(@types/node@22.13.5)(rollup@4.32.0)(typescript@5.7.3)
+      astro: 4.16.18(@types/node@22.13.9)(rollup@4.32.0)(typescript@5.8.2)
       send: 0.18.0
       server-destroy: 1.0.1
     transitivePeerDependencies:
@@ -3912,10 +3912,10 @@ snapshots:
     dependencies:
       prismjs: 1.29.0
 
-  '@astrojs/solid-js@4.4.1(solid-js@1.9.5)(vite@5.4.12(@types/node@22.13.5))':
+  '@astrojs/solid-js@4.4.1(solid-js@1.9.5)(vite@5.4.12(@types/node@22.13.9))':
     dependencies:
       solid-js: 1.9.5
-      vite-plugin-solid: 2.10.2(solid-js@1.9.5)(vite@5.4.12(@types/node@22.13.5))
+      vite-plugin-solid: 2.10.2(solid-js@1.9.5)(vite@5.4.12(@types/node@22.13.9))
     transitivePeerDependencies:
       - '@testing-library/jest-dom'
       - supports-color
@@ -4179,7 +4179,7 @@ snapshots:
     dependencies:
       '@comunica/bus-rdf-parse': 2.10.0
       '@comunica/types': 2.10.0
-      n3: 1.23.1
+      n3: 1.24.0
 
   '@comunica/actor-rdf-parse-rdfxml@2.10.0':
     dependencies:
@@ -4919,14 +4919,14 @@ snapshots:
 
   '@oslojs/encoding@1.1.0': {}
 
-  '@playwright/test@1.50.1':
+  '@playwright/test@1.51.0':
     dependencies:
-      playwright: 1.50.1
+      playwright: 1.51.0
 
-  '@prisma/client@6.4.1(prisma@6.4.1(typescript@5.7.3))(typescript@5.7.3)':
+  '@prisma/client@6.4.1(prisma@6.4.1(typescript@5.8.2))(typescript@5.8.2)':
     optionalDependencies:
-      prisma: 6.4.1(typescript@5.7.3)
-      typescript: 5.7.3
+      prisma: 6.4.1(typescript@5.8.2)
+      typescript: 5.8.2
 
   '@prisma/debug@6.4.1': {}
 
@@ -4959,11 +4959,11 @@ snapshots:
 
   '@rdfjs/types@1.1.0':
     dependencies:
-      '@types/node': 22.13.5
+      '@types/node': 22.13.9
 
   '@rdfjs/types@1.1.2':
     dependencies:
-      '@types/node': 22.13.5
+      '@types/node': 22.13.9
 
   '@rollup/pluginutils@5.1.4(rollup@4.32.0)':
     dependencies:
@@ -5054,13 +5054,13 @@ snapshots:
       '@sentry-internal/browser-utils': 8.51.0
       '@sentry/core': 8.51.0
 
-  '@sentry/astro@8.51.0(astro@4.16.18(@types/node@22.13.5)(rollup@4.32.0)(typescript@5.7.3))':
+  '@sentry/astro@8.51.0(astro@4.16.18(@types/node@22.13.9)(rollup@4.32.0)(typescript@5.8.2))':
     dependencies:
       '@sentry/browser': 8.51.0
       '@sentry/core': 8.51.0
       '@sentry/node': 8.51.0
       '@sentry/vite-plugin': 2.23.0
-      astro: 4.16.18(@types/node@22.13.5)(rollup@4.32.0)(typescript@5.7.3)
+      astro: 4.16.18(@types/node@22.13.9)(rollup@4.32.0)(typescript@5.8.2)
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -5273,7 +5273,7 @@ snapshots:
 
   '@types/connect@3.4.36':
     dependencies:
-      '@types/node': 22.13.5
+      '@types/node': 22.13.9
 
   '@types/cookie@0.6.0': {}
 
@@ -5289,7 +5289,7 @@ snapshots:
 
   '@types/http-link-header@1.0.5':
     dependencies:
-      '@types/node': 22.13.5
+      '@types/node': 22.13.9
 
   '@types/mdast@4.0.4':
     dependencies:
@@ -5299,22 +5299,22 @@ snapshots:
 
   '@types/mysql@2.15.26':
     dependencies:
-      '@types/node': 22.13.5
+      '@types/node': 22.13.9
 
   '@types/n3@1.21.1':
     dependencies:
       '@rdfjs/types': 1.1.2
-      '@types/node': 22.13.5
+      '@types/node': 22.13.9
 
   '@types/nlcst@2.0.3':
     dependencies:
       '@types/unist': 3.0.3
 
-  '@types/node@18.19.76':
+  '@types/node@18.19.79':
     dependencies:
       undici-types: 5.26.5
 
-  '@types/node@22.13.5':
+  '@types/node@22.13.9':
     dependencies:
       undici-types: 6.20.0
 
@@ -5324,7 +5324,7 @@ snapshots:
 
   '@types/pg@8.6.1':
     dependencies:
-      '@types/node': 22.13.5
+      '@types/node': 22.13.9
       pg-protocol: 1.7.0
       pg-types: 2.2.0
 
@@ -5334,13 +5334,13 @@ snapshots:
 
   '@types/readable-stream@2.3.15':
     dependencies:
-      '@types/node': 22.13.5
+      '@types/node': 22.13.9
       safe-buffer: 5.1.2
 
   '@types/request@2.48.12':
     dependencies:
       '@types/caseless': 0.12.5
-      '@types/node': 22.13.5
+      '@types/node': 22.13.9
       '@types/tough-cookie': 4.0.5
       form-data: 2.5.3
 
@@ -5352,7 +5352,7 @@ snapshots:
 
   '@types/tedious@4.0.14':
     dependencies:
-      '@types/node': 22.13.5
+      '@types/node': 22.13.9
 
   '@types/tough-cookie@4.0.5': {}
 
@@ -5379,13 +5379,13 @@ snapshots:
       chai: 5.2.0
       tinyrainbow: 1.2.0
 
-  '@vitest/mocker@2.1.9(vite@5.4.12(@types/node@22.13.5))':
+  '@vitest/mocker@2.1.9(vite@5.4.12(@types/node@22.13.9))':
     dependencies:
       '@vitest/spy': 2.1.9
       estree-walker: 3.0.3
       magic-string: 0.30.17
     optionalDependencies:
-      vite: 5.4.12(@types/node@22.13.5)
+      vite: 5.4.12(@types/node@22.13.9)
 
   '@vitest/pretty-format@2.1.9':
     dependencies:
@@ -5412,12 +5412,12 @@ snapshots:
       loupe: 3.1.3
       tinyrainbow: 1.2.0
 
-  '@volar/kit@2.4.11(typescript@5.7.3)':
+  '@volar/kit@2.4.11(typescript@5.8.2)':
     dependencies:
       '@volar/language-service': 2.4.11
       '@volar/typescript': 2.4.11
       typesafe-path: 0.2.2
-      typescript: 5.7.3
+      typescript: 5.8.2
       vscode-languageserver-textdocument: 1.0.12
       vscode-uri: 3.0.8
 
@@ -5534,7 +5534,7 @@ snapshots:
 
   assertion-error@2.0.1: {}
 
-  astro@4.16.18(@types/node@22.13.5)(rollup@4.32.0)(typescript@5.7.3):
+  astro@4.16.18(@types/node@22.13.9)(rollup@4.32.0)(typescript@5.8.2):
     dependencies:
       '@astrojs/compiler': 2.10.3
       '@astrojs/internal-helpers': 0.4.1
@@ -5587,17 +5587,17 @@ snapshots:
       semver: 7.6.3
       shiki: 1.29.1
       tinyexec: 0.3.2
-      tsconfck: 3.1.4(typescript@5.7.3)
+      tsconfck: 3.1.4(typescript@5.8.2)
       unist-util-visit: 5.0.0
       vfile: 6.0.3
-      vite: 5.4.12(@types/node@22.13.5)
-      vitefu: 1.0.5(vite@5.4.12(@types/node@22.13.5))
+      vite: 5.4.12(@types/node@22.13.9)
+      vitefu: 1.0.5(vite@5.4.12(@types/node@22.13.9))
       which-pm: 3.0.0
       xxhash-wasm: 1.1.0
       yargs-parser: 21.1.1
       zod: 3.24.2
       zod-to-json-schema: 3.24.1(zod@3.24.2)
-      zod-to-ts: 1.2.0(typescript@5.7.3)(zod@3.24.2)
+      zod-to-ts: 1.2.0(typescript@5.8.2)(zod@3.24.2)
     optionalDependencies:
       sharp: 0.33.5
     transitivePeerDependencies:
@@ -6545,7 +6545,7 @@ snapshots:
   jsonld-context-parser@2.4.0:
     dependencies:
       '@types/http-link-header': 1.0.5
-      '@types/node': 18.19.76
+      '@types/node': 18.19.79
       cross-fetch: 3.1.8
       http-link-header: 1.1.3
       relative-to-absolute-iri: 1.0.7
@@ -7164,7 +7164,7 @@ snapshots:
 
   muggle-string@0.4.1: {}
 
-  n3@1.23.1:
+  n3@1.24.0:
     dependencies:
       buffer: 6.0.3
       queue-microtask: 1.2.3
@@ -7307,11 +7307,11 @@ snapshots:
     dependencies:
       find-up: 4.1.0
 
-  playwright-core@1.50.1: {}
+  playwright-core@1.51.0: {}
 
-  playwright@1.50.1:
+  playwright@1.51.0:
     dependencies:
-      playwright-core: 1.50.1
+      playwright-core: 1.51.0
     optionalDependencies:
       fsevents: 2.3.2
 
@@ -7340,14 +7340,14 @@ snapshots:
   prettier@2.8.7:
     optional: true
 
-  prisma@6.4.1(typescript@5.7.3):
+  prisma@6.4.1(typescript@5.8.2):
     dependencies:
       '@prisma/engines': 6.4.1
       esbuild: 0.25.0
       esbuild-register: 3.6.0(esbuild@0.25.0)
     optionalDependencies:
       fsevents: 2.3.3
-      typescript: 5.7.3
+      typescript: 5.8.2
     transitivePeerDependencies:
       - supports-color
 
@@ -7741,7 +7741,7 @@ snapshots:
   shaclc-parse@1.4.0:
     dependencies:
       '@rdfjs/types': 1.1.2
-      n3: 1.23.1
+      n3: 1.24.0
 
   sharp@0.33.5:
     dependencies:
@@ -7955,9 +7955,9 @@ snapshots:
 
   trough@2.2.0: {}
 
-  tsconfck@3.1.4(typescript@5.7.3):
+  tsconfck@3.1.4(typescript@5.8.2):
     optionalDependencies:
-      typescript: 5.7.3
+      typescript: 5.8.2
 
   tslib@2.7.0: {}
 
@@ -7977,7 +7977,7 @@ snapshots:
     dependencies:
       semver: 7.6.3
 
-  typescript@5.7.3: {}
+  typescript@5.8.2: {}
 
   undici-types@5.26.5: {}
 
@@ -8085,13 +8085,13 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.2
 
-  vite-node@2.1.9(@types/node@22.13.5):
+  vite-node@2.1.9(@types/node@22.13.9):
     dependencies:
       cac: 6.7.14
       debug: 4.4.0
       es-module-lexer: 1.6.0
       pathe: 1.1.2
-      vite: 5.4.12(@types/node@22.13.5)
+      vite: 5.4.12(@types/node@22.13.9)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -8103,7 +8103,7 @@ snapshots:
       - supports-color
       - terser
 
-  vite-plugin-solid@2.10.2(solid-js@1.9.5)(vite@5.4.12(@types/node@22.13.5)):
+  vite-plugin-solid@2.10.2(solid-js@1.9.5)(vite@5.4.12(@types/node@22.13.9)):
     dependencies:
       '@babel/core': 7.26.7
       '@types/babel__core': 7.20.5
@@ -8111,32 +8111,32 @@ snapshots:
       merge-anything: 5.1.7
       solid-js: 1.9.5
       solid-refresh: 0.6.3(solid-js@1.9.5)
-      vite: 5.4.12(@types/node@22.13.5)
-      vitefu: 0.2.5(vite@5.4.12(@types/node@22.13.5))
+      vite: 5.4.12(@types/node@22.13.9)
+      vitefu: 0.2.5(vite@5.4.12(@types/node@22.13.9))
     transitivePeerDependencies:
       - supports-color
 
-  vite@5.4.12(@types/node@22.13.5):
+  vite@5.4.12(@types/node@22.13.9):
     dependencies:
       esbuild: 0.21.5
       postcss: 8.5.1
       rollup: 4.32.0
     optionalDependencies:
-      '@types/node': 22.13.5
+      '@types/node': 22.13.9
       fsevents: 2.3.3
 
-  vitefu@0.2.5(vite@5.4.12(@types/node@22.13.5)):
+  vitefu@0.2.5(vite@5.4.12(@types/node@22.13.9)):
     optionalDependencies:
-      vite: 5.4.12(@types/node@22.13.5)
+      vite: 5.4.12(@types/node@22.13.9)
 
-  vitefu@1.0.5(vite@5.4.12(@types/node@22.13.5)):
+  vitefu@1.0.5(vite@5.4.12(@types/node@22.13.9)):
     optionalDependencies:
-      vite: 5.4.12(@types/node@22.13.5)
+      vite: 5.4.12(@types/node@22.13.9)
 
-  vitest@2.1.9(@types/node@22.13.5):
+  vitest@2.1.9(@types/node@22.13.9):
     dependencies:
       '@vitest/expect': 2.1.9
-      '@vitest/mocker': 2.1.9(vite@5.4.12(@types/node@22.13.5))
+      '@vitest/mocker': 2.1.9(vite@5.4.12(@types/node@22.13.9))
       '@vitest/pretty-format': 2.1.9
       '@vitest/runner': 2.1.9
       '@vitest/snapshot': 2.1.9
@@ -8152,11 +8152,11 @@ snapshots:
       tinyexec: 0.3.2
       tinypool: 1.0.2
       tinyrainbow: 1.2.0
-      vite: 5.4.12(@types/node@22.13.5)
-      vite-node: 2.1.9(@types/node@22.13.5)
+      vite: 5.4.12(@types/node@22.13.9)
+      vite-node: 2.1.9(@types/node@22.13.9)
       why-is-node-running: 2.3.0
     optionalDependencies:
-      '@types/node': 22.13.5
+      '@types/node': 22.13.9
     transitivePeerDependencies:
       - less
       - lightningcss
@@ -8374,9 +8374,9 @@ snapshots:
     dependencies:
       zod: 3.24.2
 
-  zod-to-ts@1.2.0(typescript@5.7.3)(zod@3.24.2):
+  zod-to-ts@1.2.0(typescript@5.8.2)(zod@3.24.2):
     dependencies:
-      typescript: 5.7.3
+      typescript: 5.8.2
       zod: 3.24.2
 
   zod@3.24.2: {}
