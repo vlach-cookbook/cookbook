@@ -26,6 +26,8 @@ jobs:
         version_prefix: 'vlach-cookbook@'
         set_commits: auto
     - uses: superfly/flyctl-actions/setup-flyctl@master
+    - name: Keep 1 production machine running
+      run: sed -i 's/min_machines_running = 0/min_machines_running = 1/' webserver/fly.toml
     - name: Update the production deployment.
       run: |
         flyctl deploy webserver -a vlach-cookbook \

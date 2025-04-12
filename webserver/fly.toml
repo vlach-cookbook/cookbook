@@ -1,5 +1,5 @@
 # Use `-a vlach-cookbook` to deploy the production app.
-# TBD how to override min_machines_running to 1 in production.
+# Production releases use `sed` to set min_machines_running to 1.
 app = "vlach-cookbook-staging"
 primary_region = "sea"
 kill_signal = "SIGINT"
@@ -14,7 +14,7 @@ kill_timeout = 5
 [http_service]
   internal_port = 8080
   force_https = true
-  auto_stop_machines = true
+  auto_stop_machines = "suspend"
   auto_start_machines = true
   min_machines_running = 0
   [http_service.concurrency]
@@ -30,4 +30,4 @@ kill_timeout = 5
 
 [[vm]]
   size = "shared-cpu-1x"
-  memory = "256mb"
+  memory = "512mb"
