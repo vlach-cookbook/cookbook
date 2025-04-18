@@ -187,10 +187,10 @@ const IngredientsEditor: Component<{
 
   return <fieldset ref={fields}>
     <legend><h3>Ingredients</h3></legend>
-    <ul>
+    <ul style={{ "padding-inline-start": 0 }}>
       <For each={ingredients}>
         {(ingredient, index) => (
-          <li draggable={true} style={{ cursor: "move" }}
+          <li draggable={true} style={{ cursor: "move", "list-style-position": "inside" }}
             onDragStart={[onDragStart, ingredient]}
             onDragEnd={onDragEnd}
             onDragEnter={[onDragEnter, ingredient]}
@@ -390,7 +390,7 @@ const InstructionsEditor: Component<{ steps: string[], setDirty: () => void }> =
         onInput={e => setSteps(0, "step", e.currentTarget.value)}
         onKeyDown={[onStepKeyDown, steps[0]]}>{steps[0]!.step}</textarea>
       :
-      <ol>
+      <ol style={{ "padding-inline-start": "20px" }}>
         <For each={steps}>
           {(step, index) =>
             <li draggable={true} style={{ cursor: "move" }}
