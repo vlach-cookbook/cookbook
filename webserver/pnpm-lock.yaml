@@ -63,8 +63,8 @@ importers:
         specifier: ^6.6.0
         version: 6.6.0(typescript@5.8.3)
       rdf-dereference:
-        specifier: ^3.0.0
-        version: 3.0.0
+        specifier: ^4.0.0
+        version: 4.0.0
       rehype-sanitize:
         specifier: ^6.0.0
         version: 6.0.0
@@ -261,106 +261,106 @@ packages:
     resolution: {integrity: sha512-t8kDRGrKXyp6+tjUh7hw2RLyclsW4TRoRvRHtSyAX9Bb5ldlFh+90YAYY6awRXrlB4G5G2izNeGySpATlFzmOg==}
     engines: {node: '>=6.9.0'}
 
-  '@bergos/jsonparse@1.4.1':
-    resolution: {integrity: sha512-vXIT0nzZGX/+yMD5bx2VhTzc92H55tPoehh1BW/FZHOndWGFddrH3MAfdx39FRc7irABirW6EQaGxIJYV6CGuA==}
+  '@bergos/jsonparse@1.4.2':
+    resolution: {integrity: sha512-qUt0QNJjvg4s1zk+AuLM6s/zcsQ8MvGn7+1f0vPuxvpCYa08YtTryuDInngbEyW5fNGGYe2znKt61RMGd5HnXg==}
     engines: {'0': node >= 0.2.0}
 
-  '@comunica/actor-abstract-mediatyped@2.10.0':
-    resolution: {integrity: sha512-0o6WBujsMnIVcwvRJv6Nj+kKPLZzqBS3On48rm01Rh9T1/My0E/buJMXwgcARKCfMonc2mJ9zxpPCh5ilGEU2A==}
+  '@comunica/actor-abstract-mediatyped@4.1.0':
+    resolution: {integrity: sha512-f11+smivMq99w54U8yCnF5e4dMfiYyoOcQIRRuqwoOoL752PBZwVGNlmwCUNgMMPzMJd5KxJyj2+r9LO1Iarjw==}
 
-  '@comunica/actor-abstract-parse@2.10.0':
-    resolution: {integrity: sha512-0puCWF+y24EDOOAUUVVbC+tOf4UV+LzEbqi8T5v25jcVGCXyTqfra+bDywfrcv3adrVp18jLCJ46ycaH5xhy9Q==}
+  '@comunica/actor-abstract-parse@4.1.0':
+    resolution: {integrity: sha512-M092U8iUjXYLnA4V3Ufy24Q3RTAivHE29rQQokOmHpVwAnWUl/TrDnzF8PnyveJ3/cftnBUZiUmhAkYZZxQ/DA==}
 
-  '@comunica/actor-dereference-fallback@2.10.0':
-    resolution: {integrity: sha512-RSc/ScPdC7l13aZjz/6r4niWA8WDETbzuESQKKSWXi/HAlFOyOxdrDADdayVY2oyeZHIQibeNRtSi2ItzU7OPQ==}
+  '@comunica/actor-dereference-fallback@4.1.0':
+    resolution: {integrity: sha512-Bgche/ycXPBKbbP5LwFleDZJIdkPnfU0268pXlz4+vWRux/bJ+RyqhL6UDKEfcub2TclnV1WquZYKTvUYulIrg==}
 
-  '@comunica/actor-dereference-file@2.10.0':
-    resolution: {integrity: sha512-WXfAyHm0M3+YbYEtLtasT6YHsrzTAevmH27ex8r51qKNj2LK74llpw4mSeea3xyjQR30jVnKBIJSxuSbN64Now==}
+  '@comunica/actor-dereference-file@4.1.0':
+    resolution: {integrity: sha512-FHvvYkR7zcb/qHNOCtrHT/zoRaSU2rEK4iYAIvHSE9jp+BeuqRsocU9XZvOKy37KOB8n4RlZm7aiUePixQPNIA==}
 
-  '@comunica/actor-dereference-http@2.10.2':
-    resolution: {integrity: sha512-gdDo83W1TAgD2jx0kVbzZKzzt++L4Y4fbyTOH3duy6vx1EMGGZlNCp6I1uguepKEjNX4N0zhAcZzdJcv8A3XMA==}
+  '@comunica/actor-dereference-http@4.1.0':
+    resolution: {integrity: sha512-c5rDRtRux/vSJwJtyNm8FkMfrGAbFJKMuJUdmQFsOd2nSLU/jlcIfsM+F9ukdYe+0XxaIIHrGYX/gvNJamk7MA==}
 
-  '@comunica/actor-dereference-rdf-parse@2.10.0':
-    resolution: {integrity: sha512-ANWL6Bv+2WHUjVRS7hfkOfVBNJs8xYZ9KHlgBOQ94CKtQZB9uSMjdb1hLp/cQjiDmFIWLn0+GM5Xi0KFwBkVAw==}
+  '@comunica/actor-dereference-rdf-parse@4.1.0':
+    resolution: {integrity: sha512-Wd1hMeTSCWu5JJdX4zkB4gJb1o1wa/Uz+cvGOADgiwYe2l6IaWbPnsAoimjTC5og/FSqRz01fwZBUItXFR5AhQ==}
 
-  '@comunica/actor-http-fetch@2.10.2':
-    resolution: {integrity: sha512-siHGx0TMVNb2gXvOroq0B3JE6uuS+4s+MsDkntqdBNVigwVYqLpNSKEaL5is8pputFfohJfDQY06lAHbfDNEcw==}
+  '@comunica/actor-http-fetch@4.1.0':
+    resolution: {integrity: sha512-mBCzGO6d37zapF7WJ+2BgqVDcYaci8UdLOmlOE4k6popjTTkQo1qaaVA61hVnGlQFegMU87+Y9+/YU97f+OymA==}
 
-  '@comunica/actor-http-proxy@2.10.2':
-    resolution: {integrity: sha512-3yUF8BCh4nwq8J6NRILEsyNrQNStkE9ggJ7hYwRfA1XcMgz1pANNaWJ2P2TEKH1jNinr23bL3JeuUZCm9Kz9dA==}
+  '@comunica/actor-http-proxy@4.1.0':
+    resolution: {integrity: sha512-kdIIuVw9f42xBYnwVyRucaMeDeQAPHCB4sBPS6nHp6oPMplsgh1dqvCOng3H/jcgv5eXq+8tKR6E2jqYPS9sAw==}
 
-  '@comunica/actor-rdf-parse-html-microdata@2.10.0':
-    resolution: {integrity: sha512-JLfiDauq4SmpI6TDS4HaHzI6iJe1j8lSk5FRRYK6YVEu8eO28jPmxQJiOiwbQiYqsjsV7kON/WIZSoUELoI4Ig==}
+  '@comunica/actor-rdf-parse-html-microdata@4.1.0':
+    resolution: {integrity: sha512-V3kk5MKxkpKjSsvOKMgJvlp1GwDhBOOGIxm66Z7C9BBlmvcY16Z4jKiikHJJdBCzluposSKWsTNMykXPyEsiFg==}
 
-  '@comunica/actor-rdf-parse-html-rdfa@2.10.0':
-    resolution: {integrity: sha512-9K3iaws9+FGl50oZi53hqyzhwjNKZ3mIr2zg/TAJZoapKvc14cthH17zKSSJrqI/NgBStRmZhBBkXcwfu1CANw==}
+  '@comunica/actor-rdf-parse-html-rdfa@4.1.0':
+    resolution: {integrity: sha512-ZXjSvr6V371Rc2et8K1Hb5IyKnPyX4KtPSNGA4L4zh3aAu6RcQH21JKc1ZnlpDddWs2P3A/D15FgA02CDrI6+w==}
 
-  '@comunica/actor-rdf-parse-html-script@2.10.0':
-    resolution: {integrity: sha512-7XYqWchDquWnBLjG7rmmY+tdE81UZ8fPCU0Hn+vI39/MikNOpaiyr/ZYFqhogWFa9SkjmH0a7idVUzmjiwKRZQ==}
+  '@comunica/actor-rdf-parse-html-script@4.1.0':
+    resolution: {integrity: sha512-bT1XnijvpCIPOG+EzT3q6u6BbT68mimjc/dJ+gg5B22ZcKRkxdfCVBx7zRd/OHTjuRjTnC7289lBKbLtHfqxbA==}
 
-  '@comunica/actor-rdf-parse-html@2.10.0':
-    resolution: {integrity: sha512-zgImXKpc+BN1i6lQiN1Qhlb1HbKdMIeJMOys6qbzRIijdK8GkGGChwhQp7Cso3lY1Nf4K7M3jPLZeQXeED2w7g==}
+  '@comunica/actor-rdf-parse-html@4.1.0':
+    resolution: {integrity: sha512-m32FttAND4ZzaYR6BKS0LxhtM96IQvj1eciErbHyo9n/8I0VrF7RI3i/kzw90OEE8KnGtwiVDap1rkMmu8wDNg==}
 
-  '@comunica/actor-rdf-parse-jsonld@2.10.2':
-    resolution: {integrity: sha512-K4fvD0zMU22KkQCqIFVT5Oy2FREEZ9CAo9u6kOcsMxEvg9aHGIM6hkaXR8I+1JCx1mDuEj3zQ8joR4tQh8fYCw==}
+  '@comunica/actor-rdf-parse-jsonld@4.1.0':
+    resolution: {integrity: sha512-VRZb+nqTi9A1nK+DFJcYBrlb5VHBpSH0fYUwZFpiw2LWABxYptlx1l9u8YUWnmP4WxY0yVSqMD2CIjP9X697bQ==}
 
-  '@comunica/actor-rdf-parse-n3@2.10.0':
-    resolution: {integrity: sha512-o1MAbwJxW4Br2WCZdhFoRmAiOP4mfogeQqJ4nqlsOkoMtQ45EvLHsotb3Kqhuk5V+vsTxyK5v/a4zylGtcU7VQ==}
+  '@comunica/actor-rdf-parse-n3@4.1.0':
+    resolution: {integrity: sha512-euHEVzbXFv4oBMzsaqRhgHY5Nw9/bkbtPESxpAuMVbL//LWmfnEux1uomgIixkwoRjHfVakU1570scL96kkTTw==}
 
-  '@comunica/actor-rdf-parse-rdfxml@2.10.0':
-    resolution: {integrity: sha512-HoJN52shXY3cvYtsS0cpin9KXpW3L7g1leebyCRSqnlnHdJv5D6G0Ep8vyt2xhquKNbOQ7LnP5VhiDiqz73XDg==}
+  '@comunica/actor-rdf-parse-rdfxml@4.1.0':
+    resolution: {integrity: sha512-aPQGpffyZYKGfVWYiUH6aYtdRlFvlnYR/KObEy02ZWxq9TJBMTKee9IwSPYjbmVoHzG3vSbPjIwTm5aD9vf4iw==}
 
-  '@comunica/actor-rdf-parse-shaclc@2.10.0':
-    resolution: {integrity: sha512-i6tmuZuS+RtDiSXpQc3s/PxtCqwIguo4ANmVB20PK4VWgQgBwoPG7LlNcJ0xmuH/3Bv6C2Agn18PLF6dZX+fKw==}
+  '@comunica/actor-rdf-parse-shaclc@4.1.0':
+    resolution: {integrity: sha512-MKywwV7G+pHKljH/b8orKNe/FwjrbjADs7IJb974trPYSpnipWT6uy13/ZqEQpIVpvUn7cTEMnwU73R28tNPNw==}
 
-  '@comunica/actor-rdf-parse-xml-rdfa@2.10.0':
-    resolution: {integrity: sha512-68r/6B/fEyA1/OYleVuaPq47J+g4xJcJijpdL1wEj7CqjV+Xa+sDWRpNCyLcD/e1Y/g9UQmLz0ZnSpR00PFddA==}
+  '@comunica/actor-rdf-parse-xml-rdfa@4.1.0':
+    resolution: {integrity: sha512-X9/6fr/gYor8V4PahO9h3dvGCss7bx004dibilIldII0wxl/TjAsqgoYlbXttAF2RDW1ZARI70a6wxX8dUzRMg==}
 
-  '@comunica/bus-dereference-rdf@2.10.0':
-    resolution: {integrity: sha512-WY/wPmFpO76wwJ2D5Aus43ZbYnBRLvQ0EOp4yywO0lBiq6F0JisjCVCM4EtWouOEAAfqEoIjHXGyC3gPWqm+SQ==}
+  '@comunica/bus-dereference-rdf@4.1.0':
+    resolution: {integrity: sha512-i6kMvHyXJg+ZLKR3WeuOxRa8/0YSUNT2ZD4T+G4Wn/BTx3VrEMWGeoaMsJnMfDxRITFTzjWMk7AIbbAH+uBd1w==}
 
-  '@comunica/bus-dereference@2.10.0':
-    resolution: {integrity: sha512-nWyQXiH7zbiPTVttWVKJHykhV4IuahfhfUwPx3Op+cVsK489Su84dnGeSmPkxTAFFuxe6wU6ZEH4i7PDu48YvQ==}
+  '@comunica/bus-dereference@4.1.0':
+    resolution: {integrity: sha512-TMAUGWosgyFGzrcDM7N6SJQkBpkvCyLLXfOx+i9NB8v/ahfxOZqI1VE7oIilq3Kte1ui/TvNrCvOjD7LmAmT8w==}
 
-  '@comunica/bus-http@2.10.2':
-    resolution: {integrity: sha512-MAYRF6uEBAuJ9dCPW2Uyne7w3lNwXFXKfa14XuPG5DFTDpgo/Z2pWupPrBsA1eIWMNJ6WOG6QyEv4rllSIBqlg==}
+  '@comunica/bus-http@4.1.0':
+    resolution: {integrity: sha512-M2K02oOK536GDmg9bqA/DrAeAJIXkN55mIPkBL/yvghZ7bpcJkVGAIZy6CEKnRC7//baiT8+M6fSpolBj+zwKg==}
 
-  '@comunica/bus-init@2.10.0':
-    resolution: {integrity: sha512-hJejHa8sLVhQLFlduCVnhOd5aW3FCEz8wmWjyeLI3kiHFaQibnGVMhUuuNRX5f8bnnPuTdEiHc1nnYHuSi+j8A==}
+  '@comunica/bus-init@4.1.0':
+    resolution: {integrity: sha512-+sJP2QUlEsROz6yy6cVLXFSJRWSMtsMf/Xm5gwEAjk/pR0LclOkLOhUwrVTExsZNqoIg9z6ODAOpNvojTcCr2g==}
 
-  '@comunica/bus-rdf-parse-html@2.10.0':
-    resolution: {integrity: sha512-RZliz4TtKP63QggoohGuIkGb6lq0BoYJ4aztKtGldWtPAVP/pdEvlDpiZWLB/j19g7S2aDLNY/lJtZ5efM1tHQ==}
+  '@comunica/bus-rdf-parse-html@4.1.0':
+    resolution: {integrity: sha512-9bx5OajDXCCLqvHIaUvOpFIsRLGyk+Wgtnnf7KjgiGEWxbz1btRXpY0zaItkXzyOAZmKw6l2ln5kFZ89LsE5Ow==}
 
-  '@comunica/bus-rdf-parse@2.10.0':
-    resolution: {integrity: sha512-EgCMZACfTG/+mayQpExWt0HoBT32BBVC1aS1lC43fXKBTxJ8kYrSrorVUuMACoh4dQVGTb+7j1j4K0hGNVzXGA==}
+  '@comunica/bus-rdf-parse@4.1.0':
+    resolution: {integrity: sha512-1MQoRPifjfddyJt6laI+RFK5mkkRqtvH05fZyidtF031revQM5hwmmmdVEXu+HJppwyr80Bhso3QQNo0OeXcxw==}
 
-  '@comunica/config-query-sparql@2.7.0':
-    resolution: {integrity: sha512-rMnFgT7cz9+0z7wV4OzIMY5qM9/Z0mTGrR8y2JokoHyyTcBGOSajFmy61XCSLMCsLLG8qDXsJ4ClCCky3TGfqA==}
+  '@comunica/config-query-sparql@4.1.0':
+    resolution: {integrity: sha512-MN5f584irr7Et0O7hFg1yTiqExjLXzNxKCR/yQMjq+FYKWCBU/DQYwRPHJBUyCvSsZpzzUF0C+2LGlxfpTitAQ==}
 
-  '@comunica/context-entries@2.10.0':
-    resolution: {integrity: sha512-lmCYCcXxW8C6ecFH2whZCt31NT1ejb0P/sbytK7f4ctyA06Q8iYFEcYE4eWOXMdpfkwkcnz31x9XL77OGeSC2Q==}
+  '@comunica/context-entries@4.1.0':
+    resolution: {integrity: sha512-OKHD8jtXZf1GqBsuIzRkrwoiTADoPJ/rIE3R8+Zc9DiNThlK8xN+dMzkvJAqZafdSLrJ+A7X9st8IziePpKzwg==}
 
-  '@comunica/core@2.10.0':
-    resolution: {integrity: sha512-onsGs2iKHUPRxxMOdx42vdxslk8q9FQZdRjQtHJ6SGiCpJwIL9ciBgPIOl2RL2YfzXHemr/0umeNOppRDcWhJA==}
+  '@comunica/core@4.1.0':
+    resolution: {integrity: sha512-8o69EmrO7UUztMN9Yb0KBusn0wBARKtSCVWRQ44Z2QUkQqjMdkkji+LVTV1qmALTOLsA3SxDDayWVP5hIZhI3Q==}
     engines: {node: '>=14.0'}
 
-  '@comunica/mediator-combine-pipeline@2.10.0':
-    resolution: {integrity: sha512-j7+/oUlbhKB4Rq6g9oNKU+e9cQL8U9z8tAUNhoXUSHajcr4huj0t1+riaOD109/DRWhV793ILhBDzgiZbHd7DA==}
+  '@comunica/mediator-combine-pipeline@4.1.0':
+    resolution: {integrity: sha512-upAeJlnvUQ0JRsOcsNGrYcPn3hEbG2l/0m4Tr9ffAEyd91raP0Sg0GSmPj0o2dTnxf0qZGH3DuyufV7KLUhtKA==}
 
-  '@comunica/mediator-combine-union@2.10.0':
-    resolution: {integrity: sha512-QbP4zP1i6nMDZ8teC0RoTz5E8pOpxDhWPBr1ylb2jzPUjPpMgrnbHYTondlN0Oau3SMEehItojg/LYDtPOP/GQ==}
+  '@comunica/mediator-combine-union@4.1.0':
+    resolution: {integrity: sha512-Ok9KiiJd7OiQR/Jp8pp/7i4al6HomCyuL0Whzmz0GgrQvbjO8+lUS0PWes9+P1lH1R7BLaatpO7giAoDfwg1OQ==}
 
-  '@comunica/mediator-number@2.10.0':
-    resolution: {integrity: sha512-0T8D1HGTu5Sd8iKb2dBjc6VRc/U4A15TAN6m561ra9pFlP+w31kby0ZYP6WWBHBobbUsX1LCvnbRQaAC4uWwVw==}
+  '@comunica/mediator-number@4.1.0':
+    resolution: {integrity: sha512-W4m8I0DiD59DARmks0BWUJN4uOmeLYLxcXhB+7pW3unLL+q535GKVcNEoRnXUxk0GjIHXSzSzBvfmSrbt61p/A==}
 
-  '@comunica/mediator-race@2.10.0':
-    resolution: {integrity: sha512-JiEtOLMkPnbjSLabVpE4VqDbu2ZKKnkUdATGBeWX+o+MjPw6c0hhw01RG4WY2rQhDyNl++nLQe3EowQh8xW9TA==}
+  '@comunica/mediator-race@4.1.0':
+    resolution: {integrity: sha512-9qtgU9Aw3V9DANO90aKrxkJgEkozlVNAVU7AAowNxvTOMyUxjMOWhb3LkPK1aT8MHz+EVwC82Z7QT9w206d44A==}
 
-  '@comunica/mediatortype-time@2.10.0':
-    resolution: {integrity: sha512-nBz1exxrja1Tj8KSlSevG4Hw2u09tTh6gtNfVjI76i/e7muu4RUWVhi9b8PcwBNAfuUqRl+5OgOSa2X4W+6QlA==}
+  '@comunica/mediatortype-time@4.1.0':
+    resolution: {integrity: sha512-mpaYHFuxgdMaJWIUBt9hehWYcIMPHFBGO+lqvvNfM8cE7i8WPy+vjjaOcaa0GMwVcVxM3xVj6avtqYNrXP+dpw==}
 
-  '@comunica/types@2.10.0':
-    resolution: {integrity: sha512-1UjPGbZcYrapBjMGUZedrIGcn9rOLpEOlJo1ZkWddFUGTwndVg9d4BZnQw+UnQzXMcLJcdKt94Zns8iEmBqARw==}
+  '@comunica/types@4.1.0':
+    resolution: {integrity: sha512-Ux2j9rS89U3aMelBI8JrvH8FUUddD8E3awWz1DEk/epfnL4ieJEMRP0KlOqPSU6gFwrbxT8UMjhTjrfsnS5VJQ==}
 
   '@ctrl/tinycolor@4.1.0':
     resolution: {integrity: sha512-WyOx8cJQ+FQus4Mm4uPIZA64gbk3Wxh0so5Lcii0aJifqwoVOlfFtorjLE0Hen4OYyHZMXDWqMmaQemBhgxFRQ==}
@@ -811,6 +811,9 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@jeswr/stream-to-string@2.0.0':
+    resolution: {integrity: sha512-VmoW6xYRjVzdMr2njBObVSlUc5KCJT+gyuuH+tea9ZLE59XhgfLNc8ufN5Md38STxCyAJUDUVcCBfaOo11BfuA==}
+
   '@jridgewell/gen-mapping@0.3.8':
     resolution: {integrity: sha512-imAbBGkb+ebQyxKgzv5Hu2nmROxoDOXHh80evxdoXNOrvAnVx7zimzc1Oo5h9RlfV4vPXaE2iM5pOFbvOCClWA==}
     engines: {node: '>=6.0.0'}
@@ -1125,8 +1128,8 @@ packages:
   '@prisma/instrumentation@5.22.0':
     resolution: {integrity: sha512-LxccF392NN37ISGxIurUljZSh1YWnphO34V5a0+T7FVQG2u9bhAXRTJpgmQ3483woVhkraQZFF7cbRrpbw/F4Q==}
 
-  '@rdfjs/types@1.1.0':
-    resolution: {integrity: sha512-5zm8bN2/CC634dTcn/0AhTRLaQRjXDZs3QfcAsQKNturHT7XVWcKy/8p3P5gXl+YkZTAmy7T5M/LyiT/jbkENw==}
+  '@rdfjs/types@1.1.2':
+    resolution: {integrity: sha512-wqpOJK1QCbmsGNtyzYnojPU8gRDPid2JO0Q0kMtb4j65xhCK880cnKAfEOwC+dX85VJcCByQx5zOwyyfCjDJsg==}
 
   '@rdfjs/types@2.0.1':
     resolution: {integrity: sha512-uyAzpugX7KekAXAHq26m3JlUIZJOC0uSBhpnefGV5i15bevDyyejoB7I+9MKeUrzXD8OOUI3+4FeV1wwQr5ihA==}
@@ -1375,10 +1378,6 @@ packages:
     resolution: {integrity: sha512-FSghU95jZPGbwr/mybVvk66qRZYpx5FkXL+vLNpy1Vp8UsdwSxXjIHE3fsvMbKWTKi9UFfewHTkc5e7jAqRYoQ==}
     engines: {node: '>=14.17.0'}
 
-  '@smessie/readable-web-to-node-stream@3.0.3':
-    resolution: {integrity: sha512-8FFE7psRtRWQT31/duqbmgnSf2++QLR2YH9kj5iwsHhnoqSvHdOY3SAN5e7dhc+60p2cNk7rv3HYOiXOapTEXQ==}
-    engines: {node: '>=8'}
-
   '@tootallnate/once@2.0.0':
     resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==}
     engines: {node: '>= 10'}
@@ -1413,8 +1412,8 @@ packages:
   '@types/hast@3.0.4':
     resolution: {integrity: sha512-WPs+bbQw5aCj+x6laNGWLH3wviHtoCv/P3+otBhbOhJgG8qtpdAMlTCxLtsTWA7LH1Oh/bFCHsBn0TPS5m30EQ==}
 
-  '@types/http-link-header@1.0.5':
-    resolution: {integrity: sha512-AxhIKR8UbyoqCTNp9rRepkktHuUOw3DjfOfDCaO9kwI8AYzjhxyrvZq4+mRw/2daD3hYDknrtSeV6SsPwmc71w==}
+  '@types/http-link-header@1.0.7':
+    resolution: {integrity: sha512-snm5oLckop0K3cTDAiBnZDy6ncx9DJ3mCRDvs42C884MbVYPP74Tiq2hFsSDRTyjK6RyDYDIulPiW23ge+g5Lw==}
 
   '@types/mdast@4.0.4':
     resolution: {integrity: sha512-kGaNbPh1k7AFzgpud/gMdvIm5xuECykRR+JnWKQno9TAXVa6WIVCGTPvYGekIDL4uwCZQSYbUxNBSb1aUo79oA==}
@@ -1449,14 +1448,17 @@ packages:
   '@types/readable-stream@2.3.15':
     resolution: {integrity: sha512-oM5JSKQCcICF1wvGgmecmHldZ48OZamtMxcGGVICOJA8o8cahXC1zEVAif8iwoc5j8etxFaRFnf095+CDsuoFQ==}
 
+  '@types/readable-stream@4.0.18':
+    resolution: {integrity: sha512-21jK/1j+Wg+7jVw1xnSwy/2Q1VgVjWuFssbYGTREPUBeZ+rqVFl2udq0IkxzPC0ZhOzVceUbyIACFZKLqKEBlA==}
+
   '@types/request@2.48.12':
     resolution: {integrity: sha512-G3sY+NpsA9jnwm0ixhAFQSJ3Q9JkpLZpJbI3GMv0mIAT0y3mRabYeINzal5WOChIiaTEGQYlHOKgkaM9EisWHw==}
 
   '@types/shimmer@1.2.0':
     resolution: {integrity: sha512-UE7oxhQLLd9gub6JKIAhDq06T0F6FnztwMNRvYgjeQSBeMc1ZG/tA47EwfduvkuQS8apbkM/lpLpWsaCeYsXVg==}
 
-  '@types/sparqljs@3.1.10':
-    resolution: {integrity: sha512-rqMpUhl/d8B+vaACa6ZVdwPQ1JXw+KxiCc0cndgn/V6moRG3WjUAgoBnhSwfKtXD98wgMThDsc6R1+yRUuMsAg==}
+  '@types/sparqljs@3.1.12':
+    resolution: {integrity: sha512-zg/sdKKtYI0845wKPSuSgunyU1o/+7tRzMw85lHsf4p/0UbA6+65MXAyEtv1nkaqSqrq/bXm7+bqXas+Xo5dpQ==}
 
   '@types/tedious@4.0.14':
     resolution: {integrity: sha512-KHPsfX/FoVbUGbyYvk1q9MMQHLPeRZhRJZdO45Q4YjvFkv4hMNghCWTvy7rdKessBsmtz4euWCWAB6/tVpI1Iw==}
@@ -1473,8 +1475,8 @@ packages:
   '@types/yargs-parser@21.0.3':
     resolution: {integrity: sha512-I4q9QU9MQv4oEOz4tAHJtNz1cwuLxn2F3xcc2iV5WdqLPpUnj30aUuxt1mAxYTG+oe8CZMV/+6rU4S4gRDzqtQ==}
 
-  '@types/yargs@17.0.32':
-    resolution: {integrity: sha512-xQ67Yc/laOG5uMfX/093MRlGGCIBzZMarVa+gfNKJxWAIgykYpVGkBdbqEzGDDfCrVUj6Hiff4mTZ5BA6TmAog==}
+  '@types/yargs@17.0.33':
+    resolution: {integrity: sha512-WpxBCKWPLr4xSsHgz511rFJAM+wS28w2zEO1QDNY5zM/S8ok70NNfztH0xwhqKyaK0OHCbN98LDAZuy1ctxDkA==}
 
   '@ungap/structured-clone@1.3.0':
     resolution: {integrity: sha512-WmoN8qaIAo7WTYWbAZuG8PYEhn5fkz7dZrqTBZ7dtt//lL2Gwms1IcnQ5yHqjDfX8Ft5j4YzDM23f87zBfDe9g==}
@@ -1822,11 +1824,8 @@ packages:
     resolution: {integrity: sha512-yki5XnKuf750l50uGTllt6kKILY4nQ1eNIQatoXEByZ5dWgnKqbnqmTrBE5B4N7lrMJKQ2ytWMiTO2o0v6Ew/w==}
     engines: {node: '>= 0.6'}
 
-  cross-fetch@3.1.8:
-    resolution: {integrity: sha512-cvA+JwZoU0Xq+h6WkMvAUqPEYy92Obet6UdKLfW60qn99ftItKjB5T+BkyWOFWe2pUyfQ+IJHmpOTznqk1M6Kg==}
-
-  cross-fetch@4.0.0:
-    resolution: {integrity: sha512-e4a5N8lVvuLgAWgnCrLr2PP0YyDOTHa9H/Rj54dirp61qXnNq46m82bRhNqIA5VccJtWBvPTFRV3TtvHUKPB1g==}
+  cross-fetch@3.2.0:
+    resolution: {integrity: sha512-Q+xVJLoGOeIMXZmbUK4HYk+69cQH6LudR0Vu/pRm2YlU/hDV9CiS0gKUMaWY5f2NeUH9C1nV3bsTlCo0FsTV1Q==}
 
   cross-spawn@7.0.6:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
@@ -1911,8 +1910,8 @@ packages:
     resolution: {integrity: sha512-cgwlv/1iFQiFnU96XXgROh8xTeetsnJiDsTc7TYCLFd9+/WNkIqPTxiM/8pSd8VIrhXGTf1Ny1q1hquVqDJB5w==}
     engines: {node: '>= 4'}
 
-  domutils@3.1.0:
-    resolution: {integrity: sha512-H78uMmQtI2AhgDJjWeQmHwJJ2bLPD3GMmO7Zja/ZZh84wkm+4ut+IUnUdRa8uCGX88DiVx1j6FRe1XfxEgjEZA==}
+  domutils@3.2.2:
+    resolution: {integrity: sha512-6kZKyUajlDuqlHKVX1w7gyslj9MPIXzIFiz/rGu35uC1wMi+kMhQwGhl4lt9unC9Vb9INnY9Z3/ZA3+FhASLaw==}
 
   dotenv-cli@8.0.0:
     resolution: {integrity: sha512-aLqYbK7xKOiTMIRf1lDPbI+Y+Ip/wo5k3eyp6ePysVaSqbyxjyK3dK35BTxG+rmd7djf5q2UPs4noPNH+cj0Qw==}
@@ -1971,6 +1970,10 @@ packages:
 
   entities@4.5.0:
     resolution: {integrity: sha512-V0hjH4dGPh9Ao5p0MoRY6BVqtwCjhz6vI5LT8AJ55H+4g9/4vbHx1I54fS0XuclLhDHArPQCiMjDxjaL8fPxhw==}
+    engines: {node: '>=0.12'}
+
+  entities@6.0.0:
+    resolution: {integrity: sha512-aKstq2TDOndCn4diEyp9Uq/Flu2i1GlLkc6XIDQSDMuaFE3OPW5OphLCyQ5SpSJZTb4reN+kTcYru5yIfXoRPw==}
     engines: {node: '>=0.12'}
 
   es-define-property@1.0.1:
@@ -2032,6 +2035,9 @@ packages:
   etag@1.8.1:
     resolution: {integrity: sha512-aIL5Fx7mawVa300al2BnEE4iNvo1qETxLrPI/o05L7z6go7fCw1J6EQmbK4FmJ2AS7kgVF/KEZWufBfdClMcPg==}
     engines: {node: '>= 0.6'}
+
+  event-emitter-promisify@1.1.0:
+    resolution: {integrity: sha512-uyHG8gjwYGDlKoo0Txtx/u1HI1ubj0FK0rVqI4O0s1EymQm4iAEMbrS5B+XFlSaS8SZ3xzoKX+YHRZk8Nk/bXg==}
 
   event-target-shim@5.0.1:
     resolution: {integrity: sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==}
@@ -2256,11 +2262,11 @@ packages:
   html-void-elements@3.0.0:
     resolution: {integrity: sha512-bEqo66MRXsUGxWHV5IP0PUiAWwoEjba4VCzg0LjFJBpchPaTfyfCKTG6bc5F8ucKec3q5y6qOdGyYTSBEvhCrg==}
 
+  htmlparser2@10.0.0:
+    resolution: {integrity: sha512-TwAZM+zE5Tq3lrEHvOlvwgj1XLWQCtaaibSN11Q+gGBAS7Y1uZSWwXXRe4iF6OXnaq1riyQAPFOBtYc77Mxq0g==}
+
   htmlparser2@8.0.2:
     resolution: {integrity: sha512-GYdjWKDkbRLkZ5geuHs5NY1puJ+PXwP7+fHPRz06Eirsb9ugf6d8kkXav6ADhcODhFFPMIXyxkxSuMf3D6NCFA==}
-
-  htmlparser2@9.1.0:
-    resolution: {integrity: sha512-5zfg6mHUoaer/97TxnGpxmbR7zJtPwIYFMZ/H5ucTlPZhKvtum05yiPK3Mgai3a0DyVxv7qYqoweaEd2nrYQzQ==}
 
   http-cache-semantics@4.1.1:
     resolution: {integrity: sha512-er295DKPVsV82j5kw1Gjt+ADA/XYHsajl82cGNQG2eyoPkvgUhX+nDIyelzhIWbbsXP39EHcI6l5tYs2FYqYXQ==}
@@ -2292,8 +2298,8 @@ packages:
   ieee754@1.2.1:
     resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==}
 
-  immutable@4.3.5:
-    resolution: {integrity: sha512-8eabxkth9gZatlwl5TBuJnCsoTADlL6ftEr7A4qgdaTsPyreilDSnUk57SO+jfKcNtxPa22U5KK6DSeAYhpBJw==}
+  immutable@4.3.7:
+    resolution: {integrity: sha512-1hqclzwYwjRDFLjcFxOM5AYkkG0rpFPpr1RLPMEuGczoS7YA8gLhy8SWXYRAA/XwfEHpfo3cw5JGioS32fnMRw==}
 
   import-in-the-middle@1.12.0:
     resolution: {integrity: sha512-yAgSE7GmtRcu4ZUSFX/4v69UGXwugFFSdIQJ14LHPOPPQrWv8Y7O9PHsw8Ovk7bKCLe4sjXMbZFqGFcLHpZ89w==}
@@ -2420,8 +2426,12 @@ packages:
     resolution: {integrity: sha512-ZYOfvh525SdPd9ReYY58dxB3E2RUEU4DJ6ZibO8AitcowPeBH4L5rCAitE2om5G1P+HMEgYEYEr4EZKbVN4tpA==}
     hasBin: true
 
-  jsonld-streaming-parser@3.4.0:
-    resolution: {integrity: sha512-897CloyQgQidfkB04dLM5XaAXVX/cN9A2hvgHJo4y4jRhIpvg3KLMBBfcrswepV2N3T8c/Rp2JeFdWfVsbVZ7g==}
+  jsonld-context-parser@3.0.0:
+    resolution: {integrity: sha512-Kg6TVtBUdIm057ht/8WNhM9BROt+BeYaDGXbzrKaa3xA99csee+CsD8IMCTizRgzoO8PIzvzcxxCoRvpq1xNQw==}
+    hasBin: true
+
+  jsonld-streaming-parser@4.0.1:
+    resolution: {integrity: sha512-6M4y9YGgADk3nXJebbRrxEdMVBJ9bnz+peAvjTXUievopqaE8sg/qml/I6Sp1ln7rpOKffsNZWSre6B7N76szw==}
 
   jwa@2.0.0:
     resolution: {integrity: sha512-jrZ2Qx916EA+fq9cEAeCROWPTfCwi1IVHqT2tapuqLEVVDKFDENFw1oL+MwrTvH6msKxsd1YTDVw6uKEcsrLEA==}
@@ -2957,11 +2967,11 @@ packages:
     resolution: {integrity: sha512-8zGqypfENjCIqGhgXToC8aB2r7YrBX+AQAfIPs/Mlk+BtPTztOvTS01NRW/3Eh60J+a48lt8qsCzirQ6loCVfA==}
     engines: {node: '>= 0.8'}
 
-  rdf-data-factory@1.1.2:
-    resolution: {integrity: sha512-TfQD63Lokabd09ES1jAtKK8AA6rkr9rwyUBGo6olOt1CE0Um36CUQIqytyf0am2ouBPR0l7SaHxCiMcPGHkt1A==}
+  rdf-data-factory@1.1.3:
+    resolution: {integrity: sha512-ny6CI7m2bq4lfQQmDYvcb2l1F9KtGwz9chipX4oWu2aAtVoXjb7k3d8J1EsgAsEbMXnBipB/iuRen5H2fwRWWQ==}
 
-  rdf-dereference@3.0.0:
-    resolution: {integrity: sha512-LxB1dP357S/NuivEfNa2YMbnY+k+hPNrvAx/p6CUaHhKv5wuqJHtfmbm8ahqbo/98CizjoFew5xT4WlqedXWYA==}
+  rdf-dereference@4.0.0:
+    resolution: {integrity: sha512-hv7uqIHTB9M/OnS69hrSwNVBo/4+CFLwdVCL6Lg7z0+KLDJChZmTK5e6CFQ8v0OL1TJTSETGx2/EORhOwuZfFQ==}
     hasBin: true
 
   rdf-isomorphic@1.3.1:
@@ -2978,6 +2988,9 @@ packages:
 
   rdfxml-streaming-parser@2.4.0:
     resolution: {integrity: sha512-f+tdI1wxOiPzMbFWRtOwinwPsqac0WIN80668yFKcVdFCSTGOWTM70ucQGUSdDZZo7pce/UvZgV0C3LDj0P7tg==}
+
+  readable-from-web@1.0.0:
+    resolution: {integrity: sha512-tei03fQhxqLEklpIvocFUR9hO42hiyYvdhwoNHAjJztPAQ8QS1NqF2AhLwzGxIGidPBJ4MCqB48wn7OAFCfhsQ==}
 
   readable-stream-node-to-web@1.0.1:
     resolution: {integrity: sha512-OGzi2VKLa8H259kAx7BIwuRrXHGcxeHj4RdASSgEGBP9Q2wowdPvBc65upF4Q9O05qWgKqBw1+9PiLTtObl7uQ==}
@@ -3215,12 +3228,12 @@ packages:
   space-separated-tokens@2.0.2:
     resolution: {integrity: sha512-PEGlAwrG8yXGXRjW32fGbg66JAlOAwbObuqVoJpv/mRgoWDQfgH1wDPvtzWyUSNAXBGSk8h755YDbbcEy3SH2Q==}
 
-  sparqlalgebrajs@4.3.4:
-    resolution: {integrity: sha512-BUpd79w3SfrfRPyA+gHA23B3masuD2wLK47IOnglyIK6hx4BC+4TWtOmP5D8RTbmbPCuLKYfLGyLDF/RQsKgWg==}
+  sparqlalgebrajs@4.3.8:
+    resolution: {integrity: sha512-Xo1/5icRtVk2N38BrY9NXN8N/ZPjULlns7sDHv0nlcGOsOediBLWVy8LmV+Q90RHvb3atZZbrFy3VqrM4iXciA==}
     hasBin: true
 
-  sparqljs@3.7.1:
-    resolution: {integrity: sha512-I1jYMtcwDkgCEqQ4eQuQIhB8hFAlRAJ6YDXDcV54XztaJaYRFqJlidHt77S3j8Mfh6kY6GK04dXPEIopxbEeuQ==}
+  sparqljs@3.7.3:
+    resolution: {integrity: sha512-FQfHUhfwn5PD9WH6xPU7DhFfXMgqK/XoDrYDVxz/grhw66Il0OjRg3JBgwuEvwHnQt7oSTiKWEiCZCPNaUbqgg==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     hasBin: true
 
@@ -3640,9 +3653,6 @@ packages:
   web-namespaces@2.0.1:
     resolution: {integrity: sha512-bKr1DkiNa2krS7qxNtdrtHAmzuYGFQLiQ13TsorsdT6ULTkPLKuu5+GsFpDlg6JFjUTwX2DyhMPG2be8uPrqsQ==}
 
-  web-streams-ponyfill@1.4.2:
-    resolution: {integrity: sha512-LCHW+fE2UBJ2vjhqJujqmoxh1ytEDEr0dPO3CabMdMDJPKmsaxzS90V1Ar6LtNE5VHLqxR4YMEj1i4lzMAccIA==}
-
   webidl-conversions@3.0.1:
     resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
 
@@ -3981,237 +3991,253 @@ snapshots:
       '@babel/helper-string-parser': 7.25.9
       '@babel/helper-validator-identifier': 7.25.9
 
-  '@bergos/jsonparse@1.4.1':
+  '@bergos/jsonparse@1.4.2':
     dependencies:
       buffer: 6.0.3
 
-  '@comunica/actor-abstract-mediatyped@2.10.0':
+  '@comunica/actor-abstract-mediatyped@4.1.0':
     dependencies:
-      '@comunica/core': 2.10.0
-      '@comunica/types': 2.10.0
+      '@comunica/core': 4.1.0
+      '@comunica/types': 4.1.0
 
-  '@comunica/actor-abstract-parse@2.10.0':
+  '@comunica/actor-abstract-parse@4.1.0':
     dependencies:
-      '@comunica/core': 2.10.0
+      '@comunica/core': 4.1.0
       readable-stream: 4.7.0
 
-  '@comunica/actor-dereference-fallback@2.10.0':
+  '@comunica/actor-dereference-fallback@4.1.0':
     dependencies:
-      '@comunica/bus-dereference': 2.10.0
-      '@comunica/core': 2.10.0
+      '@comunica/bus-dereference': 4.1.0
+      '@comunica/core': 4.1.0
     transitivePeerDependencies:
       - encoding
 
-  '@comunica/actor-dereference-file@2.10.0':
+  '@comunica/actor-dereference-file@4.1.0':
     dependencies:
-      '@comunica/bus-dereference': 2.10.0
-      '@comunica/core': 2.10.0
+      '@comunica/bus-dereference': 4.1.0
+      '@comunica/core': 4.1.0
     transitivePeerDependencies:
       - encoding
 
-  '@comunica/actor-dereference-http@2.10.2':
+  '@comunica/actor-dereference-http@4.1.0':
     dependencies:
-      '@comunica/bus-dereference': 2.10.0
-      '@comunica/bus-http': 2.10.2
-      '@comunica/core': 2.10.0
-      cross-fetch: 4.0.0
+      '@comunica/bus-dereference': 4.1.0
+      '@comunica/bus-http': 4.1.0
+      '@comunica/core': 4.1.0
+      '@jeswr/stream-to-string': 2.0.0
       relative-to-absolute-iri: 1.0.7
-      stream-to-string: 1.2.1
     transitivePeerDependencies:
       - encoding
 
-  '@comunica/actor-dereference-rdf-parse@2.10.0':
+  '@comunica/actor-dereference-rdf-parse@4.1.0':
     dependencies:
-      '@comunica/bus-dereference': 2.10.0
-      '@comunica/bus-dereference-rdf': 2.10.0
-      '@comunica/bus-rdf-parse': 2.10.0
+      '@comunica/bus-dereference': 4.1.0
+      '@comunica/bus-dereference-rdf': 4.1.0
+      '@comunica/bus-rdf-parse': 4.1.0
     transitivePeerDependencies:
       - encoding
 
-  '@comunica/actor-http-fetch@2.10.2':
+  '@comunica/actor-http-fetch@4.1.0':
     dependencies:
-      '@comunica/bus-http': 2.10.2
-      '@comunica/context-entries': 2.10.0
-      '@comunica/mediatortype-time': 2.10.0
-      abort-controller: 3.0.0
-      cross-fetch: 4.0.0
+      '@comunica/bus-http': 4.1.0
+      '@comunica/context-entries': 4.1.0
+      '@comunica/core': 4.1.0
+      '@comunica/mediatortype-time': 4.1.0
     transitivePeerDependencies:
       - encoding
 
-  '@comunica/actor-http-proxy@2.10.2':
+  '@comunica/actor-http-proxy@4.1.0':
     dependencies:
-      '@comunica/bus-http': 2.10.2
-      '@comunica/context-entries': 2.10.0
-      '@comunica/mediatortype-time': 2.10.0
-      '@comunica/types': 2.10.0
+      '@comunica/bus-http': 4.1.0
+      '@comunica/context-entries': 4.1.0
+      '@comunica/core': 4.1.0
+      '@comunica/mediatortype-time': 4.1.0
+      '@comunica/types': 4.1.0
     transitivePeerDependencies:
       - encoding
 
-  '@comunica/actor-rdf-parse-html-microdata@2.10.0':
+  '@comunica/actor-rdf-parse-html-microdata@4.1.0':
     dependencies:
-      '@comunica/bus-rdf-parse-html': 2.10.0
-      '@comunica/core': 2.10.0
+      '@comunica/bus-rdf-parse-html': 4.1.0
+      '@comunica/context-entries': 4.1.0
+      '@comunica/core': 4.1.0
+      '@comunica/types': 4.1.0
       microdata-rdf-streaming-parser: 2.0.1
+    transitivePeerDependencies:
+      - encoding
 
-  '@comunica/actor-rdf-parse-html-rdfa@2.10.0':
+  '@comunica/actor-rdf-parse-html-rdfa@4.1.0':
     dependencies:
-      '@comunica/bus-rdf-parse-html': 2.10.0
-      '@comunica/core': 2.10.0
+      '@comunica/bus-rdf-parse-html': 4.1.0
+      '@comunica/context-entries': 4.1.0
+      '@comunica/core': 4.1.0
+      '@comunica/types': 4.1.0
       rdfa-streaming-parser: 2.0.1
+    transitivePeerDependencies:
+      - encoding
 
-  '@comunica/actor-rdf-parse-html-script@2.10.0':
+  '@comunica/actor-rdf-parse-html-script@4.1.0':
     dependencies:
-      '@comunica/bus-rdf-parse': 2.10.0
-      '@comunica/bus-rdf-parse-html': 2.10.0
-      '@comunica/context-entries': 2.10.0
-      '@comunica/core': 2.10.0
-      '@comunica/types': 2.10.0
+      '@comunica/bus-rdf-parse': 4.1.0
+      '@comunica/bus-rdf-parse-html': 4.1.0
+      '@comunica/context-entries': 4.1.0
+      '@comunica/core': 4.1.0
+      '@comunica/types': 4.1.0
       '@rdfjs/types': 2.0.1
       readable-stream: 4.7.0
       relative-to-absolute-iri: 1.0.7
     transitivePeerDependencies:
       - encoding
 
-  '@comunica/actor-rdf-parse-html@2.10.0':
+  '@comunica/actor-rdf-parse-html@4.1.0':
     dependencies:
-      '@comunica/bus-rdf-parse': 2.10.0
-      '@comunica/bus-rdf-parse-html': 2.10.0
-      '@comunica/core': 2.10.0
-      '@comunica/types': 2.10.0
+      '@comunica/bus-rdf-parse': 4.1.0
+      '@comunica/bus-rdf-parse-html': 4.1.0
+      '@comunica/core': 4.1.0
+      '@comunica/types': 4.1.0
       '@rdfjs/types': 2.0.1
-      htmlparser2: 9.1.0
+      htmlparser2: 10.0.0
       readable-stream: 4.7.0
 
-  '@comunica/actor-rdf-parse-jsonld@2.10.2':
+  '@comunica/actor-rdf-parse-jsonld@4.1.0':
     dependencies:
-      '@comunica/bus-http': 2.10.2
-      '@comunica/bus-rdf-parse': 2.10.0
-      '@comunica/context-entries': 2.10.0
-      '@comunica/core': 2.10.0
-      '@comunica/types': 2.10.0
+      '@comunica/bus-http': 4.1.0
+      '@comunica/bus-rdf-parse': 4.1.0
+      '@comunica/context-entries': 4.1.0
+      '@comunica/core': 4.1.0
+      '@comunica/types': 4.1.0
+      '@jeswr/stream-to-string': 2.0.0
       jsonld-context-parser: 2.4.0
-      jsonld-streaming-parser: 3.4.0
-      stream-to-string: 1.2.1
+      jsonld-streaming-parser: 4.0.1
     transitivePeerDependencies:
       - encoding
 
-  '@comunica/actor-rdf-parse-n3@2.10.0':
+  '@comunica/actor-rdf-parse-n3@4.1.0':
     dependencies:
-      '@comunica/bus-rdf-parse': 2.10.0
-      '@comunica/types': 2.10.0
+      '@comunica/bus-rdf-parse': 4.1.0
+      '@comunica/context-entries': 4.1.0
+      '@comunica/types': 4.1.0
       n3: 1.25.2
+    transitivePeerDependencies:
+      - encoding
 
-  '@comunica/actor-rdf-parse-rdfxml@2.10.0':
+  '@comunica/actor-rdf-parse-rdfxml@4.1.0':
     dependencies:
-      '@comunica/bus-rdf-parse': 2.10.0
-      '@comunica/types': 2.10.0
+      '@comunica/bus-rdf-parse': 4.1.0
+      '@comunica/context-entries': 4.1.0
       rdfxml-streaming-parser: 2.4.0
+    transitivePeerDependencies:
+      - encoding
 
-  '@comunica/actor-rdf-parse-shaclc@2.10.0':
+  '@comunica/actor-rdf-parse-shaclc@4.1.0':
     dependencies:
-      '@comunica/bus-rdf-parse': 2.10.0
-      '@comunica/types': 2.10.0
+      '@comunica/bus-rdf-parse': 4.1.0
+      '@comunica/types': 4.1.0
+      '@jeswr/stream-to-string': 2.0.0
       '@rdfjs/types': 2.0.1
       asynciterator: 3.9.0
       readable-stream: 4.7.0
       shaclc-parse: 1.4.0
-      stream-to-string: 1.2.1
 
-  '@comunica/actor-rdf-parse-xml-rdfa@2.10.0':
+  '@comunica/actor-rdf-parse-xml-rdfa@4.1.0':
     dependencies:
-      '@comunica/bus-rdf-parse': 2.10.0
-      '@comunica/types': 2.10.0
+      '@comunica/bus-rdf-parse': 4.1.0
+      '@comunica/context-entries': 4.1.0
+      '@comunica/types': 4.1.0
       rdfa-streaming-parser: 2.0.1
+    transitivePeerDependencies:
+      - encoding
 
-  '@comunica/bus-dereference-rdf@2.10.0':
+  '@comunica/bus-dereference-rdf@4.1.0':
     dependencies:
-      '@comunica/bus-dereference': 2.10.0
-      '@comunica/bus-rdf-parse': 2.10.0
-      '@comunica/core': 2.10.0
+      '@comunica/bus-dereference': 4.1.0
+      '@comunica/bus-rdf-parse': 4.1.0
+      '@comunica/core': 4.1.0
       '@rdfjs/types': 2.0.1
     transitivePeerDependencies:
       - encoding
 
-  '@comunica/bus-dereference@2.10.0':
+  '@comunica/bus-dereference@4.1.0':
     dependencies:
-      '@comunica/actor-abstract-mediatyped': 2.10.0
-      '@comunica/actor-abstract-parse': 2.10.0
-      '@comunica/context-entries': 2.10.0
-      '@comunica/core': 2.10.0
-      '@comunica/types': 2.10.0
+      '@comunica/actor-abstract-mediatyped': 4.1.0
+      '@comunica/actor-abstract-parse': 4.1.0
+      '@comunica/context-entries': 4.1.0
+      '@comunica/core': 4.1.0
+      '@comunica/types': 4.1.0
       readable-stream: 4.7.0
     transitivePeerDependencies:
       - encoding
 
-  '@comunica/bus-http@2.10.2':
+  '@comunica/bus-http@4.1.0':
     dependencies:
-      '@comunica/core': 2.10.0
-      '@smessie/readable-web-to-node-stream': 3.0.3
+      '@comunica/core': 4.1.0
+      '@jeswr/stream-to-string': 2.0.0
       is-stream: 2.0.1
+      readable-from-web: 1.0.0
       readable-stream-node-to-web: 1.0.1
-      web-streams-ponyfill: 1.4.2
 
-  '@comunica/bus-init@2.10.0':
+  '@comunica/bus-init@4.1.0':
     dependencies:
-      '@comunica/core': 2.10.0
+      '@comunica/core': 4.1.0
       readable-stream: 4.7.0
 
-  '@comunica/bus-rdf-parse-html@2.10.0':
+  '@comunica/bus-rdf-parse-html@4.1.0':
     dependencies:
-      '@comunica/core': 2.10.0
+      '@comunica/core': 4.1.0
       '@rdfjs/types': 2.0.1
 
-  '@comunica/bus-rdf-parse@2.10.0':
+  '@comunica/bus-rdf-parse@4.1.0':
     dependencies:
-      '@comunica/actor-abstract-mediatyped': 2.10.0
-      '@comunica/actor-abstract-parse': 2.10.0
-      '@comunica/core': 2.10.0
+      '@comunica/actor-abstract-mediatyped': 4.1.0
+      '@comunica/actor-abstract-parse': 4.1.0
+      '@comunica/core': 4.1.0
       '@rdfjs/types': 2.0.1
 
-  '@comunica/config-query-sparql@2.7.0': {}
+  '@comunica/config-query-sparql@4.1.0': {}
 
-  '@comunica/context-entries@2.10.0':
+  '@comunica/context-entries@4.1.0':
     dependencies:
-      '@comunica/core': 2.10.0
-      '@comunica/types': 2.10.0
+      '@comunica/core': 4.1.0
+      '@comunica/types': 4.1.0
       '@rdfjs/types': 2.0.1
       jsonld-context-parser: 2.4.0
-      sparqlalgebrajs: 4.3.4
+      sparqlalgebrajs: 4.3.8
     transitivePeerDependencies:
       - encoding
 
-  '@comunica/core@2.10.0':
+  '@comunica/core@4.1.0':
     dependencies:
-      '@comunica/types': 2.10.0
-      immutable: 4.3.5
+      '@comunica/types': 4.1.0
+      immutable: 4.3.7
 
-  '@comunica/mediator-combine-pipeline@2.10.0':
+  '@comunica/mediator-combine-pipeline@4.1.0':
     dependencies:
-      '@comunica/core': 2.10.0
-      '@comunica/types': 2.10.0
+      '@comunica/core': 4.1.0
+      '@comunica/types': 4.1.0
 
-  '@comunica/mediator-combine-union@2.10.0':
+  '@comunica/mediator-combine-union@4.1.0':
     dependencies:
-      '@comunica/core': 2.10.0
+      '@comunica/core': 4.1.0
 
-  '@comunica/mediator-number@2.10.0':
+  '@comunica/mediator-number@4.1.0':
     dependencies:
-      '@comunica/core': 2.10.0
+      '@comunica/core': 4.1.0
 
-  '@comunica/mediator-race@2.10.0':
+  '@comunica/mediator-race@4.1.0':
     dependencies:
-      '@comunica/core': 2.10.0
+      '@comunica/core': 4.1.0
 
-  '@comunica/mediatortype-time@2.10.0':
+  '@comunica/mediatortype-time@4.1.0':
     dependencies:
-      '@comunica/core': 2.10.0
+      '@comunica/core': 4.1.0
 
-  '@comunica/types@2.10.0':
+  '@comunica/types@4.1.0':
     dependencies:
       '@rdfjs/types': 2.0.1
-      '@types/yargs': 17.0.32
+      '@types/yargs': 17.0.33
       asynciterator: 3.9.0
-      sparqlalgebrajs: 4.3.4
+      lru-cache: 10.4.3
+      sparqlalgebrajs: 4.3.8
 
   '@ctrl/tinycolor@4.1.0': {}
 
@@ -4504,6 +4530,10 @@ snapshots:
 
   '@img/sharp-win32-x64@0.33.5':
     optional: true
+
+  '@jeswr/stream-to-string@2.0.0':
+    dependencies:
+      event-emitter-promisify: 1.1.0
 
   '@jridgewell/gen-mapping@0.3.8':
     dependencies:
@@ -4883,7 +4913,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@rdfjs/types@1.1.0':
+  '@rdfjs/types@1.1.2':
     dependencies:
       '@types/node': 22.14.1
 
@@ -5167,11 +5197,6 @@ snapshots:
       - '@floating-ui/utils'
       - '@types/react'
 
-  '@smessie/readable-web-to-node-stream@3.0.3':
-    dependencies:
-      process: 0.11.10
-      readable-stream: 4.7.0
-
   '@tootallnate/once@2.0.0': {}
 
   '@types/babel__core@7.20.5':
@@ -5213,7 +5238,7 @@ snapshots:
     dependencies:
       '@types/unist': 3.0.3
 
-  '@types/http-link-header@1.0.5':
+  '@types/http-link-header@1.0.7':
     dependencies:
       '@types/node': 22.14.1
 
@@ -5263,6 +5288,11 @@ snapshots:
       '@types/node': 22.14.1
       safe-buffer: 5.1.2
 
+  '@types/readable-stream@4.0.18':
+    dependencies:
+      '@types/node': 22.14.1
+      safe-buffer: 5.1.2
+
   '@types/request@2.48.12':
     dependencies:
       '@types/caseless': 0.12.5
@@ -5272,7 +5302,7 @@ snapshots:
 
   '@types/shimmer@1.2.0': {}
 
-  '@types/sparqljs@3.1.10':
+  '@types/sparqljs@3.1.12':
     dependencies:
       '@rdfjs/types': 2.0.1
 
@@ -5288,7 +5318,7 @@ snapshots:
 
   '@types/yargs-parser@21.0.3': {}
 
-  '@types/yargs@17.0.32':
+  '@types/yargs@17.0.33':
     dependencies:
       '@types/yargs-parser': 21.0.3
 
@@ -5741,13 +5771,7 @@ snapshots:
 
   cookie@0.7.2: {}
 
-  cross-fetch@3.1.8:
-    dependencies:
-      node-fetch: 2.7.0
-    transitivePeerDependencies:
-      - encoding
-
-  cross-fetch@4.0.0:
+  cross-fetch@3.2.0:
     dependencies:
       node-fetch: 2.7.0
     transitivePeerDependencies:
@@ -5814,7 +5838,7 @@ snapshots:
     dependencies:
       domelementtype: 2.3.0
 
-  domutils@3.1.0:
+  domutils@3.2.2:
     dependencies:
       dom-serializer: 2.0.0
       domelementtype: 2.3.0
@@ -5874,6 +5898,8 @@ snapshots:
       once: 1.4.0
 
   entities@4.5.0: {}
+
+  entities@6.0.0: {}
 
   es-define-property@1.0.1: {}
 
@@ -5968,6 +5994,8 @@ snapshots:
       '@types/estree': 1.0.6
 
   etag@1.8.1: {}
+
+  event-emitter-promisify@1.1.0: {}
 
   event-target-shim@5.0.1: {}
 
@@ -6303,18 +6331,18 @@ snapshots:
 
   html-void-elements@3.0.0: {}
 
+  htmlparser2@10.0.0:
+    dependencies:
+      domelementtype: 2.3.0
+      domhandler: 5.0.3
+      domutils: 3.2.2
+      entities: 6.0.0
+
   htmlparser2@8.0.2:
     dependencies:
       domelementtype: 2.3.0
       domhandler: 5.0.3
-      domutils: 3.1.0
-      entities: 4.5.0
-
-  htmlparser2@9.1.0:
-    dependencies:
-      domelementtype: 2.3.0
-      domhandler: 5.0.3
-      domutils: 3.1.0
+      domutils: 3.2.2
       entities: 4.5.0
 
   http-cache-semantics@4.1.1: {}
@@ -6357,7 +6385,7 @@ snapshots:
 
   ieee754@1.2.1: {}
 
-  immutable@4.3.5: {}
+  immutable@4.3.7: {}
 
   import-in-the-middle@1.12.0:
     dependencies:
@@ -6448,28 +6476,33 @@ snapshots:
 
   jsonld-context-parser@2.4.0:
     dependencies:
-      '@types/http-link-header': 1.0.5
+      '@types/http-link-header': 1.0.7
       '@types/node': 18.19.86
-      cross-fetch: 3.1.8
+      cross-fetch: 3.2.0
       http-link-header: 1.1.3
       relative-to-absolute-iri: 1.0.7
     transitivePeerDependencies:
       - encoding
 
-  jsonld-streaming-parser@3.4.0:
+  jsonld-context-parser@3.0.0:
     dependencies:
-      '@bergos/jsonparse': 1.4.1
+      '@types/http-link-header': 1.0.7
+      '@types/node': 18.19.86
+      http-link-header: 1.1.3
+      relative-to-absolute-iri: 1.0.7
+
+  jsonld-streaming-parser@4.0.1:
+    dependencies:
+      '@bergos/jsonparse': 1.4.2
       '@rdfjs/types': 2.0.1
-      '@types/http-link-header': 1.0.5
-      '@types/readable-stream': 2.3.15
+      '@types/http-link-header': 1.0.7
+      '@types/readable-stream': 4.0.18
       buffer: 6.0.3
       canonicalize: 1.0.8
       http-link-header: 1.1.3
-      jsonld-context-parser: 2.4.0
-      rdf-data-factory: 1.1.2
+      jsonld-context-parser: 3.0.0
+      rdf-data-factory: 1.1.3
       readable-stream: 4.7.0
-    transitivePeerDependencies:
-      - encoding
 
   jwa@2.0.0:
     dependencies:
@@ -6690,7 +6723,7 @@ snapshots:
     dependencies:
       '@rdfjs/types': 2.0.1
       htmlparser2: 8.0.2
-      rdf-data-factory: 1.1.2
+      rdf-data-factory: 1.1.3
       readable-stream: 4.7.0
       relative-to-absolute-iri: 1.0.7
 
@@ -7148,42 +7181,42 @@ snapshots:
       iconv-lite: 0.4.24
       unpipe: 1.0.0
 
-  rdf-data-factory@1.1.2:
+  rdf-data-factory@1.1.3:
     dependencies:
-      '@rdfjs/types': 2.0.1
+      '@rdfjs/types': 1.1.2
 
-  rdf-dereference@3.0.0:
+  rdf-dereference@4.0.0:
     dependencies:
-      '@comunica/actor-dereference-fallback': 2.10.0
-      '@comunica/actor-dereference-file': 2.10.0
-      '@comunica/actor-dereference-http': 2.10.2
-      '@comunica/actor-dereference-rdf-parse': 2.10.0
-      '@comunica/actor-http-fetch': 2.10.2
-      '@comunica/actor-http-proxy': 2.10.2
-      '@comunica/actor-rdf-parse-html': 2.10.0
-      '@comunica/actor-rdf-parse-html-microdata': 2.10.0
-      '@comunica/actor-rdf-parse-html-rdfa': 2.10.0
-      '@comunica/actor-rdf-parse-html-script': 2.10.0
-      '@comunica/actor-rdf-parse-jsonld': 2.10.2
-      '@comunica/actor-rdf-parse-n3': 2.10.0
-      '@comunica/actor-rdf-parse-rdfxml': 2.10.0
-      '@comunica/actor-rdf-parse-shaclc': 2.10.0
-      '@comunica/actor-rdf-parse-xml-rdfa': 2.10.0
-      '@comunica/bus-dereference': 2.10.0
-      '@comunica/bus-dereference-rdf': 2.10.0
-      '@comunica/bus-http': 2.10.2
-      '@comunica/bus-init': 2.10.0
-      '@comunica/bus-rdf-parse': 2.10.0
-      '@comunica/bus-rdf-parse-html': 2.10.0
-      '@comunica/config-query-sparql': 2.7.0
-      '@comunica/context-entries': 2.10.0
-      '@comunica/core': 2.10.0
-      '@comunica/mediator-combine-pipeline': 2.10.0
-      '@comunica/mediator-combine-union': 2.10.0
-      '@comunica/mediator-number': 2.10.0
-      '@comunica/mediator-race': 2.10.0
+      '@comunica/actor-dereference-fallback': 4.1.0
+      '@comunica/actor-dereference-file': 4.1.0
+      '@comunica/actor-dereference-http': 4.1.0
+      '@comunica/actor-dereference-rdf-parse': 4.1.0
+      '@comunica/actor-http-fetch': 4.1.0
+      '@comunica/actor-http-proxy': 4.1.0
+      '@comunica/actor-rdf-parse-html': 4.1.0
+      '@comunica/actor-rdf-parse-html-microdata': 4.1.0
+      '@comunica/actor-rdf-parse-html-rdfa': 4.1.0
+      '@comunica/actor-rdf-parse-html-script': 4.1.0
+      '@comunica/actor-rdf-parse-jsonld': 4.1.0
+      '@comunica/actor-rdf-parse-n3': 4.1.0
+      '@comunica/actor-rdf-parse-rdfxml': 4.1.0
+      '@comunica/actor-rdf-parse-shaclc': 4.1.0
+      '@comunica/actor-rdf-parse-xml-rdfa': 4.1.0
+      '@comunica/bus-dereference': 4.1.0
+      '@comunica/bus-dereference-rdf': 4.1.0
+      '@comunica/bus-http': 4.1.0
+      '@comunica/bus-init': 4.1.0
+      '@comunica/bus-rdf-parse': 4.1.0
+      '@comunica/bus-rdf-parse-html': 4.1.0
+      '@comunica/config-query-sparql': 4.1.0
+      '@comunica/context-entries': 4.1.0
+      '@comunica/core': 4.1.0
+      '@comunica/mediator-combine-pipeline': 4.1.0
+      '@comunica/mediator-combine-union': 4.1.0
+      '@comunica/mediator-number': 4.1.0
+      '@comunica/mediator-race': 4.1.0
       '@rdfjs/types': 2.0.1
-      process: 0.11.10
+      rdf-data-factory: 1.1.3
       rdf-string: 1.6.3
       stream-to-string: 1.2.1
     transitivePeerDependencies:
@@ -7199,19 +7232,19 @@ snapshots:
   rdf-string@1.6.3:
     dependencies:
       '@rdfjs/types': 2.0.1
-      rdf-data-factory: 1.1.2
+      rdf-data-factory: 1.1.3
 
   rdf-terms@1.11.0:
     dependencies:
       '@rdfjs/types': 2.0.1
-      rdf-data-factory: 1.1.2
+      rdf-data-factory: 1.1.3
       rdf-string: 1.6.3
 
   rdfa-streaming-parser@2.0.1:
     dependencies:
       '@rdfjs/types': 2.0.1
       htmlparser2: 8.0.2
-      rdf-data-factory: 1.1.2
+      rdf-data-factory: 1.1.3
       readable-stream: 4.7.0
       relative-to-absolute-iri: 1.0.7
 
@@ -7221,10 +7254,15 @@ snapshots:
       '@rubensworks/saxes': 6.0.1
       '@types/readable-stream': 2.3.15
       buffer: 6.0.3
-      rdf-data-factory: 1.1.2
+      rdf-data-factory: 1.1.3
       readable-stream: 4.7.0
       relative-to-absolute-iri: 1.0.7
       validate-iri: 1.0.1
+
+  readable-from-web@1.0.0:
+    dependencies:
+      '@types/readable-stream': 4.0.18
+      readable-stream: 4.7.0
 
   readable-stream-node-to-web@1.0.1: {}
 
@@ -7498,7 +7536,7 @@ snapshots:
 
   shaclc-parse@1.4.0:
     dependencies:
-      '@rdfjs/types': 1.1.0
+      '@rdfjs/types': 1.1.2
       n3: 1.25.2
 
   sharp@0.33.5:
@@ -7605,21 +7643,21 @@ snapshots:
 
   space-separated-tokens@2.0.2: {}
 
-  sparqlalgebrajs@4.3.4:
+  sparqlalgebrajs@4.3.8:
     dependencies:
       '@rdfjs/types': 2.0.1
-      '@types/sparqljs': 3.1.10
+      '@types/sparqljs': 3.1.12
       fast-deep-equal: 3.1.3
       minimist: 1.2.8
-      rdf-data-factory: 1.1.2
+      rdf-data-factory: 1.1.3
       rdf-isomorphic: 1.3.1
       rdf-string: 1.6.3
       rdf-terms: 1.11.0
-      sparqljs: 3.7.1
+      sparqljs: 3.7.3
 
-  sparqljs@3.7.1:
+  sparqljs@3.7.3:
     dependencies:
-      rdf-data-factory: 1.1.2
+      rdf-data-factory: 1.1.3
 
   sprintf-js@1.0.3: {}
 
@@ -8028,8 +8066,6 @@ snapshots:
   vscode-uri@3.0.8: {}
 
   web-namespaces@2.0.1: {}
-
-  web-streams-ponyfill@1.4.2: {}
 
   webidl-conversions@3.0.1: {}
 
