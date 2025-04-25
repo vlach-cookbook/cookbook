@@ -36,7 +36,7 @@
     "astro": "^4.16.18",
     "debug": "^4.4.0",
     "dset": "^3.1.4",
-    "express": "^4.21.2",
+    "express": "^5.1.0",
     "google-auth-library": "^9.15.1",
     "lit": "^3.3.0",
     "mdast-util-find-and-replace": "^3.0.2",
