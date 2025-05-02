@@ -30,7 +30,7 @@
     "@google-cloud/storage": "^7.16.0",
     "@js-temporal/polyfill": "^0.5.1",
     "@prisma/client": "^6.6.0",
-    "@sentry/astro": "^9.14.0",
+    "@sentry/astro": "^9.15.0",
     "@shoelace-style/shoelace": "^2.20.1",
     "age-encryption": "^0.2.1",
     "astro": "^4.16.18",
