@@ -5,7 +5,7 @@
   },
   "dependencies": {
     "@google-cloud/storage": "^7.16.0",
-    "age-encryption": "^0.2.1",
+    "age-encryption": "^0.2.3",
     "express": "^5.1.0",
     "morgan": "^1.10.0"
   },
@@ -13,7 +13,7 @@
     "@tsconfig/node22": "^22.0.1",
     "@types/express": "^5.0.1",
     "@types/morgan": "^1.9.9",
-    "@types/node": "^22.15.2",
+    "@types/node": "^22.15.3",
     "typescript": "^5.8.3"
   },
   "engines": {
