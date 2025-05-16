@@ -26,7 +26,7 @@
   "dependencies": {
     "@astrojs/node": "^8.3.3",
     "@astrojs/solid-js": "^4.4.1",
-    "@github/relative-time-element": "^4.4.5",
+    "@github/relative-time-element": "^4.4.8",
     "@google-cloud/storage": "^7.16.0",
     "@js-temporal/polyfill": "^0.5.1",
     "@prisma/client": "^6.6.0",
