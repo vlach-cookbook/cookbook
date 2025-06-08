@@ -1,5 +1,5 @@
 import { Temporal } from "@js-temporal/polyfill";
-import { escapeRegExp } from "@lib/util";
+import { escapeRegExp, formatMonth } from "@lib/util";
 import { actions } from "astro:actions";
 import {
   For,
@@ -15,15 +15,6 @@ import {
 } from "solid-js";
 import { OneRecipe, type RecipeTitleWithLinkFields } from "./OneRecipe";
 import { QueryDrivenTextField } from "./QueryDrivenTextField";
-
-function formatMonth(m: Temporal.PlainYearMonth) {
-  // Avoid using the PlainYearMonth's calendar, which is probably iso8601, because Node 22 formats
-  // it differently from the default Gregorian calendar.
-  return m.toPlainDate({ day: 1 }).toLocaleString(undefined, {
-    year: "numeric",
-    month: "short",
-  });
-}
 
 export const HistoryList: Component<{
   /** In ISO YYYY-MM format. */

@@ -1,3 +1,5 @@
+import type { Temporal } from "@js-temporal/polyfill";
+
 // Borrowed from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#escaping.
 export function escapeRegExp(re: string) {
   return re.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
@@ -39,3 +41,12 @@ export const andList = new Intl.ListFormat("en", {
   type: "conjunction",
   style: "long",
 });
+
+export function formatMonth(m: Temporal.PlainYearMonth) {
+  // Avoid using the PlainYearMonth's calendar, which is probably iso8601, because Node 22 formats
+  // it differently from the default Gregorian calendar.
+  return m.toPlainDate({ day: 1 }).toLocaleString(undefined, {
+    year: "numeric",
+    month: "short",
+  });
+}

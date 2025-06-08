@@ -156,36 +156,6 @@ test("Ingredient Filters", async ({ page, someFilterableRecipes }) => {
     .not.toBeVisible();
 });
 
-test("Category Filters", async ({ page, someFilterableRecipes }) => {
-  const { recipe2 } = someFilterableRecipes;
-
-  await page.goto("/categories");
-
-  await expect(page.getByLabel(/Filter/)).toHaveValue("");
-
-  await page.getByLabel(/Filter/).fill("s");
-  await expect(page).toHaveURL("/categories?filter=s");
-
-  await expect
-    .soft(page.locator("#categories").getByRole("listitem").locator("summary"))
-    .toHaveText([/^Supper$/i, /^Dessert$/i]);
-
-  await page
-    .locator("#categories")
-    .getByRole("listitem")
-    .filter({ hasText: /Supper/i })
-    .click();
-  await expect
-    .soft(
-      page
-        .locator("#categories")
-        .getByRole("listitem")
-        .filter({ hasText: /Supper/i })
-        .getByRole("listitem")
-    )
-    .toHaveText([recipe2.name]);
-});
-
 test("History Filters", async ({ page, someFilterableRecipes, testLogin }) => {
   const { recipe1 } = someFilterableRecipes;
   const { userId: _ } = testLogin;

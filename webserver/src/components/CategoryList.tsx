@@ -1,4 +1,9 @@
-import { escapeRegExp, filterListWithInitialMatchesFirst } from "@lib/util";
+import { Temporal } from "@js-temporal/polyfill";
+import {
+  escapeRegExp,
+  filterListWithInitialMatchesFirst,
+  formatMonth,
+} from "@lib/util";
 import type { Category } from "@prisma/client";
 import { actions } from "astro:actions";
 import {
@@ -13,7 +18,8 @@ import {
   type Setter,
   Suspense,
 } from "solid-js";
-import { OneRecipe, type RecipeTitleWithLinkFields } from "./OneRecipe";
+import type { RecipeInCategoryResponse } from "src/actions/recipes-in-category";
+import { OneRecipe } from "./OneRecipe";
 import { QueryDrivenTextField } from "./QueryDrivenTextField";
 
 export const CategoryList: Component<{
@@ -32,16 +38,32 @@ export const CategoryList: Component<{
   type PendingRecipeList = {
     needRecipes: Accessor<boolean>;
     setNeedRecipes: Setter<boolean>;
-    recipes: Resource<RecipeTitleWithLinkFields[]>;
+    recipes: Resource<RecipeInCategoryResponse[]>;
   };
 
   const recipesByCategory = createMemo(() => {
     return new Map<number, PendingRecipeList>(
       props.categories.map((category) => {
         const [needRecipes, setNeedRecipes] = createSignal(false);
-        const [recipes] = createResource(needRecipes, () =>
-          actions.recipesInCategory.orThrow({ categoryIds: [category.id] })
-        );
+        const [recipes] = createResource(needRecipes, async () => {
+          const recipes = await actions.recipesInCategory.orThrow({
+            categoryIds: [category.id],
+          });
+          recipes.sort(
+            (a: RecipeInCategoryResponse, b: RecipeInCategoryResponse) => {
+              const aHasCookingHistory = a.lastCooked !== undefined;
+              const bHasCookingHistory = b.lastCooked !== undefined;
+              if (aHasCookingHistory !== bHasCookingHistory) {
+                if (aHasCookingHistory) return 1;
+                return -1;
+              }
+              if (a.lastCooked && b.lastCooked)
+                return Temporal.PlainDate.compare(a.lastCooked, b.lastCooked);
+              return 0;
+            }
+          );
+          return recipes;
+        });
         return [category.id, { needRecipes, setNeedRecipes, recipes }];
       })
     );
@@ -94,6 +116,10 @@ export const CategoryList: Component<{
                         {(recipe) => (
                           <li>
                             <OneRecipe recipe={recipe} />
+                            {recipe.lastCooked &&
+                              ` last cooked ${formatMonth(
+                                Temporal.PlainYearMonth.from(recipe.lastCooked)
+                              )}`}
                           </li>
                         )}
                       </For>
