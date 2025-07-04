@@ -29,7 +29,7 @@
     "@github/relative-time-element": "^4.4.5",
     "@google-cloud/storage": "^7.16.0",
     "@js-temporal/polyfill": "^0.5.1",
-    "@prisma/client": "^6.10.1",
+    "@prisma/client": "^6.11.1",
     "@sentry/astro": "^9.15.0",
     "@shoelace-style/shoelace": "^2.20.1",
     "age-encryption": "^0.2.1",
@@ -55,7 +55,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
-    "@playwright/test": "1.53.0",
+    "@playwright/test": "1.53.2",
     "@types/mdast": "^4.0.4",
     "@types/n3": "^1.24.2",
     "@types/node": "^22.15.2",
