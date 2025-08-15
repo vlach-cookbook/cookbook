@@ -32,7 +32,7 @@ jobs:
     env:
       DATABASE_URL: "postgresql://prisma:prisma@db:5432/tests?statement_cache_size=0"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
@@ -62,7 +62,7 @@ jobs:
   astro-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
@@ -82,7 +82,7 @@ jobs:
     name: Check Typescript types
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
@@ -104,7 +104,7 @@ jobs:
     name: Run unit tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
