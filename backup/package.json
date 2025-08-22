@@ -4,17 +4,17 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@google-cloud/storage": "^7.16.0",
-    "age-encryption": "^0.2.3",
+    "@google-cloud/storage": "^7.17.0",
+    "age-encryption": "^0.2.4",
     "express": "^5.1.0",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.1"
   },
   "devDependencies": {
     "@tsconfig/node22": "^22.0.2",
     "@types/express": "^5.0.3",
     "@types/morgan": "^1.9.10",
     "@types/node": "^22.15.32",
-    "typescript": "^5.8.3"
+    "typescript": "^5.9.2"
   },
   "engines": {
     "node": "22"
