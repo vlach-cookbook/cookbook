@@ -24,8 +24,8 @@
   },
   "packageManager": "pnpm@10.9.0+sha512.0486e394640d3c1fb3c9d43d49cf92879ff74f8516959c235308f5a8f62e2e19528a65cdc2a3058f587cde71eba3d5b56327c8c33a97e4c4051ca48a10ca2d5f",
   "dependencies": {
-    "@astrojs/node": "^8.3.3",
-    "@astrojs/solid-js": "^4.4.1",
+    "@astrojs/node": "^9.5.0",
+    "@astrojs/solid-js": "^5.1.1",
     "@github/relative-time-element": "^4.4.5",
     "@google-cloud/storage": "^7.16.0",
     "@js-temporal/polyfill": "^0.5.1",
@@ -60,6 +60,6 @@
     "@types/n3": "^1.24.2",
     "@types/node": "^22.15.2",
     "dotenv-cli": "^8.0.0",
-    "vitest": "^2.1.9"
+    "vitest": "^4.0.3"
   }
 }
