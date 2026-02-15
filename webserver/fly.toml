@@ -1,7 +1,7 @@
 # Use `-a vlach-cookbook` to deploy the production app.
 # Production releases use `sed` to set min_machines_running to 1.
 app = "vlach-cookbook-staging"
-primary_region = "sea"
+primary_region = "sjc"
 kill_signal = "SIGINT"
 kill_timeout = 5
 
